@@ -10,11 +10,20 @@ import UIKit
 
 class LifestyleViewController: UIViewController {
     
-    enum Section {
-        case main
+    // MARK: Sizing constants
+    
+    private let estimatedHeaderHeight: CGFloat = 54
+    private let estimatedGroupHeight: CGFloat = 186
+    private let sectionInsets = NSDirectionalEdgeInsets(top: 16, leading: 18, bottom: 24, trailing: 20)
+    private let interItemSpacing: CGFloat = 18
+    
+    enum Section: Int, CaseIterable {
+        case ongoing, completed
     }
     
-    var dataSource: UICollectionViewDiffableDataSource<Section, Int>! = nil
+    var presenter: LifestyleViewPresenter!
+    
+    var dataSource: UICollectionViewDiffableDataSource<Section, DisposableItem>! = nil
     var collectionView: UICollectionView! = nil
     
     override func viewDidLoad() {
@@ -34,30 +43,40 @@ extension LifestyleViewController {
     
     func createLayout() -> UICollectionViewLayout {
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .fractionalHeight(1.0))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .estimated(186))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
-        let spacing = CGFloat(18)
-        group.interItemSpacing = .fixed(spacing)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = spacing
-        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 18, bottom: 24, trailing: 20)
-        
-        // Header sizing configuration
-        
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                heightDimension: .estimated(54))
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerSize,
-            elementKind: SupplementaryViewKind.header.kindIdentifier(TitleSupplementaryView.self), alignment: .top)
-        section.boundarySupplementaryItems = [sectionHeader]
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
+        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            
+            guard let self = self else { return nil }
+            
+            // --- Item ---
+            
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                  heightDimension: .fractionalHeight(1.0))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            // --- Group ---
+            
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                   heightDimension: .estimated(self.estimatedGroupHeight))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
+            group.interItemSpacing = .fixed(self.interItemSpacing)
+            
+            // --- Section ---
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.interGroupSpacing = self.interItemSpacing
+            section.contentInsets = self.sectionInsets
+            
+            // --- Header ---
+            
+            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                    heightDimension: .estimated(self.estimatedHeaderHeight))
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerSize,
+                elementKind: SupplementaryViewKind.header.kindIdentifier(TitleSupplementaryView.self), alignment: .top)
+            section.boundarySupplementaryItems = [sectionHeader]
+            
+            return section
+        }
         return layout
     }
 }
@@ -79,11 +98,17 @@ extension LifestyleViewController {
     
     func configureDataSource() {
         
-        dataSource = UICollectionViewDiffableDataSource<Section, Int>(collectionView: collectionView) {
-            (collectionView: UICollectionView, indexPath: IndexPath, identifier: Int) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<Section, DisposableItem>(collectionView: collectionView) {  [weak self]
+            (collectionView: UICollectionView, indexPath: IndexPath, disposableItem: DisposableItem) -> UICollectionViewCell? in
             
-            // If last item in a section
-            if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 1 {
+            guard let self = self, let section = Section(rawValue: indexPath.section)  else { return nil }
+            
+            print("The identifider is \(disposableItem) the index path is \(indexPath)")
+            
+            let isLast = disposableItem == self.presenter.disposableItems[indexPath.section].last
+            
+            // If last item in a first section
+            if isLast, section == .ongoing {
                 
                 let cell: SuggestedItemsCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.configure(items: 6)
@@ -91,24 +116,33 @@ extension LifestyleViewController {
             } else {
                 
                 let cell: ItemCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.configure(name: "Plastic bottle", image: UIImage(named: "bottle"))
+                cell.configure(name: disposableItem.title, image: disposableItem.image, isCompleted: section == .completed)
                 return cell
             }
         }
         
-        dataSource.supplementaryViewProvider = { (
+        dataSource.supplementaryViewProvider = { [weak self] (
             collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
             
+            guard let self = self else { return nil }
+            
             let supplementaryView: TitleSupplementaryView = collectionView.dequeueReusableSupplementaryView(for: indexPath, kind: kind)
-            supplementaryView.configure(title: "Mar 8 - Mar 14", annotation: "Current week")
+            
+            if let section = Section(rawValue: indexPath.section) {
+                supplementaryView.configure(header: self.presenter.header(for: section))
+            }
+            
             return supplementaryView
         }
         
-        // initial data
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Int>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(Array(0..<4))
+        // Initial data
+        var snapshot = NSDiffableDataSourceSnapshot<Section, DisposableItem>()
+        Section.allCases.forEach {
+            snapshot.appendSections([$0])
+            snapshot.appendItems(self.presenter.disposableItems[$0.rawValue])
+        }
         dataSource.apply(snapshot, animatingDifferences: false)
     }
 }
 
+extension LifestyleViewController: LifestyleView {}

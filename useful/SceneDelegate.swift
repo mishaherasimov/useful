@@ -21,6 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         let lifestyle = LifestyleViewController()
+        lifestyle.presenter = LifestylePresenter(view: lifestyle)
         
         let navigation = UsefulNavigationController(rootViewController: lifestyle)
         window.rootViewController = navigation

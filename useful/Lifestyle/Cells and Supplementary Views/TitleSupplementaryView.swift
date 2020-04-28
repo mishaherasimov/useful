@@ -46,10 +46,10 @@ class TitleSupplementaryView: UICollectionReusableView {
         NSLayoutConstraint.snap(stackView, to: self)
     }
     
-    func configure(title: String, annotation: String = .empty) {
+    func configure(header: (title: String, annotation: String)) {
         
-        annotationLabel.isHidden = annotation.isEmpty
-        titleLabel.text = title
-        annotationLabel.text = annotation
+        annotationLabel.isHidden = header.annotation.isEmpty
+        titleLabel.text = header.title
+        annotationLabel.text = header.annotation
     }
 }

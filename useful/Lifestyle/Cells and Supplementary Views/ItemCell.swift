@@ -20,7 +20,7 @@ class ItemCell: UICollectionViewCell {
     
     // MARK: - Views
     
-    private let nameLabel: UILabel = UILabel.create(fontStyle: .headline)
+    private let nameLabel: UILabel = UILabel.create(fontStyle: .headline, isDynamicallySized: true)
     
     private let itemImage: UIImageView = {
         
@@ -68,9 +68,10 @@ class ItemCell: UICollectionViewCell {
         NSLayoutConstraint.snap(stackView, to: contentView, with: contentInsets)
     }
     
-    func configure(name: String, image: UIImage?) {
+    func configure(name: String, image: UIImage?, isCompleted: Bool) {
         
         nameLabel.text = name
         itemImage.image = image
+        contentView.alpha = isCompleted ? 0.6 : 1.0
     }
 }
