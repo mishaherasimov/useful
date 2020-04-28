@@ -26,6 +26,7 @@ class ItemCell: UICollectionViewCell {
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.textColor = UIColor(collection: .midnightBlack)
         return label
     }()
     
@@ -33,7 +34,7 @@ class ItemCell: UICollectionViewCell {
         
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .center
         return imageView
     }()
     
@@ -64,7 +65,7 @@ class ItemCell: UICollectionViewCell {
     
     private func configureUI() {
         
-        let stackView = UIStackView.create(axis: .vertical, spacing: spacing, alignment: .center)
+        let stackView = UIStackView.create(axis: .vertical, spacing: spacing)
         contentView.addSubview(stackView)
         
         layer.cornerRadius = cornerRadius
