@@ -15,6 +15,13 @@
 		8433FD53245635E500C301D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8433FD51245635E500C301D3 /* LaunchScreen.storyboard */; };
 		8433FD5E245635E500C301D3 /* usefulTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD5D245635E500C301D3 /* usefulTests.swift */; };
 		84FECED82457915B00E3D5E6 /* UsefulNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECED72457915B00E3D5E6 /* UsefulNavigationController.swift */; };
+		84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */; };
+		84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDD245797E200E3D5E6 /* ReusableView.swift */; };
+		84FECEE124579C1700E3D5E6 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEE024579C1700E3D5E6 /* ItemCell.swift */; };
+		84FECEE424579EAD00E3D5E6 /* Layout+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEE324579EAD00E3D5E6 /* Layout+Convenience.swift */; };
+		84FECEE62457A72B00E3D5E6 /* UIKit+CommonViewCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEE52457A72B00E3D5E6 /* UIKit+CommonViewCreation.swift */; };
+		84FECEE82457B5B100E3D5E6 /* Colours+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEE72457B5B100E3D5E6 /* Colours+Convenience.swift */; };
+		84FECEEA2457B6F700E3D5E6 /* CALayer+Shadows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEE92457B6F700E3D5E6 /* CALayer+Shadows.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +47,13 @@
 		8433FD5D245635E500C301D3 /* usefulTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = usefulTests.swift; sourceTree = "<group>"; };
 		8433FD5F245635E500C301D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84FECED72457915B00E3D5E6 /* UsefulNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulNavigationController.swift; sourceTree = "<group>"; };
+		84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+CellHandling.swift"; sourceTree = "<group>"; };
+		84FECEDD245797E200E3D5E6 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
+		84FECEE024579C1700E3D5E6 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
+		84FECEE324579EAD00E3D5E6 /* Layout+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Layout+Convenience.swift"; sourceTree = "<group>"; };
+		84FECEE52457A72B00E3D5E6 /* UIKit+CommonViewCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+CommonViewCreation.swift"; sourceTree = "<group>"; };
+		84FECEE72457B5B100E3D5E6 /* Colours+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Colours+Convenience.swift"; sourceTree = "<group>"; };
+		84FECEE92457B6F700E3D5E6 /* CALayer+Shadows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Shadows.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +103,7 @@
 				8433FD51245635E500C301D3 /* LaunchScreen.storyboard */,
 				8433FD54245635E500C301D3 /* Info.plist */,
 				84FECED92457930B00E3D5E6 /* Shared */,
+				84FECEDC2457973100E3D5E6 /* Extensions */,
 			);
 			path = useful;
 			sourceTree = "<group>";
@@ -106,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				8433FD4A245635E400C301D3 /* LifestyleViewController.swift */,
+				84FECEE224579C1C00E3D5E6 /* Cells and Supplementary Views */,
 			);
 			path = Lifestyle;
 			sourceTree = "<group>";
@@ -114,8 +130,37 @@
 			isa = PBXGroup;
 			children = (
 				84FECED72457915B00E3D5E6 /* UsefulNavigationController.swift */,
+				84FECEDF2457981700E3D5E6 /* Protocols */,
 			);
 			name = Shared;
+			sourceTree = "<group>";
+		};
+		84FECEDC2457973100E3D5E6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */,
+				84FECEE324579EAD00E3D5E6 /* Layout+Convenience.swift */,
+				84FECEE52457A72B00E3D5E6 /* UIKit+CommonViewCreation.swift */,
+				84FECEE72457B5B100E3D5E6 /* Colours+Convenience.swift */,
+				84FECEE92457B6F700E3D5E6 /* CALayer+Shadows.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		84FECEDF2457981700E3D5E6 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				84FECEDD245797E200E3D5E6 /* ReusableView.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		84FECEE224579C1C00E3D5E6 /* Cells and Supplementary Views */ = {
+			isa = PBXGroup;
+			children = (
+				84FECEE024579C1700E3D5E6 /* ItemCell.swift */,
+			);
+			path = "Cells and Supplementary Views";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,8 +264,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84FECEEA2457B6F700E3D5E6 /* CALayer+Shadows.swift in Sources */,
+				84FECEE62457A72B00E3D5E6 /* UIKit+CommonViewCreation.swift in Sources */,
+				84FECEE82457B5B100E3D5E6 /* Colours+Convenience.swift in Sources */,
 				8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */,
+				84FECEE424579EAD00E3D5E6 /* Layout+Convenience.swift in Sources */,
+				84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */,
 				8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */,
+				84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */,
+				84FECEE124579C1700E3D5E6 /* ItemCell.swift in Sources */,
 				84FECED82457915B00E3D5E6 /* UsefulNavigationController.swift in Sources */,
 				8433FD49245635E400C301D3 /* SceneDelegate.swift in Sources */,
 			);

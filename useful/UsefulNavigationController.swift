@@ -13,16 +13,16 @@ class UsefulNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationBar.prefersLargeTitles = true
         
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBarAppearance.backgroundColor = UIColor(named: "olive")
+        navBarAppearance.backgroundColor = UIColor(collection: .olive)
         
-        navigationController?.navigationBar.standardAppearance = navBarAppearance
-        navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        navigationBar.standardAppearance = navBarAppearance
+        navigationBar.scrollEdgeAppearance = navBarAppearance
     }
     
     override var childForStatusBarStyle: UIViewController? {
