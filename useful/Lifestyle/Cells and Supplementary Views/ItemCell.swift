@@ -18,17 +18,9 @@ class ItemCell: UICollectionViewCell {
     private let spread: CGFloat = -20
     private let blur: CGFloat = 30
     
-    
     // MARK: - Views
     
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.preferredFont(forTextStyle: .headline)
-        label.textColor = UIColor(collection: .midnightBlack)
-        return label
-    }()
+    private let nameLabel: UILabel = UILabel.create(fontStyle: .headline)
     
     private let itemImage: UIImageView = {
         

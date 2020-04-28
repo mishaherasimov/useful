@@ -8,6 +8,49 @@
 
 import UIKit
 
+extension UIView {
+    
+    func configureRequiredPriorities(for axies: [NSLayoutConstraint.PriorityAxis]) {
+
+        axies.forEach {
+
+            switch $0 {
+            case let .horizontal(priority), let .vertical(priority):
+
+                setContentHuggingPriority(priority, for: $0.constraintAxis)
+                setContentCompressionResistancePriority(priority, for: $0.constraintAxis)
+            }
+        }
+    }
+}
+
+extension UILabel {
+
+    class func create(fontStyle: UIFont.TextStyle,
+                      fontTrait: UIFontDescriptor.SymbolicTraits? = nil,
+                      text: String? = nil,
+                      textColor: UIColor? = UIColor(collection: .midnightBlack),
+                      textAlignment: NSTextAlignment = .left,
+                      isDynamicallySized: Bool = false,
+                      contentPriority axies: [NSLayoutConstraint.PriorityAxis] = []) -> UILabel {
+
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.preferredFont(forTextStyle: fontStyle)
+        label.text = text
+        label.numberOfLines = isDynamicallySized ? 0 : 1
+        label.textAlignment = textAlignment
+        label.textColor = textColor
+        label.configureRequiredPriorities(for: axies)
+        
+        if let trait = fontTrait {
+            label.font = label.font.withTraits(traits: trait)
+        }
+        
+        return label
+    }
+}
+
 extension UIStackView {
 
     class func create(axis: NSLayoutConstraint.Axis, spacing: CGFloat = 8, distribution: Distribution = .fill, alignment: Alignment = .fill) -> UIStackView {
