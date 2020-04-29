@@ -26,6 +26,8 @@ class LifestyleViewController: UIViewController {
     var dataSource: UICollectionViewDiffableDataSource<Section, DisposableItem>! = nil
     var collectionView: UICollectionView! = nil
     
+    let searchController = UISearchController(searchResultsController: nil)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,8 +36,51 @@ class LifestyleViewController: UIViewController {
         configureDataSource()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
+        
+        navigationItem.searchController = searchController
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.configureSearchBar()
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+}
+
+extension LifestyleViewController {
+    
+    func configureSearchBar() {
+        
+        let searchBar = searchController.searchBar
+        searchBar.searchTextField.textColor = .white
+        searchBar.searchTextField.backgroundColor = UIColor.white.withAlphaComponent(0.12)
+        searchBar.tintColor = .white
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search items", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.6)])
+        
+        let searchGlyph = searchBar.searchTextField.leftView as? UIImageView
+        searchGlyph?.image = searchGlyph?.image?.withRenderingMode(.alwaysTemplate)
+        searchGlyph?.tintColor = .white
+        
+        if let clearButton = searchBar.searchTextField.value(forKey: "clearButton") as? UIButton {
+            
+            clearButton.imageView?.tintColor = .white
+            
+            let configuration = UIImage.SymbolConfiguration(scale: .medium)
+            let clearGlyph = UIImage(systemName: "xmark.circle.fill", withConfiguration: configuration)
+            
+            clearButton.setImage(clearGlyph?.withRenderingMode(.alwaysTemplate), for: .normal)
+        }
     }
 }
 
@@ -103,7 +148,7 @@ extension LifestyleViewController {
             
             guard let self = self, let section = Section(rawValue: indexPath.section)  else { return nil }
             
-            print("The identifider is \(disposableItem) the index path is \(indexPath)")
+            // print("The identifider is \(disposableItem) the index path is \(indexPath)")
             
             let isLast = disposableItem == self.presenter.disposableItems[indexPath.section].last
             
@@ -142,6 +187,12 @@ extension LifestyleViewController {
             snapshot.appendItems(self.presenter.disposableItems[$0.rawValue])
         }
         dataSource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+extension LifestyleViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
     }
 }
 

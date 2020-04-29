@@ -13,7 +13,7 @@
 		8433FD50245635E500C301D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8433FD4F245635E500C301D3 /* Assets.xcassets */; };
 		8433FD53245635E500C301D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8433FD51245635E500C301D3 /* LaunchScreen.storyboard */; };
 		8433FD5E245635E500C301D3 /* usefulTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD5D245635E500C301D3 /* usefulTests.swift */; };
-		84FECED82457915B00E3D5E6 /* UsefulNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECED72457915B00E3D5E6 /* UsefulNavigationController.swift */; };
+		84FECED82457915B00E3D5E6 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */; };
 		84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */; };
 		84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDD245797E200E3D5E6 /* ReusableView.swift */; };
 		84FECEE124579C1700E3D5E6 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEE024579C1700E3D5E6 /* ItemCell.swift */; };
@@ -28,6 +28,7 @@
 		84FECEF42458A1A800E3D5E6 /* DisposableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF32458A1A800E3D5E6 /* DisposableItem.swift */; };
 		84FECEF72458A50500E3D5E6 /* LifestyleStructurePattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF62458A50500E3D5E6 /* LifestyleStructurePattern.swift */; };
 		84FECEF92458A56700E3D5E6 /* LifestylePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */; };
+		84FECEFB2458E86000E3D5E6 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEFA2458E86000E3D5E6 /* CalendarViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +52,7 @@
 		8433FD59245635E500C301D3 /* usefulTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = usefulTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8433FD5D245635E500C301D3 /* usefulTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = usefulTests.swift; sourceTree = "<group>"; };
 		8433FD5F245635E500C301D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84FECED72457915B00E3D5E6 /* UsefulNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulNavigationController.swift; sourceTree = "<group>"; };
+		84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+CellHandling.swift"; sourceTree = "<group>"; };
 		84FECEDD245797E200E3D5E6 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
 		84FECEE024579C1700E3D5E6 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
@@ -66,6 +67,7 @@
 		84FECEF32458A1A800E3D5E6 /* DisposableItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposableItem.swift; sourceTree = "<group>"; };
 		84FECEF62458A50500E3D5E6 /* LifestyleStructurePattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestyleStructurePattern.swift; sourceTree = "<group>"; };
 		84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestylePresenter.swift; sourceTree = "<group>"; };
+		84FECEFA2458E86000E3D5E6 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,9 +134,10 @@
 			isa = PBXGroup;
 			children = (
 				8433FD4A245635E400C301D3 /* LifestyleViewController.swift */,
-				84FECEE224579C1C00E3D5E6 /* Cells and Supplementary Views */,
 				84FECEF62458A50500E3D5E6 /* LifestyleStructurePattern.swift */,
 				84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */,
+				84FECEE224579C1C00E3D5E6 /* Cells and Supplementary Views */,
+				84FECEFC2458E86F00E3D5E6 /* Controls */,
 			);
 			path = Lifestyle;
 			sourceTree = "<group>";
@@ -142,7 +145,7 @@
 		84FECED92457930B00E3D5E6 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				84FECED72457915B00E3D5E6 /* UsefulNavigationController.swift */,
+				84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */,
 				84FECEF52458A1B600E3D5E6 /* Models */,
 				84FECEDF2457981700E3D5E6 /* Protocols */,
 			);
@@ -187,6 +190,14 @@
 				84FECEF32458A1A800E3D5E6 /* DisposableItem.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		84FECEFC2458E86F00E3D5E6 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				84FECEFA2458E86000E3D5E6 /* CalendarViewController.swift */,
+			);
+			path = Controls;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,13 +310,14 @@
 				84FECEEE2457E45A00E3D5E6 /* String+Enhancements.swift in Sources */,
 				84FECEF92458A56700E3D5E6 /* LifestylePresenter.swift in Sources */,
 				8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */,
+				84FECEFB2458E86000E3D5E6 /* CalendarViewController.swift in Sources */,
 				84FECEE424579EAD00E3D5E6 /* Layout+Convenience.swift in Sources */,
 				84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */,
 				8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */,
 				84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */,
 				84FECEE124579C1700E3D5E6 /* ItemCell.swift in Sources */,
 				84FECEEC2457DF0600E3D5E6 /* TitleSupplementaryView.swift in Sources */,
-				84FECED82457915B00E3D5E6 /* UsefulNavigationController.swift in Sources */,
+				84FECED82457915B00E3D5E6 /* CustomNavigationController.swift in Sources */,
 				8433FD49245635E400C301D3 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

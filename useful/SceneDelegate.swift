@@ -23,7 +23,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let lifestyle = LifestyleViewController()
         lifestyle.presenter = LifestylePresenter(view: lifestyle)
         
-        let navigation = UsefulNavigationController(rootViewController: lifestyle)
+//        let calendar = CalendarViewController()
+        
+//        let navigation = CustomNavigationController(rootViewController: calendar)
+        let navigation = CustomNavigationController(rootViewController: lifestyle)
         window.rootViewController = navigation
         
         self.window = window
