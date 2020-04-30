@@ -12,8 +12,8 @@ enum DateFormatPreset {
 
     enum CustomStyle: String, Equatable, Hashable {
 
-        case invertedRegularDate = "yyyy-MM-dd"
-        case extendedFull = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        case monthYear = "MMMM yyyy"
+        case day = "EE"
     }
 
     case system(dateStyle: DateFormatter.Style, timeStyle: DateFormatter.Style, timeZone: TimeZone?)
@@ -49,5 +49,14 @@ extension DateFormatPreset: Hashable {
             hasher.combine(timeZone)
             hasher.combine(format)
         }
+    }
+}
+
+extension Date {
+
+    func formatted(as format: DateFormatPreset) -> String {
+
+        let formatter = DateFormatter.cached(with: format)
+        return formatter.string(from: self)
     }
 }

@@ -16,6 +16,8 @@
 		84BB0CEE245A24F700D080D5 /* DateFormatter+Caching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CED245A24F700D080D5 /* DateFormatter+Caching.swift */; };
 		84BB0CF0245A257300D080D5 /* DateFormatPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CEF245A257300D080D5 /* DateFormatPreset.swift */; };
 		84BB0CF2245A56C000D080D5 /* CalendarItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CF1245A56C000D080D5 /* CalendarItemCell.swift */; };
+		84BB0CF4245A8FE700D080D5 /* Calendar+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CF3245A8FE700D080D5 /* Calendar+Operations.swift */; };
+		84BB0CF6245AA36200D080D5 /* LegendSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CF5245AA36200D080D5 /* LegendSupplementaryView.swift */; };
 		84FECED82457915B00E3D5E6 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */; };
 		84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */; };
 		84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDD245797E200E3D5E6 /* ReusableView.swift */; };
@@ -58,6 +60,8 @@
 		84BB0CED245A24F700D080D5 /* DateFormatter+Caching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Caching.swift"; sourceTree = "<group>"; };
 		84BB0CEF245A257300D080D5 /* DateFormatPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatPreset.swift; sourceTree = "<group>"; };
 		84BB0CF1245A56C000D080D5 /* CalendarItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarItemCell.swift; sourceTree = "<group>"; };
+		84BB0CF3245A8FE700D080D5 /* Calendar+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Operations.swift"; sourceTree = "<group>"; };
+		84BB0CF5245AA36200D080D5 /* LegendSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegendSupplementaryView.swift; sourceTree = "<group>"; };
 		84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+CellHandling.swift"; sourceTree = "<group>"; };
 		84FECEDD245797E200E3D5E6 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 				84FECEED2457E45A00E3D5E6 /* String+Enhancements.swift */,
 				84FECEEF2457EE2500E3D5E6 /* UIFont+Traits.swift */,
 				84BB0CED245A24F700D080D5 /* DateFormatter+Caching.swift */,
+				84BB0CF3245A8FE700D080D5 /* Calendar+Operations.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 				84FECEEB2457DF0600E3D5E6 /* TitleSupplementaryView.swift */,
 				84FECEF12457F15A00E3D5E6 /* SuggestedItemsCell.swift */,
 				84BB0CF1245A56C000D080D5 /* CalendarItemCell.swift */,
+				84BB0CF5245AA36200D080D5 /* LegendSupplementaryView.swift */,
 			);
 			path = "Cells and Supplementary Views";
 			sourceTree = "<group>";
@@ -320,10 +326,12 @@
 				84FECEEE2457E45A00E3D5E6 /* String+Enhancements.swift in Sources */,
 				84FECEF92458A56700E3D5E6 /* LifestylePresenter.swift in Sources */,
 				8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */,
+				84BB0CF6245AA36200D080D5 /* LegendSupplementaryView.swift in Sources */,
 				84FECEE424579EAD00E3D5E6 /* Layout+Convenience.swift in Sources */,
 				84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */,
 				8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */,
 				84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */,
+				84BB0CF4245A8FE700D080D5 /* Calendar+Operations.swift in Sources */,
 				84FECEE124579C1700E3D5E6 /* ItemCell.swift in Sources */,
 				84FECEEC2457DF0600E3D5E6 /* TitleSupplementaryView.swift in Sources */,
 				84BB0CEE245A24F700D080D5 /* DateFormatter+Caching.swift in Sources */,
