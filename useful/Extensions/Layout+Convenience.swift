@@ -27,10 +27,10 @@ extension NSLayoutConstraint {
 
     enum Side: CaseIterable {
 
-        static let top: Side = .top(priority: .required)
-        static let bottom: Side = .bottom(priority: .required)
-        static let left: Side = .left(priority: .required)
-        static let right: Side = .right(priority: .required)
+        static let top: Side = .top(priority: .defaultHigh)
+        static let bottom: Side = .bottom(priority: .defaultHigh)
+        static let left: Side = .left(priority: .defaultHigh)
+        static let right: Side = .right(priority: .defaultHigh)
 
         case top(priority: UILayoutPriority)
         case bottom(priority: UILayoutPriority)
@@ -73,7 +73,7 @@ extension NSLayoutConstraint {
             }
         }
 
-        size(view: view, attributes: sizeAttributes)
+        size(view: subview, attributes: sizeAttributes)
     }
 
     static func size(view: UIView, attributes: [CGSize.Attributes]) {

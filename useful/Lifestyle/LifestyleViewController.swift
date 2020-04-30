@@ -27,13 +27,18 @@ class LifestyleViewController: UIViewController {
     var collectionView: UICollectionView! = nil
     
     let searchController = UISearchController(searchResultsController: nil)
+    let calendarBar = CalendarBar()
+    
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.title = "Lifestyle"
+        view.backgroundColor = UIColor(collection: .olive)
         configureHierarchy()
         configureDataSource()
+        configureCalendarBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +55,7 @@ class LifestyleViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.configureSearchBar()
+        configureSearchBar()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -59,6 +64,12 @@ class LifestyleViewController: UIViewController {
 }
 
 extension LifestyleViewController {
+    
+    func configureCalendarBar() {
+        
+        view.addSubview(calendarBar)
+        NSLayoutConstraint.snap(calendarBar, to: collectionView, for: [.left, .top, .right])
+    }
     
     func configureSearchBar() {
         
@@ -138,7 +149,8 @@ extension LifestyleViewController {
         collectionView.backgroundColor = UIColor(collection: .darkGray)
         view.addSubview(collectionView)
         
-        NSLayoutConstraint.snap(collectionView, to: view)
+        NSLayoutConstraint.snap(collectionView, to: view, for: [.left, .right, .bottom])
+        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
     }
     
     func configureDataSource() {

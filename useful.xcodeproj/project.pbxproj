@@ -13,6 +13,9 @@
 		8433FD50245635E500C301D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8433FD4F245635E500C301D3 /* Assets.xcassets */; };
 		8433FD53245635E500C301D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8433FD51245635E500C301D3 /* LaunchScreen.storyboard */; };
 		8433FD5E245635E500C301D3 /* usefulTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD5D245635E500C301D3 /* usefulTests.swift */; };
+		84BB0CEE245A24F700D080D5 /* DateFormatter+Caching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CED245A24F700D080D5 /* DateFormatter+Caching.swift */; };
+		84BB0CF0245A257300D080D5 /* DateFormatPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CEF245A257300D080D5 /* DateFormatPreset.swift */; };
+		84BB0CF2245A56C000D080D5 /* CalendarItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CF1245A56C000D080D5 /* CalendarItemCell.swift */; };
 		84FECED82457915B00E3D5E6 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */; };
 		84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */; };
 		84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDD245797E200E3D5E6 /* ReusableView.swift */; };
@@ -28,7 +31,7 @@
 		84FECEF42458A1A800E3D5E6 /* DisposableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF32458A1A800E3D5E6 /* DisposableItem.swift */; };
 		84FECEF72458A50500E3D5E6 /* LifestyleStructurePattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF62458A50500E3D5E6 /* LifestyleStructurePattern.swift */; };
 		84FECEF92458A56700E3D5E6 /* LifestylePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */; };
-		84FECEFB2458E86000E3D5E6 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEFA2458E86000E3D5E6 /* CalendarViewController.swift */; };
+		84FECF002459F53200E3D5E6 /* CalendarBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +55,9 @@
 		8433FD59245635E500C301D3 /* usefulTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = usefulTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8433FD5D245635E500C301D3 /* usefulTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = usefulTests.swift; sourceTree = "<group>"; };
 		8433FD5F245635E500C301D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84BB0CED245A24F700D080D5 /* DateFormatter+Caching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Caching.swift"; sourceTree = "<group>"; };
+		84BB0CEF245A257300D080D5 /* DateFormatPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatPreset.swift; sourceTree = "<group>"; };
+		84BB0CF1245A56C000D080D5 /* CalendarItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarItemCell.swift; sourceTree = "<group>"; };
 		84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+CellHandling.swift"; sourceTree = "<group>"; };
 		84FECEDD245797E200E3D5E6 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
@@ -67,7 +73,7 @@
 		84FECEF32458A1A800E3D5E6 /* DisposableItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposableItem.swift; sourceTree = "<group>"; };
 		84FECEF62458A50500E3D5E6 /* LifestyleStructurePattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestyleStructurePattern.swift; sourceTree = "<group>"; };
 		84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestylePresenter.swift; sourceTree = "<group>"; };
-		84FECEFA2458E86000E3D5E6 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +154,7 @@
 				84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */,
 				84FECEF52458A1B600E3D5E6 /* Models */,
 				84FECEDF2457981700E3D5E6 /* Protocols */,
+				84BB0CEF245A257300D080D5 /* DateFormatPreset.swift */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -162,6 +169,7 @@
 				84FECEE92457B6F700E3D5E6 /* CALayer+Shadows.swift */,
 				84FECEED2457E45A00E3D5E6 /* String+Enhancements.swift */,
 				84FECEEF2457EE2500E3D5E6 /* UIFont+Traits.swift */,
+				84BB0CED245A24F700D080D5 /* DateFormatter+Caching.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -180,6 +188,7 @@
 				84FECEE024579C1700E3D5E6 /* ItemCell.swift */,
 				84FECEEB2457DF0600E3D5E6 /* TitleSupplementaryView.swift */,
 				84FECEF12457F15A00E3D5E6 /* SuggestedItemsCell.swift */,
+				84BB0CF1245A56C000D080D5 /* CalendarItemCell.swift */,
 			);
 			path = "Cells and Supplementary Views";
 			sourceTree = "<group>";
@@ -195,7 +204,7 @@
 		84FECEFC2458E86F00E3D5E6 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
-				84FECEFA2458E86000E3D5E6 /* CalendarViewController.swift */,
+				84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -301,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84FECEF72458A50500E3D5E6 /* LifestyleStructurePattern.swift in Sources */,
+				84BB0CF0245A257300D080D5 /* DateFormatPreset.swift in Sources */,
 				84FECEEA2457B6F700E3D5E6 /* CALayer+Shadows.swift in Sources */,
 				84FECEF02457EE2500E3D5E6 /* UIFont+Traits.swift in Sources */,
 				84FECEE62457A72B00E3D5E6 /* UIKit+CommonViewCreation.swift in Sources */,
@@ -310,14 +320,16 @@
 				84FECEEE2457E45A00E3D5E6 /* String+Enhancements.swift in Sources */,
 				84FECEF92458A56700E3D5E6 /* LifestylePresenter.swift in Sources */,
 				8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */,
-				84FECEFB2458E86000E3D5E6 /* CalendarViewController.swift in Sources */,
 				84FECEE424579EAD00E3D5E6 /* Layout+Convenience.swift in Sources */,
 				84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */,
 				8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */,
 				84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */,
 				84FECEE124579C1700E3D5E6 /* ItemCell.swift in Sources */,
 				84FECEEC2457DF0600E3D5E6 /* TitleSupplementaryView.swift in Sources */,
+				84BB0CEE245A24F700D080D5 /* DateFormatter+Caching.swift in Sources */,
+				84BB0CF2245A56C000D080D5 /* CalendarItemCell.swift in Sources */,
 				84FECED82457915B00E3D5E6 /* CustomNavigationController.swift in Sources */,
+				84FECF002459F53200E3D5E6 /* CalendarBar.swift in Sources */,
 				8433FD49245635E400C301D3 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -402,7 +414,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -456,7 +468,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
