@@ -16,6 +16,7 @@ class LifestyleViewController: UIViewController {
     private let estimatedGroupHeight: CGFloat = 186
     private let sectionInsets = NSDirectionalEdgeInsets(top: 16, leading: 18, bottom: 24, trailing: 20)
     private let interItemSpacing: CGFloat = 18
+    private let contentTopInset: CGFloat = 45
     
     enum Section: Int, CaseIterable {
         case ongoing, completed
@@ -24,10 +25,21 @@ class LifestyleViewController: UIViewController {
     var presenter: LifestyleViewPresenter!
     
     var dataSource: UICollectionViewDiffableDataSource<Section, DisposableItem>! = nil
-    var collectionView: UICollectionView! = nil
+    lazy var collectionView: UICollectionView = {
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        collectionView.contentInset.top = self.contentTopInset
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(ItemCell.self)
+        collectionView.register(SuggestedItemsCell.self)
+        collectionView.register(TitleSupplementaryView.self, kind: .header)
+        collectionView.backgroundColor = UIColor(collection: .darkGray)
+        return collectionView
+    }()
     
     let searchController = UISearchController(searchResultsController: nil)
     let calendarBar = CalendarBar()
+    var calendarBarTopConstraint: NSLayoutConstraint? = nil
     
     // MARK: Lifecycle
     
@@ -68,7 +80,9 @@ extension LifestyleViewController {
     func configureCalendarBar() {
         
         view.addSubview(calendarBar)
-        NSLayoutConstraint.snap(calendarBar, to: collectionView, for: [.left, .top, .right])
+        NSLayoutConstraint.snap(calendarBar, to: collectionView, for: [.left, .right])
+        calendarBarTopConstraint = calendarBar.topAnchor.constraint(equalTo: collectionView.topAnchor)
+        calendarBarTopConstraint?.isActive = true
     }
     
     func configureSearchBar() {
@@ -140,13 +154,8 @@ extension LifestyleViewController {
 extension LifestyleViewController {
     
     func configureHierarchy() {
-        
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(ItemCell.self)
-        collectionView.register(SuggestedItemsCell.self)
-        collectionView.register(TitleSupplementaryView.self, kind: .header)
-        collectionView.backgroundColor = UIColor(collection: .darkGray)
+    
+        collectionView.delegate = self
         view.addSubview(collectionView)
         
         NSLayoutConstraint.snap(collectionView, to: view, for: [.left, .right, .bottom])
@@ -199,6 +208,16 @@ extension LifestyleViewController {
             snapshot.appendItems(self.presenter.disposableItems[$0.rawValue])
         }
         dataSource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+extension LifestyleViewController: UICollectionViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        // Helps to mimic the behaviour of the stretchy navigation bar
+        let isNegativeDirection = scrollView.contentOffset.y <= -contentTopInset
+        calendarBarTopConstraint?.constant = isNegativeDirection ? abs(scrollView.contentOffset.y) - contentTopInset : 0
     }
 }
 

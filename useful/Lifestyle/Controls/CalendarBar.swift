@@ -17,7 +17,7 @@ class CalendarBar: UIView {
     // Constraints
     
     private let cornerRadius: CGFloat = 20
-    private let initialHeight: CGFloat = 280 // 35
+    private let initialHeight: CGFloat = 280
     
     private let indicatorHeight: CGFloat = 5
     private let indicatorWidth: CGFloat = 48
@@ -131,7 +131,7 @@ extension CalendarBar {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(CalendarItemCell.self)
         collectionView.register(LegendSupplementaryView.self, kind: .header)
-        collectionView.backgroundColor = UIColor(collection: .olive)
+        collectionView.backgroundColor = .clear
         
         addSubview(collectionView)
         NSLayoutConstraint.snap(collectionView, to: self, for: [.left, .right, .bottom], sizeAttributes: [.height(value: calendarHeight)], with: calendarInsets)

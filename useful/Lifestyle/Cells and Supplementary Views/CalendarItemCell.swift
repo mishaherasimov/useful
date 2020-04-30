@@ -33,7 +33,7 @@ class CalendarItemCell: UICollectionViewCell {
     private func configureUI() {
         
         contentView.addSubview(dayLabel)
-        backgroundColor = UIColor(collection: .olive)
+        backgroundColor = .clear
         NSLayoutConstraint.snap(dayLabel, to: contentView)
     }
     
