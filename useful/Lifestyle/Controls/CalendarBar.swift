@@ -10,8 +10,8 @@ import UIKit
 
 class CalendarBar: UIView {
     
-    enum Section: Int {
-        case calendar
+    enum Week: Int, CaseIterable {
+        case week1, week2, week3, week4, week5, week6
     }
     
     // Constraints
@@ -30,15 +30,36 @@ class CalendarBar: UIView {
     private let calendarHeight: CGFloat = 222
     private let legendHeight: CGFloat = 20
     private let daysTopInset: CGFloat = 10
-    private let calendarInsets: UIEdgeInsets = .create(right: 8, bottom: 26, left: 12)
+    private let calendarInsets: UIEdgeInsets = .create(right: 12, bottom: 26, left: 12)
     
     // -- Constraints --
     
-    private var heightConstraint: NSLayoutConstraint! = nil
+    // Views
+    
+    private var heightConstraint: NSLayoutConstraint?
     private let titleLabel: UILabel = UILabel.create(fontStyle: .headline, textColor: .white)
     
-    fileprivate var collectionView: UICollectionView! = nil
-    fileprivate var dataSource: UICollectionViewDiffableDataSource<Section, Int>! = nil
+    private lazy var collectionView: UICollectionView = {
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(CalendarItemCell.self)
+        collectionView.register(LegendSupplementaryView.self, kind: .header)
+        collectionView.backgroundColor = .clear
+        return collectionView
+    }()
+    
+    // -- Views --
+    
+    private var dataSource: UICollectionViewDiffableDataSource<Week, Int>! = nil
+    private var selectedWeek: Week = .week3 {
+        didSet {
+            guard oldValue != selectedWeek else { return }
+            var snapshot = dataSource.snapshot()
+            snapshot.reloadSections([oldValue, selectedWeek])
+            dataSource.apply(snapshot, animatingDifferences: true)
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -57,7 +78,7 @@ class CalendarBar: UIView {
         layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         translatesAutoresizingMaskIntoConstraints = false
         heightConstraint = heightAnchor.constraint(equalToConstant: initialHeight)
-        heightConstraint.isActive = true
+        heightConstraint?.isActive = true
         
         // -- Disclosure indicator --
         
@@ -89,7 +110,7 @@ extension CalendarBar {
         
         let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             
-            guard let self = self else { return nil }
+            guard let self = self, let sectionType = Week(rawValue: sectionIndex) else { return nil }
             
             // --- Item ---
             
@@ -106,19 +127,35 @@ extension CalendarBar {
             // --- Section ---
             
             let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: self.daysTopInset, leading: 0, bottom: 0, trailing: 0)
+            section.contentInsets = NSDirectionalEdgeInsets(top: sectionType == .week1 ? self.daysTopInset : 0, leading: 0, bottom: 0, trailing: 0)
             
             // --- Header ---
             
-            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                    heightDimension: .absolute(self.legendHeight))
-            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: headerSize,
-                elementKind: SupplementaryViewKind.header.kindIdentifier(LegendSupplementaryView.self), alignment: .top)
-            section.boundarySupplementaryItems = [sectionHeader]
+            if sectionType == .week1 {
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                        heightDimension: .absolute(self.legendHeight))
+                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: SupplementaryViewKind.header.kindIdentifier(LegendSupplementaryView.self), alignment: .top)
+                section.boundarySupplementaryItems = [sectionHeader]
+            }
+            
+            // -- Background --
+            
+            if sectionType == self.selectedWeek {
+                
+                let weekBackgroundDecoration = NSCollectionLayoutDecorationItem.background(
+                    elementKind: SupplementaryViewKind.background.kindIdentifier(WeekBackgroundDecorationView.self))
+                section.decorationItems = [weekBackgroundDecoration]
+            }
             
             return section
         }
+        
+        layout.register(
+            WeekBackgroundDecorationView.self,
+            forDecorationViewOfKind: SupplementaryViewKind.background.kindIdentifier(WeekBackgroundDecorationView.self))
+        
         return layout
     }
 }
@@ -127,12 +164,7 @@ extension CalendarBar {
     
     func configureHierarchy() {
         
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(CalendarItemCell.self)
-        collectionView.register(LegendSupplementaryView.self, kind: .header)
-        collectionView.backgroundColor = .clear
-        
+        collectionView.delegate = self
         addSubview(collectionView)
         NSLayoutConstraint.snap(collectionView, to: self, for: [.left, .right, .bottom], sizeAttributes: [.height(value: calendarHeight)], with: calendarInsets)
     }
@@ -141,7 +173,7 @@ extension CalendarBar {
         
         let calendarData = calculateCalendar()
         
-        dataSource = UICollectionViewDiffableDataSource<Section, Int>(collectionView: collectionView) {
+        dataSource = UICollectionViewDiffableDataSource<Week, Int>(collectionView: collectionView) {
             (collectionView: UICollectionView, indexPath: IndexPath, index: Int) -> UICollectionViewCell? in
             
             let cell: CalendarItemCell = collectionView.dequeueReusableCell(for: indexPath)
@@ -154,14 +186,21 @@ extension CalendarBar {
         dataSource.supplementaryViewProvider = { (
             collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
             
+            guard let section = Week(rawValue: indexPath.section), section == .week1 else { return nil }
+            
             let supplementaryView: LegendSupplementaryView = collectionView.dequeueReusableSupplementaryView(for: indexPath, kind: kind)
             return supplementaryView
         }
         
         // Initial data
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Int>()
-        snapshot.appendSections([.calendar])
-        snapshot.appendItems(Array(0..<numberOfCells)) // -- one month of days + remaining items
+        var snapshot = NSDiffableDataSourceSnapshot<Week, Int>()
+        
+        let cells = Array(0..<numberOfCells).chunked(into: 7) // -- one month of days + remaining items
+        Week.allCases.forEach {
+            snapshot.appendSections([$0])
+            snapshot.appendItems(cells[$0.rawValue])
+        }
+        
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     
@@ -203,5 +242,21 @@ extension CalendarBar {
         }
         
         return nil
+    }
+}
+
+extension CalendarBar: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let newSelectedWeek = Week(rawValue: indexPath.section) else { return }
+        selectedWeek = newSelectedWeek
+    }
+}
+
+private extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
+        }
     }
 }

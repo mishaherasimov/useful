@@ -9,7 +9,7 @@
 import UIKit
 
 class CalendarItemCell: UICollectionViewCell {
-    
+
     // MARK: - Views
     
     private let dayLabel: UILabel = UILabel.create(fontStyle: .caption1, textColor: .white, textAlignment: .center)

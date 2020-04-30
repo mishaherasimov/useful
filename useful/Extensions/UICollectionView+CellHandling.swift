@@ -9,7 +9,7 @@
 import UIKit
 
 public enum SupplementaryViewKind: String {
-    case header, footer
+    case header, footer, background
     
     func kindIdentifier<T: UICollectionReusableView>(_: T.Type) -> String {
         return T.defaultReuseIdentifier + self.rawValue
@@ -23,14 +23,14 @@ extension UICollectionView {
     }
     
     public func register<T: UICollectionReusableView>(_: T.Type, kind: SupplementaryViewKind) {
-        register(T.self, forSupplementaryViewOfKind: T.defaultReuseIdentifier + kind.rawValue, withReuseIdentifier: T.defaultReuseIdentifier)
+        register(T.self, forSupplementaryViewOfKind: kind.kindIdentifier(T.self), withReuseIdentifier: T.defaultReuseIdentifier)
     }
-
+    
     public func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T {
         guard let cell = dequeueReusableCell(withReuseIdentifier: T.defaultReuseIdentifier, for: indexPath) as? T else {
             fatalError("Could not dequeue cell with identifier: \(T.defaultReuseIdentifier)")
         }
-
+        
         return cell
     }
     
@@ -38,7 +38,7 @@ extension UICollectionView {
         guard let supplementaryView = dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: T.defaultReuseIdentifier, for: indexPath) as? T else {
             fatalError("Could not dequeue reusabe view with identifier: \(T.defaultReuseIdentifier) of kind: \(kind)")
         }
-
+        
         return supplementaryView
     }
 }
