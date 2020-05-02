@@ -16,7 +16,13 @@ class LifestyleViewController: UIViewController {
     private let estimatedGroupHeight: CGFloat = 186
     private let sectionInsets = NSDirectionalEdgeInsets(top: 16, leading: 18, bottom: 24, trailing: 20)
     private let interItemSpacing: CGFloat = 18
-    private let contentTopInset: CGFloat = 45
+    
+    /// Top inset for the collection view `calendarBounds.min + 10`
+    private let contentTopInset: CGFloat = 55
+    
+    /// Min and max height of the calendar bar
+    private let calendarBounds: (min: CGFloat, max: CGFloat) = (45, 280)
+    private let titleInsets: UIEdgeInsets = .create(left: 18)
     
     enum Section: Int, CaseIterable {
         case ongoing, completed
@@ -38,8 +44,19 @@ class LifestyleViewController: UIViewController {
     }()
     
     let searchController = UISearchController(searchResultsController: nil)
-    let calendarBar = CalendarBar()
-    var calendarBarTopConstraint: NSLayoutConstraint? = nil
+    
+    private var elasticTopInset: CGFloat = 0 {
+        didSet {
+            calendarBarTopConstraint?.constant = elasticTopInset
+            calendarBarHeaderTopConstraint?.constant = elasticTopInset
+        }
+    }
+    
+    private let calendarBar = CalendarBar()
+    private var calendarAnimator: CalendarAnimator?
+    
+    private var calendarBarTopConstraint: NSLayoutConstraint?
+    private var calendarBarHeaderTopConstraint: NSLayoutConstraint?
     
     // MARK: Lifecycle
     
@@ -81,8 +98,38 @@ extension LifestyleViewController {
         
         view.addSubview(calendarBar)
         NSLayoutConstraint.snap(calendarBar, to: collectionView, for: [.left, .right])
-        calendarBarTopConstraint = calendarBar.topAnchor.constraint(equalTo: collectionView.topAnchor)
-        calendarBarTopConstraint?.isActive = true
+        
+        let calendarTopConstraint = calendarBar.topAnchor.constraint(equalTo: collectionView.topAnchor)
+        let animatableConstraint = calendarBar.bottomAnchor.constraint(equalTo: calendarBar.topAnchor, constant: calendarBounds.min)
+        
+        NSLayoutConstraint.activate([animatableConstraint, calendarTopConstraint])
+        
+        calendarBarTopConstraint = calendarTopConstraint
+        calendarAnimator = CalendarAnimator(bounds: calendarBounds, constraint: animatableConstraint, calendar: calendarBar)
+        
+        // -- Buffer view --
+        // Helps to cover calendar top constraint oscillation
+        
+        let bufferView = UIView.create(backgroundColor: UIColor(collection: .olive))
+        view.insertSubview(bufferView, belowSubview: calendarBar)
+        NSLayoutConstraint.snap(bufferView, to: calendarBar, for: [.left, .right])
+        bufferView.bottomAnchor.constraint(equalTo: calendarBar.centerYAnchor).activate()
+        bufferView.topAnchor.constraint(equalTo: view.topAnchor).activate()
+        
+        // -- Calendar header --
+        
+        let titleBackgroundView = UIView.create(backgroundColor: UIColor(collection: .olive))
+        let titleLabel: UILabel = UILabel.create(fontStyle: .headline, textColor: .white)
+        titleLabel.text = Date().formatted(as: .custom(style: .monthYear, timeZone: .current))
+        
+        titleBackgroundView.addSubview(titleLabel)
+        NSLayoutConstraint.snap(titleLabel, to: titleBackgroundView, with: titleInsets)
+        view.insertSubview(titleBackgroundView, aboveSubview: calendarBar)
+        NSLayoutConstraint.snap(titleBackgroundView, to: view, for: [.left, .right])
+        
+        let topHeaderConstraint = titleBackgroundView.topAnchor.constraint(equalTo: collectionView.topAnchor)
+        calendarBarHeaderTopConstraint = topHeaderConstraint
+        topHeaderConstraint.activate()
     }
     
     func configureSearchBar() {
@@ -217,7 +264,7 @@ extension LifestyleViewController: UICollectionViewDelegate {
         
         // Helps to mimic the behaviour of the stretchy navigation bar
         let isNegativeDirection = scrollView.contentOffset.y <= -contentTopInset
-        calendarBarTopConstraint?.constant = isNegativeDirection ? abs(scrollView.contentOffset.y) - contentTopInset : 0
+        elasticTopInset = isNegativeDirection ? abs(scrollView.contentOffset.y) - contentTopInset : 0
     }
 }
 

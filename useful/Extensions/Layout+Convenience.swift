@@ -13,12 +13,10 @@ extension UIEdgeInsets {
     static let infinite = UIEdgeInsets.create(right: CGFloat.greatestFiniteMagnitude)
 
     static func create(top: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0, left: CGFloat = 0) -> UIEdgeInsets {
-
         return UIEdgeInsets(top: top, left: left, bottom: bottom, right: right)
     }
 
     static func create(vertical: CGFloat, horizontal: CGFloat) -> UIEdgeInsets {
-
         return UIEdgeInsets(top: vertical, left: horizontal, bottom: vertical, right: horizontal)
     }
 }
@@ -102,7 +100,7 @@ extension NSLayoutConstraint {
         }
     }
 
-    func activate(with priority: UILayoutPriority) {
+    func activate(with priority: UILayoutPriority = .required) {
 
         self.priority = priority
         isActive = true

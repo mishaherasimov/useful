@@ -10,6 +10,14 @@ import UIKit
 
 extension UIView {
     
+    class func create(backgroundColor: UIColor?) -> UIView {
+        
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = backgroundColor ?? .white
+        return view
+    }
+    
     func configureRequiredPriorities(for axies: [NSLayoutConstraint.PriorityAxis]) {
 
         axies.forEach {

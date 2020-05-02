@@ -14,37 +14,29 @@ class CalendarBar: UIView {
         case week1, week2, week3, week4, week5, week6
     }
     
-    // Constraints
+    // Constants
     
     private let cornerRadius: CGFloat = 20
-    private let initialHeight: CGFloat = 280
     
     private let indicatorHeight: CGFloat = 5
     private let indicatorWidth: CGFloat = 48
     private let indicatorInsets: UIEdgeInsets = .create(bottom: 8)
     
-    private let titleInsets: UIEdgeInsets = .create(left: 18)
-    
-    private let numberOfCells: Int = 42
+    private let legendBottomSpacing: CGFloat = 10
     private let daysGroupHeight: CGFloat = 32
-    private let calendarHeight: CGFloat = 222
-    private let legendHeight: CGFloat = 20
-    private let daysTopInset: CGFloat = 10
     private let calendarInsets: UIEdgeInsets = .create(right: 12, bottom: 26, left: 12)
+    private var numberOfCells: Int { return 7 * Week.allCases.count }
+    private var calendarHeight: CGFloat { return daysGroupHeight * CGFloat(Week.allCases.count) }
     
-    // -- Constraints --
+    // -- Constants --
     
     // Views
-    
-    private var heightConstraint: NSLayoutConstraint?
-    private let titleLabel: UILabel = UILabel.create(fontStyle: .headline, textColor: .white)
     
     private lazy var collectionView: UICollectionView = {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(CalendarItemCell.self)
-        collectionView.register(LegendSupplementaryView.self, kind: .header)
         collectionView.backgroundColor = .clear
         return collectionView
     }()
@@ -77,8 +69,6 @@ class CalendarBar: UIView {
         layer.cornerRadius = cornerRadius
         layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         translatesAutoresizingMaskIntoConstraints = false
-        heightConstraint = heightAnchor.constraint(equalToConstant: initialHeight)
-        heightConstraint?.isActive = true
         
         // -- Disclosure indicator --
         
@@ -91,16 +81,23 @@ class CalendarBar: UIView {
         NSLayoutConstraint.center(disclosureIndicator, in: self, for: [.horizontal])
         NSLayoutConstraint.snap(disclosureIndicator, to: self, for: [.bottom], sizeAttributes: [.height(value: indicatorHeight), .width(value: indicatorWidth)], with: indicatorInsets)
         
-        // -- Title label --
-        
-        titleLabel.text = Date().formatted(as: .custom(style: .monthYear, timeZone: .current))
-        addSubview(titleLabel)
-        NSLayoutConstraint.snap(titleLabel, to: self, for: [.left, .top], with: titleInsets)
-        
         // -- Calendar --
         
         configureHierarchy()
         configureDataSource()
+        
+        // -- Legend --
+        
+        let stackView = UIStackView.create(axis: .horizontal, spacing: 0, distribution: .fillEqually)
+        addSubview(stackView)
+        
+        let legends = Calendar.current.veryShortWeekdaySymbols.map {
+            UILabel.create(fontStyle: .subheadline, text: $0, textColor: .white, textAlignment: .center)
+        }
+        
+        stackView.items = legends
+        NSLayoutConstraint.snap(stackView, to: collectionView, for: [.left, .right])
+        stackView.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -legendBottomSpacing).isActive = true
     }
 }
 
@@ -127,18 +124,6 @@ extension CalendarBar {
             // --- Section ---
             
             let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: sectionType == .week1 ? self.daysTopInset : 0, leading: 0, bottom: 0, trailing: 0)
-            
-            // --- Header ---
-            
-            if sectionType == .week1 {
-                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                        heightDimension: .absolute(self.legendHeight))
-                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-                    layoutSize: headerSize,
-                    elementKind: SupplementaryViewKind.header.kindIdentifier(LegendSupplementaryView.self), alignment: .top)
-                section.boundarySupplementaryItems = [sectionHeader]
-            }
             
             // -- Background --
             
@@ -181,15 +166,6 @@ extension CalendarBar {
                 cell.configure(day: days[index], isCurrentMonth: currentMonth.contains(index))
             }
             return cell
-        }
-        
-        dataSource.supplementaryViewProvider = { (
-            collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
-            
-            guard let section = Week(rawValue: indexPath.section), section == .week1 else { return nil }
-            
-            let supplementaryView: LegendSupplementaryView = collectionView.dequeueReusableSupplementaryView(for: indexPath, kind: kind)
-            return supplementaryView
         }
         
         // Initial data
