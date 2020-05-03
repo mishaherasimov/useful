@@ -110,7 +110,7 @@ extension LifestyleViewController {
         // -- Buffer view --
         // Helps to cover calendar top constraint oscillation
         
-        let bufferView = UIView.create(backgroundColor: UIColor(collection: .midnightBlack))
+        let bufferView = UIView.create(backgroundColor: UIColor(collection: .olive))
         view.insertSubview(bufferView, belowSubview: calendarBar)
         NSLayoutConstraint.snap(bufferView, to: calendarBar, for: [.left, .right])
         bufferView.bottomAnchor.constraint(equalTo: calendarBar.centerYAnchor).activate()
