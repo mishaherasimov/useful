@@ -20,8 +20,9 @@ class LifestyleViewController: UIViewController {
     /// Top inset for the collection view `calendarBounds.min + 10`
     private let contentTopInset: CGFloat = 55
     
-    /// Min and max height of the calendar bar
-    private let calendarBounds: (min: CGFloat, max: CGFloat) = (45, 280)
+    /// Top inset for the calendar bar
+    private var calendarInset: CGFloat = -235
+    private let calendarHeight: CGFloat = 280
     private let titleInsets: UIEdgeInsets = .create(left: 18)
     
     enum Section: Int, CaseIterable {
@@ -47,7 +48,7 @@ class LifestyleViewController: UIViewController {
     
     private var elasticTopInset: CGFloat = 0 {
         didSet {
-            calendarBarTopConstraint?.constant = elasticTopInset
+            calendarBarTopConstraint?.constant = calendarInset + elasticTopInset
             calendarBarHeaderTopConstraint?.constant = elasticTopInset
         }
     }
@@ -97,20 +98,19 @@ extension LifestyleViewController {
     func configureCalendarBar() {
         
         view.addSubview(calendarBar)
-        NSLayoutConstraint.snap(calendarBar, to: collectionView, for: [.left, .right])
         
-        let calendarTopConstraint = calendarBar.topAnchor.constraint(equalTo: collectionView.topAnchor)
-        let animatableConstraint = calendarBar.bottomAnchor.constraint(equalTo: calendarBar.topAnchor, constant: calendarBounds.min)
+        let constraints = NSLayoutConstraint.snap(calendarBar, to: collectionView, for: [.left, .right, .top], sizeAttributes: [.height(value: calendarHeight)], with: .create(top: calendarInset))
         
-        NSLayoutConstraint.activate([animatableConstraint, calendarTopConstraint])
-        
-        calendarBarTopConstraint = calendarTopConstraint
-        calendarAnimator = CalendarAnimator(bounds: calendarBounds, constraint: animatableConstraint, calendar: calendarBar)
+        if let calendarTopConstraint = constraints[.top] {
+            calendarBarTopConstraint = calendarTopConstraint
+            calendarAnimator = CalendarAnimator(inset: calendarInset, constraint: calendarTopConstraint, calendar: calendarBar)
+            calendarAnimator?.delegate = self
+        }
         
         // -- Buffer view --
         // Helps to cover calendar top constraint oscillation
         
-        let bufferView = UIView.create(backgroundColor: UIColor(collection: .olive))
+        let bufferView = UIView.create(backgroundColor: UIColor(collection: .midnightBlack))
         view.insertSubview(bufferView, belowSubview: calendarBar)
         NSLayoutConstraint.snap(bufferView, to: calendarBar, for: [.left, .right])
         bufferView.bottomAnchor.constraint(equalTo: calendarBar.centerYAnchor).activate()
@@ -121,12 +121,12 @@ extension LifestyleViewController {
         let titleBackgroundView = UIView.create(backgroundColor: UIColor(collection: .olive))
         let titleLabel: UILabel = UILabel.create(fontStyle: .headline, textColor: .white)
         titleLabel.text = Date().formatted(as: .custom(style: .monthYear, timeZone: .current))
-        
+
         titleBackgroundView.addSubview(titleLabel)
         NSLayoutConstraint.snap(titleLabel, to: titleBackgroundView, with: titleInsets)
         view.insertSubview(titleBackgroundView, aboveSubview: calendarBar)
         NSLayoutConstraint.snap(titleBackgroundView, to: view, for: [.left, .right])
-        
+
         let topHeaderConstraint = titleBackgroundView.topAnchor.constraint(equalTo: collectionView.topAnchor)
         calendarBarHeaderTopConstraint = topHeaderConstraint
         topHeaderConstraint.activate()
@@ -201,7 +201,7 @@ extension LifestyleViewController {
 extension LifestyleViewController {
     
     func configureHierarchy() {
-    
+        
         collectionView.delegate = self
         view.addSubview(collectionView)
         
@@ -255,6 +255,12 @@ extension LifestyleViewController {
             snapshot.appendItems(self.presenter.disposableItems[$0.rawValue])
         }
         dataSource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+extension LifestyleViewController: CalendarAnimatorDelegate {
+    func didUpdateInset(to inset: CGFloat) {
+        calendarInset = inset
     }
 }
 
