@@ -26,14 +26,16 @@ class CalendarAnimator {
                 return .open
             }
         }
+        
+        
     }
     
     private enum BoundsPosition {
-        case mid, below(bound: CGFloat), above(bound: CGFloat)
+        case mid, below(bound: CGFloat), above(bound: CGFloat, distance: CGFloat)
         
         var bound: CGFloat {
             switch self {
-            case let .above(bound), let .below(bound):
+            case let .above(bound, _), let .below(bound):
                 return bound
             default:
                 return 0
@@ -42,7 +44,7 @@ class CalendarAnimator {
         
         init(progress: CGFloat, translationY: CGFloat, bounds: (min: CGFloat, max: CGFloat)) {
             if progress > bounds.max {
-                self = .above(bound: bounds.max)
+                self = .above(bound: bounds.max, distance: abs(bounds.max - bounds.min))
             } else if progress < bounds.min, translationY <= 0 { // Movement in the negative direction and below the min threshold
                 self = .below(bound: bounds.min)
             } else {
@@ -52,8 +54,8 @@ class CalendarAnimator {
         
         func rubberbandProgressCalculation(for translation: CGFloat) -> CGFloat {
             switch self {
-            case .above:
-                return logMaxConstraintValue(for: translation)
+            case let .above(_, distance):
+                return logMaxConstraintValue(for: translation, distance: distance)
             case .below:
                 return sqrtMinConstraintValue(for: translation)
             case .mid:
@@ -61,14 +63,13 @@ class CalendarAnimator {
             }
         }
         
-        private func logMaxConstraintValue(for yPosition: CGFloat) -> CGFloat {
-//            return bound * (1 + log10(yPosition / bound))
-//            return (1 + log10(yPosition))
-            return bound + sqrt(bound + yPosition)
+        private func logMaxConstraintValue(for yPosition: CGFloat, distance: CGFloat) -> CGFloat {
+            let total = distance + yPosition
+            return (distance * (1 + log10(total / distance))) - distance
         }
         
         private func sqrtMinConstraintValue(for yPosition: CGFloat) -> CGFloat {
-            return bound - sqrt(abs(yPosition))
+            return bound - sqrt(abs(yPosition + abs(bound)))
         }
     }
     
@@ -109,106 +110,110 @@ class CalendarAnimator {
     @objc private func handle(recognizer: UIPanGestureRecognizer) {
         
         let translation = recognizer.translation(in: calendar)
-        print(constraint.constant)
         let position = BoundsPosition(progress: constraint.constant, translationY: translation.y, bounds: bounds)
-print(position)
+
         switch position {
         case .below, .above:
 
             totalTranslation += translation.y
             constraint.constant = position.rubberbandProgressCalculation(for: totalTranslation)
-            if(recognizer.state == .ended) {
-                animateViewBackToLimit(bound: position.bound, initialVelocity: CGVector(dx: 0, dy: 10))
+            if (recognizer.state == .ended) {
+                animateViewBackToLimit(position: position, yVelocity: recognizer.velocity(in: calendar).y)
             }
-            recognizer.setTranslation(.zero, in: calendar)
         case .mid:
 //
             totalTranslation = translation.y > 0 ? bounds.max : bounds.min
-//            constraint.constant += translation.y
-        
-        switch recognizer.state {
-        case .began:
-
-                // start the animations
-                animateTransitionIfNeeded(to: currentState.toggle(), duration: 0.5)
-
-                // pause animation, since the next event may be a pan changed
-                runningAnimator?.pauseAnimation()
-
-                // keep track of each animator's progress
-                animationProgress = runningAnimator?.fractionComplete ?? 0
-
-            case .changed:
-
-                // variable setup
-                var fraction = translation.y / (bounds.max - bounds.min)
-//                print("Fraction \(fraction), translation \(translation.y), the bounds: \((bounds.max - bounds.min))")
-
-                // adjust the fraction for the current state and reversed state
-                if currentState == .open { fraction *= -1 }
-                if runningAnimator?.isReversed == true { fraction *= -1 }
-
-                // apply the new fraction
-                runningAnimator?.fractionComplete = fraction + animationProgress
-                print(fraction + animationProgress)
-
-            case .ended:
-
-                // variable setup
-                let yVelocity = recognizer.velocity(in: calendar).y
-                let shouldClose = yVelocity < 0
-
-                // if there is no motion, continue all animations and exit early
-                if yVelocity == 0 {
-                    runningAnimator?.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-                    break
-                }
-
-                // reverse the animations based on their current state and pan motion
-                switch currentState {
-                case .open:
-                    if !shouldClose, let animator = runningAnimator, !animator.isReversed { animator.isReversed = !animator.isReversed }
-                    if shouldClose, let animator = runningAnimator, animator.isReversed { animator.isReversed = !animator.isReversed }
-                case .closed:
-                    if shouldClose, let animator = runningAnimator, !animator.isReversed { animator.isReversed = !animator.isReversed }
-                    if !shouldClose, let animator = runningAnimator, animator.isReversed { animator.isReversed = !animator.isReversed }
-                }
-
-                // continue animation
-                runningAnimator?.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-
-            default:
-                ()
-            }
+            constraint.constant += translation.y
+//
+//        switch recognizer.state {
+//        case .began:
+//
+//                // start the animations
+//                animateTransitionIfNeeded(to: currentState.toggle(), duration: 0.5)
+//
+//                // pause animation, since the next event may be a pan changed
+//                runningAnimator?.pauseAnimation()
+//
+//                // keep track of each animator's progress
+//                animationProgress = runningAnimator?.fractionComplete ?? 0
+//
+//            case .changed:
+//
+//                // variable setup
+//                var fraction = translation.y / (bounds.max - bounds.min)
+////                print("Fraction \(fraction), translation \(translation.y), the bounds: \((bounds.max - bounds.min))")
+//
+//                // adjust the fraction for the current state and reversed state
+//                if currentState == .open { fraction *= -1 }
+//                if runningAnimator?.isReversed == true { fraction *= -1 }
+//
+//                // apply the new fraction
+//                runningAnimator?.fractionComplete = fraction + animationProgress
+//                print(fraction + animationProgress)
+//
+//            case .ended:
+//
+//                // variable setup
+//                let yVelocity = recognizer.velocity(in: calendar).y
+//                let shouldClose = yVelocity < 0
+//
+//                // if there is no motion, continue all animations and exit early
+//                if yVelocity == 0 {
+//                    runningAnimator?.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+//                    break
+//                }
+//
+//                // reverse the animations based on their current state and pan motion
+//                switch currentState {
+//                case .open:
+//                    if !shouldClose, let animator = runningAnimator, !animator.isReversed { animator.isReversed = !animator.isReversed }
+//                    if shouldClose, let animator = runningAnimator, animator.isReversed { animator.isReversed = !animator.isReversed }
+//                case .closed:
+//                    if shouldClose, let animator = runningAnimator, !animator.isReversed { animator.isReversed = !animator.isReversed }
+//                    if !shouldClose, let animator = runningAnimator, animator.isReversed { animator.isReversed = !animator.isReversed }
+//                }
+//
+//                // continue animation
+//                runningAnimator?.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+//
+//            default:
+//                ()
+//            }
         }
+        
+         recognizer.setTranslation(.zero, in: calendar)
     }
     
-    private func animateViewBackToLimit(bound: CGFloat, initialVelocity: CGVector) {
+    private func animateViewBackToLimit(position: BoundsPosition, yVelocity: CGFloat) {
         
-        UIView.animate(withDuration: 0.5,
-                       delay: 0,
-                       usingSpringWithDamping: 0.3,
-                       initialSpringVelocity: 10,
-                       options: .allowUserInteraction, animations: {
-                        
-                        self.constraint.constant = bound
-                        self.calendar.superview?.layoutIfNeeded()
-                        self.totalTranslation = bound
-        })
+        let normalizedVelocity = yVelocity / abs(bounds.max - bounds.min)
         
-        //        let timing = UISpringTimingParameters(damping: 1, response: 2, initialVelocity: initialVelocity) //(dampingRatio: 0.9, initialVelocity: 10)
-        //        let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: timing)
-        //
-        //        animator.addAnimations {
-        //            self.calendar.layoutIfNeeded()
-        //        }
-        //
-        //        animator.addCompletion { _ in
-        //            self.totalTranslation = bound
-        //        }
-        //
-        //        self.constraint.constant = self.bounds.max
-        //        animator.startAnimation()
+//        UIView.animate(withDuration: 0.5,
+//                       delay: 0,
+//                       usingSpringWithDamping: 0.3,
+//                       initialSpringVelocity: 10,
+//                       options: .allowUserInteraction, animations: {
+//
+//                        self.constraint.constant = bound
+//                        self.calendar.superview?.layoutIfNeeded()
+//                        self.totalTranslation = bound
+//        })
+        
+        let timing = UISpringTimingParameters(dampingRatio: 0.8, initialVelocity: CGVector(dx: 0, dy: normalizedVelocity))
+        let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: timing)
+
+        animator.addAnimations {
+            
+            self.constraint.constant = position.bound
+            self.calendar.superview?.layoutIfNeeded()
+            self.totalTranslation = position.bound
+        }
+
+        animator.addCompletion { _ in
+            self.delegate?.didUpdateInset(to: position.bound)
+        }
+
+        animator.startAnimation()
     }
     
     private func animateTransitionIfNeeded(to state: State, duration: TimeInterval) {
