@@ -21,7 +21,8 @@ class LifestyleViewController: UIViewController {
     private let contentTopInset: CGFloat = 55
     
     /// Top inset for the calendar bar
-    private var calendarInset: CGFloat = -235
+    private var calendarContainerCornerRadius: CGFloat = 20
+    private let calendarInset: CGFloat = -235
     private let calendarHeight: CGFloat = 280
     private let titleInsets: UIEdgeInsets = .create(left: 18)
     
@@ -48,7 +49,7 @@ class LifestyleViewController: UIViewController {
     
     private var elasticTopInset: CGFloat = 0 {
         didSet {
-            calendarBarTopConstraint?.constant = calendarInset + elasticTopInset
+            calendarContainerTopConstraint?.constant = elasticTopInset
             calendarBarHeaderTopConstraint?.constant = elasticTopInset
         }
     }
@@ -56,7 +57,7 @@ class LifestyleViewController: UIViewController {
     private let calendarBar = CalendarBar()
     private var calendarAnimator: CalendarAnimator?
     
-    private var calendarBarTopConstraint: NSLayoutConstraint?
+    private var calendarContainerTopConstraint: NSLayoutConstraint?
     private var calendarBarHeaderTopConstraint: NSLayoutConstraint?
     
     // MARK: Lifecycle
@@ -97,24 +98,15 @@ extension LifestyleViewController {
     
     func configureCalendarBar() {
         
-        view.addSubview(calendarBar)
+        // -- Container view --
+        // Helps to handle collection view oscillation
         
-        let constraints = NSLayoutConstraint.snap(calendarBar, to: collectionView, for: [.left, .right, .top], sizeAttributes: [.height(value: calendarHeight)], with: .create(top: calendarInset))
-        
-        if let calendarTopConstraint = constraints[.top] {
-            calendarBarTopConstraint = calendarTopConstraint
-            calendarAnimator = CalendarAnimator(inset: calendarInset, constraint: calendarTopConstraint, calendar: calendarBar)
-            calendarAnimator?.delegate = self
+        let containerView = UIView.create(backgroundColor: UIColor(collection: .olive), cornerRadius: calendarContainerCornerRadius)
+        view.addSubview(containerView)
+        let containerConstraints = NSLayoutConstraint.snap(containerView, to: collectionView, for: [.left, .right, .top])
+        if let containerTopConstraint = containerConstraints[.top] {
+            calendarContainerTopConstraint = containerTopConstraint
         }
-        
-        // -- Buffer view --
-        // Helps to cover calendar top constraint oscillation
-        
-        let bufferView = UIView.create(backgroundColor: UIColor(collection: .olive))
-        view.insertSubview(bufferView, belowSubview: calendarBar)
-        NSLayoutConstraint.snap(bufferView, to: calendarBar, for: [.left, .right])
-        bufferView.bottomAnchor.constraint(equalTo: calendarBar.centerYAnchor).activate()
-        bufferView.topAnchor.constraint(equalTo: view.topAnchor).activate()
         
         // -- Calendar header --
         
@@ -130,6 +122,19 @@ extension LifestyleViewController {
         let topHeaderConstraint = titleBackgroundView.topAnchor.constraint(equalTo: collectionView.topAnchor)
         calendarBarHeaderTopConstraint = topHeaderConstraint
         topHeaderConstraint.activate()
+        
+        // -- Calendar --
+        
+        containerView.addSubview(calendarBar)
+        
+        let calendarConstraint = NSLayoutConstraint.snap(calendarBar, to: containerView, for: [.left, .right, .top], sizeAttributes: [.height(value: calendarHeight)], with: .create(top: calendarInset))
+        
+        // make container view same height as a calendar bar visible portion
+        containerView.bottomAnchor.constraint(equalTo: calendarBar.bottomAnchor).activate(with: .defaultLow)
+        
+        if let calendarTopConstraint = calendarConstraint[.top] {
+            calendarAnimator = CalendarAnimator(inset: calendarInset, constraint: calendarTopConstraint, calendar: calendarBar)
+        }
     }
     
     func configureSearchBar() {
@@ -258,13 +263,11 @@ extension LifestyleViewController {
     }
 }
 
-extension LifestyleViewController: CalendarAnimatorDelegate {
-    func didUpdateInset(to inset: CGFloat) {
-        calendarInset = inset
-    }
-}
-
 extension LifestyleViewController: UICollectionViewDelegate {
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        calendarAnimator?.closeBar()
+    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         

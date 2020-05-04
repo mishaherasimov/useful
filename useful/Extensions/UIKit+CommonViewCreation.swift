@@ -10,9 +10,10 @@ import UIKit
 
 extension UIView {
     
-    class func create(backgroundColor: UIColor?) -> UIView {
+    class func create(backgroundColor: UIColor?, cornerRadius: CGFloat = 0) -> UIView {
         
         let view = UIView()
+        view.layer.cornerRadius = cornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = backgroundColor ?? .white
         return view
