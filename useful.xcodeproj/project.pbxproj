@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		840AF23D246100BC0062DBF9 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF23C246100BC0062DBF9 /* APIResponse.swift */; };
+		840AF2402461017A0062DBF9 /* APIParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF23F2461017A0062DBF9 /* APIParser.swift */; };
+		840AF2422461049F0062DBF9 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF2412461049F0062DBF9 /* APIError.swift */; };
+		840AF2442461062E0062DBF9 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF2432461062E0062DBF9 /* APIClient.swift */; };
+		840AF246246106530062DBF9 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF245246106530062DBF9 /* APIRequest.swift */; };
+		840AF24A246107100062DBF9 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF249246107100062DBF9 /* HTTPMethod.swift */; };
+		840AF24C246108220062DBF9 /* NetworkSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF24B246108220062DBF9 /* NetworkSessionManager.swift */; };
+		840AF250246116960062DBF9 /* GetDisposableItemsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF24F246116960062DBF9 /* GetDisposableItemsCall.swift */; };
+		840AF25224611B1D0062DBF9 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF25124611B1D0062DBF9 /* LoadingState.swift */; };
 		8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD46245635E400C301D3 /* AppDelegate.swift */; };
 		8433FD49245635E400C301D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD48245635E400C301D3 /* SceneDelegate.swift */; };
 		8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD4A245635E400C301D3 /* LifestyleViewController.swift */; };
@@ -48,6 +57,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		840AF23C246100BC0062DBF9 /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
+		840AF23F2461017A0062DBF9 /* APIParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIParser.swift; sourceTree = "<group>"; };
+		840AF2412461049F0062DBF9 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		840AF2432461062E0062DBF9 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		840AF245246106530062DBF9 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		840AF249246107100062DBF9 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		840AF24B246108220062DBF9 /* NetworkSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSessionManager.swift; sourceTree = "<group>"; };
+		840AF24F246116960062DBF9 /* GetDisposableItemsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDisposableItemsCall.swift; sourceTree = "<group>"; };
+		840AF25124611B1D0062DBF9 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		8433FD43245635E400C301D3 /* Useful.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Useful.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8433FD46245635E400C301D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8433FD48245635E400C301D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +118,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		840AF23E246100C60062DBF9 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				840AF249246107100062DBF9 /* HTTPMethod.swift */,
+				840AF23C246100BC0062DBF9 /* APIResponse.swift */,
+				840AF23F2461017A0062DBF9 /* APIParser.swift */,
+				840AF2412461049F0062DBF9 /* APIError.swift */,
+				840AF2432461062E0062DBF9 /* APIClient.swift */,
+				840AF245246106530062DBF9 /* APIRequest.swift */,
+				840AF24B246108220062DBF9 /* NetworkSessionManager.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		8433FD3A245635E400C301D3 = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +182,7 @@
 				84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */,
 				84FECEE224579C1C00E3D5E6 /* Cells and Supplementary Views */,
 				84FECEFC2458E86F00E3D5E6 /* Controls */,
+				84FECEF52458A1B600E3D5E6 /* Models */,
 			);
 			path = Lifestyle;
 			sourceTree = "<group>";
@@ -158,9 +191,10 @@
 			isa = PBXGroup;
 			children = (
 				84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */,
-				84FECEF52458A1B600E3D5E6 /* Models */,
-				84FECEDF2457981700E3D5E6 /* Protocols */,
 				84BB0CEF245A257300D080D5 /* DateFormatPreset.swift */,
+				840AF25124611B1D0062DBF9 /* LoadingState.swift */,
+				84FECEDF2457981700E3D5E6 /* Protocols */,
+				840AF23E246100C60062DBF9 /* Network */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -204,6 +238,7 @@
 		84FECEF52458A1B600E3D5E6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				840AF24F246116960062DBF9 /* GetDisposableItemsCall.swift */,
 				84FECEF32458A1A800E3D5E6 /* DisposableItem.swift */,
 			);
 			path = Models;
@@ -318,18 +353,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				840AF24C246108220062DBF9 /* NetworkSessionManager.swift in Sources */,
 				84FECEF72458A50500E3D5E6 /* LifestyleStructurePattern.swift in Sources */,
+				840AF2402461017A0062DBF9 /* APIParser.swift in Sources */,
 				84BB0CF0245A257300D080D5 /* DateFormatPreset.swift in Sources */,
 				84FECEEA2457B6F700E3D5E6 /* CALayer+Shadows.swift in Sources */,
 				84FECEF02457EE2500E3D5E6 /* UIFont+Traits.swift in Sources */,
+				840AF2442461062E0062DBF9 /* APIClient.swift in Sources */,
+				840AF250246116960062DBF9 /* GetDisposableItemsCall.swift in Sources */,
 				84FECEE62457A72B00E3D5E6 /* UIKit+CommonViewCreation.swift in Sources */,
+				840AF23D246100BC0062DBF9 /* APIResponse.swift in Sources */,
 				84FECEF22457F15A00E3D5E6 /* SuggestedItemsCell.swift in Sources */,
 				84FECEF42458A1A800E3D5E6 /* DisposableItem.swift in Sources */,
 				84BB0CF8245B61F900D080D5 /* WeekBackgroundDecorationView.swift in Sources */,
 				84FECEE82457B5B100E3D5E6 /* Colors+Convenience.swift in Sources */,
+				840AF24A246107100062DBF9 /* HTTPMethod.swift in Sources */,
 				84519D84245D5C6D000ABC2D /* CalendarAnimator.swift in Sources */,
 				84FECEEE2457E45A00E3D5E6 /* String+Enhancements.swift in Sources */,
 				84FECEF92458A56700E3D5E6 /* LifestylePresenter.swift in Sources */,
+				840AF25224611B1D0062DBF9 /* LoadingState.swift in Sources */,
 				8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */,
 				84FECEE424579EAD00E3D5E6 /* Layout+Convenience.swift in Sources */,
 				84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */,
@@ -337,11 +379,13 @@
 				84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */,
 				84BB0CF4245A8FE700D080D5 /* Calendar+Operations.swift in Sources */,
 				84FECEE124579C1700E3D5E6 /* ItemCell.swift in Sources */,
+				840AF2422461049F0062DBF9 /* APIError.swift in Sources */,
 				84FECEEC2457DF0600E3D5E6 /* TitleSupplementaryView.swift in Sources */,
 				84BB0CEE245A24F700D080D5 /* DateFormatter+Caching.swift in Sources */,
 				84BB0CF2245A56C000D080D5 /* CalendarItemCell.swift in Sources */,
 				84FECED82457915B00E3D5E6 /* CustomNavigationController.swift in Sources */,
 				84FECF002459F53200E3D5E6 /* CalendarBar.swift in Sources */,
+				840AF246246106530062DBF9 /* APIRequest.swift in Sources */,
 				8433FD49245635E400C301D3 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -70,6 +70,8 @@ class LifestyleViewController: UIViewController {
         configureHierarchy()
         configureDataSource()
         configureCalendarBar()
+        
+        presenter.loadItems()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,12 +115,12 @@ extension LifestyleViewController {
         let titleBackgroundView = UIView.create(backgroundColor: UIColor(collection: .olive))
         let titleLabel: UILabel = UILabel.create(fontStyle: .headline, textColor: .white)
         titleLabel.text = Date().formatted(as: .custom(style: .monthYear, timeZone: .current))
-
+        
         titleBackgroundView.addSubview(titleLabel)
         NSLayoutConstraint.snap(titleLabel, to: titleBackgroundView, with: titleInsets)
         view.insertSubview(titleBackgroundView, aboveSubview: calendarBar)
         NSLayoutConstraint.snap(titleBackgroundView, to: view, for: [.left, .right])
-
+        
         let topHeaderConstraint = titleBackgroundView.topAnchor.constraint(equalTo: collectionView.topAnchor)
         calendarBarHeaderTopConstraint = topHeaderConstraint
         topHeaderConstraint.activate()
@@ -234,7 +236,7 @@ extension LifestyleViewController {
             } else {
                 
                 let cell: ItemCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.configure(name: disposableItem.title, image: disposableItem.image, isCompleted: section == .completed)
+                cell.configure(name: disposableItem.name, image: disposableItem.image, isCompleted: section == .completed)
                 return cell
             }
         }
@@ -254,12 +256,17 @@ extension LifestyleViewController {
         }
         
         // Initial data
+        refreshItems(animatingDifferences: false)
+    }
+    
+    func refreshItems(animatingDifferences: Bool) {
+        guard !self.presenter.disposableItems.isEmpty else { return }
         var snapshot = NSDiffableDataSourceSnapshot<Section, DisposableItem>()
         Section.allCases.forEach {
             snapshot.appendSections([$0])
             snapshot.appendItems(self.presenter.disposableItems[$0.rawValue])
         }
-        dataSource.apply(snapshot, animatingDifferences: false)
+        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
 }
 
@@ -283,4 +290,21 @@ extension LifestyleViewController: UISearchResultsUpdating {
     }
 }
 
-extension LifestyleViewController: LifestyleView {}
+extension LifestyleViewController: LifestyleView {
+    
+    func loadingDisposableItems(with state: LoadingState) {
+        
+        switch state {
+        case .willLoad:
+            break
+//            info.type == .fullReload ? refreshControl.beginRefreshing() : Void()
+        case let .failLoading(title, message):
+            
+            //showAlert(title: title, message: message)
+            fallthrough
+        case .didLoad:
+            refreshItems(animatingDifferences: true)
+        case .isLoading: break
+        }
+    }
+}

@@ -15,6 +15,10 @@ protocol LifestyleViewPresenter {
     init(view: LifestyleView)
     
     func header(for section: LifestyleViewController.Section) -> (title: String, annotation: String)
+    func loadItems()
 }
 
-protocol LifestyleView: class { }
+protocol LifestyleView: class {
+    
+    func loadingDisposableItems(with state: LoadingState)
+}
