@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Lottie
 
 class LifestyleViewController: UIViewController {
     
@@ -72,6 +73,14 @@ class LifestyleViewController: UIViewController {
         configureCalendarBar()
         
         presenter.loadItems()
+        
+//        let animationView = AnimationView(name: "loading")
+//        animationView.translatesAutoresizingMaskIntoConstraints = false
+//        animationView.loopMode = .loop
+//        view.addSubview(animationView)
+//        NSLayoutConstraint.center(animationView, in: view)
+//        NSLayoutConstraint.size(view: animationView, attributes: [.height(value: 100), .width(value: 100)])
+//        animationView.play()
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import Lottie
 
 class ItemCell: UICollectionViewCell {
     
@@ -74,7 +75,7 @@ class ItemCell: UICollectionViewCell {
         nameLabel.text = name
         
         if let imageURL = URL(string: imageURL) {
-            itemImage.kf.indicatorType = .activity
+            itemImage.kf.indicatorType = .custom(indicator: CustomIndicator())
             itemImage.kf.setImage(with: imageURL)
         }
 
