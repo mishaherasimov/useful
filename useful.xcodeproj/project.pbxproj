@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,6 +16,8 @@
 		840AF24C246108220062DBF9 /* NetworkSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF24B246108220062DBF9 /* NetworkSessionManager.swift */; };
 		840AF250246116960062DBF9 /* GetDisposableItemsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF24F246116960062DBF9 /* GetDisposableItemsCall.swift */; };
 		840AF25224611B1D0062DBF9 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF25124611B1D0062DBF9 /* LoadingState.swift */; };
+		840AF255246125160062DBF9 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 840AF254246125160062DBF9 /* Kingfisher */; };
+		840AF25824612D990062DBF9 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 840AF25724612D990062DBF9 /* Lottie */; };
 		8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD46245635E400C301D3 /* AppDelegate.swift */; };
 		8433FD49245635E400C301D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD48245635E400C301D3 /* SceneDelegate.swift */; };
 		8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD4A245635E400C301D3 /* LifestyleViewController.swift */; };
@@ -105,6 +107,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				840AF255246125160062DBF9 /* Kingfisher in Frameworks */,
+				840AF25824612D990062DBF9 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +273,10 @@
 			dependencies = (
 			);
 			name = useful;
+			packageProductDependencies = (
+				840AF254246125160062DBF9 /* Kingfisher */,
+				840AF25724612D990062DBF9 /* Lottie */,
+			);
 			productName = useful;
 			productReference = 8433FD43245635E400C301D3 /* Useful.app */;
 			productType = "com.apple.product-type.application";
@@ -319,6 +327,10 @@
 				Base,
 			);
 			mainGroup = 8433FD3A245635E400C301D3;
+			packageReferences = (
+				840AF253246125160062DBF9 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				840AF25624612D990062DBF9 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = 8433FD44245635E400C301D3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -645,6 +657,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		840AF253246125160062DBF9 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.13.4;
+			};
+		};
+		840AF25624612D990062DBF9 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.8;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		840AF254246125160062DBF9 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 840AF253246125160062DBF9 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		840AF25724612D990062DBF9 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 840AF25624612D990062DBF9 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8433FD3B245635E400C301D3 /* Project object */;
 }

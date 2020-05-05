@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ItemCell: UICollectionViewCell {
     
@@ -26,7 +27,7 @@ class ItemCell: UICollectionViewCell {
         
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .center
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -68,10 +69,15 @@ class ItemCell: UICollectionViewCell {
         NSLayoutConstraint.snap(stackView, to: contentView, with: contentInsets)
     }
     
-    func configure(name: String, image: UIImage?, isCompleted: Bool) {
+    func configure(name: String, imageURL: String, isCompleted: Bool) {
         
         nameLabel.text = name
-        itemImage.image = image
+        
+        if let imageURL = URL(string: imageURL) {
+            itemImage.kf.indicatorType = .activity
+            itemImage.kf.setImage(with: imageURL)
+        }
+
         contentView.alpha = isCompleted ? 0.6 : 1.0
     }
 }

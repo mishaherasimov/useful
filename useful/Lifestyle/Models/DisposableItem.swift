@@ -14,10 +14,6 @@ struct DisposableItem: Hashable, Equatable, Decodable {
     let imageURL: String
     let isCompleted: Bool?
     
-    var image: UIImage? {
-        return UIImage(named: "bag")
-    }
-    
     init() {
         self.name = .empty
         self.imageURL = .empty

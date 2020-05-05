@@ -236,7 +236,7 @@ extension LifestyleViewController {
             } else {
                 
                 let cell: ItemCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.configure(name: disposableItem.name, image: disposableItem.image, isCompleted: section == .completed)
+                cell.configure(name: disposableItem.name, imageURL: disposableItem.imageURL, isCompleted: section == .completed)
                 return cell
             }
         }
