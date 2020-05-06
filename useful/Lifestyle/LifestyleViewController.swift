@@ -337,9 +337,9 @@ extension LifestyleViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
         let underConstruction = UnderConstructionViewController()
         present(underConstruction, animated: true)
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
 }
 

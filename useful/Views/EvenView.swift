@@ -21,8 +21,9 @@ class EventView: UIView {
     private let imageView: UIImageView = UIImageView.create()
     private let contentLabel: UILabel = UILabel.create(fontStyle: .subheadline, textAlignment: .center)
     
-    convenience init(contentVerticalInset: CGFloat) {
+    convenience init(contentVerticalInset: CGFloat, textColor: UIColor? = UIColor(collection: .midnightBlack)) {
         self.init(frame: .zero)
+        self.contentLabel.textColor = textColor
         self.verticalInset = contentVerticalInset
     }
     

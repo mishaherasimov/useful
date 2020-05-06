@@ -23,7 +23,7 @@ class UnderConstructionViewController: UIViewController {
 
         view.addSubview(blurEffectView)
         
-        let eventView = EventView()
+        let eventView = EventView(contentVerticalInset: 0, textColor: .white)
         eventView.configure(for: .construction)
         view.addSubview(eventView)
         NSLayoutConstraint.snap(eventView, to: view)

@@ -9,6 +9,7 @@
 import UIKit
 
 class SuggestedItemsCell: UICollectionViewCell {
+    
     // MARK: - Insets & constants
     
     private let contentInsets: UIEdgeInsets = .create(top: 24, right: 12, bottom: 14, left: 16)
@@ -18,6 +19,7 @@ class SuggestedItemsCell: UICollectionViewCell {
     private let blur: CGFloat = 30
     
     // MARK: - Views
+    
     private let disclosureImageView: UIImageView = {
         
         let symbolConfig = UIImage.SymbolConfiguration(pointSize: 28, weight: .semibold, scale: .medium)
@@ -43,15 +45,6 @@ class SuggestedItemsCell: UICollectionViewCell {
         imageView.contentMode = .center
         return imageView
     }()
-    
-    // MARK: - Overrides
-    
-    override var isSelected: Bool {
-        didSet {
-            //            backgroundColor = isSelected ? Theme.reddishColor : .white
-            //            floorLabel.textColor = isSelected ? .white : Theme.reddishColor
-        }
-    }
     
     // MARK: - Initializers
     
