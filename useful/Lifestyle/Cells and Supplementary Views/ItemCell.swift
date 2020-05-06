@@ -16,7 +16,8 @@ class ItemCell: UICollectionViewCell {
     
     private let contentInsets: UIEdgeInsets = .create(top: 24, right: 16, bottom: 36, left: 16)
     private let cornerRadius: CGFloat = 15
-    private let spacing: CGFloat = 34
+    private let imageSize: CGSize = CGSize(width: 80, height: 70)
+    private let spacing: CGFloat = 8
     private let spread: CGFloat = -20
     private let blur: CGFloat = 30
     
@@ -31,6 +32,11 @@ class ItemCell: UICollectionViewCell {
         didSet {
             backgroundColor = isSelected ? UIColor(collection: .dirtySand) : .white
         }
+    }
+    
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        layer.applyShadow(blur: blur, spread: spread)
     }
     
     // MARK: - Initializers
@@ -51,15 +57,18 @@ class ItemCell: UICollectionViewCell {
     
     private func configureUI() {
         
-        let stackView = UIStackView.create(axis: .vertical, spacing: spacing)
-        contentView.addSubview(stackView)
-        
         layer.cornerRadius = cornerRadius
         layer.applyShadow(blur: blur, spread: spread)
         backgroundColor = .white
         
-        stackView.items = [nameLabel, itemImage]
-        NSLayoutConstraint.snap(stackView, to: contentView, with: contentInsets)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(itemImage)
+        
+        NSLayoutConstraint.snap(nameLabel, to: contentView, for: [.left, .right, .top], with: contentInsets)
+        NSLayoutConstraint.snap(itemImage, to: contentView, for: [.bottom], with: contentInsets)
+        NSLayoutConstraint.size(view: itemImage, attributes: [.height(value: imageSize.height), .width(value: imageSize.width)])
+        NSLayoutConstraint.center(itemImage, in: contentView, for: [.horizontal])
+        itemImage.topAnchor.constraint(greaterThanOrEqualTo: nameLabel.bottomAnchor, constant: spacing).activate()
     }
     
     func configure(name: String, imageURL: String, isCompleted: Bool) {

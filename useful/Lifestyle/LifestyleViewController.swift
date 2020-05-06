@@ -157,10 +157,12 @@ extension LifestyleViewController {
         let titleLabel: UILabel = UILabel.create(fontStyle: .headline, textColor: .white)
         titleLabel.text = Date().formatted(as: .custom(style: .monthYear, timeZone: .current))
         
-        titleBackgroundView.addSubview(titleLabel)
-        NSLayoutConstraint.snap(titleLabel, to: titleBackgroundView, with: titleInsets)
         view.insertSubview(titleBackgroundView, aboveSubview: calendarBar)
         NSLayoutConstraint.snap(titleBackgroundView, to: view, for: [.left, .right])
+        
+        titleBackgroundView.addSubview(titleLabel)
+        NSLayoutConstraint.snap(titleLabel, to: titleBackgroundView, for: [.top, .right, .bottom], with: titleInsets)
+        titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: titleInsets.left).activate()
         
         let topHeaderConstraint = titleBackgroundView.topAnchor.constraint(equalTo: collectionView.topAnchor)
         calendarBarHeaderTopConstraint = topHeaderConstraint
@@ -231,9 +233,18 @@ extension LifestyleViewController {
             
             // --- Group ---
             
+            let traitCollection = layoutEnvironment.traitCollection
+            
+            var columns = 0
+            switch (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass) {
+            case (.compact, .compact), (.regular, _):
+                columns = 4
+            default:
+                columns = 2
+            }
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                    heightDimension: .estimated(self.estimatedGroupHeight))
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
             group.interItemSpacing = .fixed(self.interItemSpacing)
             
             // --- Section ---

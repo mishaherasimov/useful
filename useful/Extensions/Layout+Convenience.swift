@@ -85,9 +85,9 @@ extension NSLayoutConstraint {
             case let .bottom(priority):
                 constraints[side] = subview.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -inset.bottom).activate(with: priority)
             case let .left(priority):
-                constraints[side] = subview.leftAnchor.constraint(equalTo: view.leftAnchor, constant: inset.left).activate(with: priority)
+                constraints[side] = subview.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset.left).activate(with: priority)
             case let .right(priority):
-                constraints[side] = subview.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -inset.right).activate(with: priority)
+                constraints[side] = subview.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset.right).activate(with: priority)
             }
         }
 
