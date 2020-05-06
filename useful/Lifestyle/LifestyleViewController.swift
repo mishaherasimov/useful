@@ -88,7 +88,7 @@ class LifestyleViewController: UIViewController {
         configureDataSource()
         configureCalendarBar()
         
-        presenter.loadItems()
+        presenter.loadItems(isReloading: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -132,8 +132,8 @@ class LifestyleViewController: UIViewController {
     }
     
     @objc private func refreshItems(_ sender: UIRefreshControl) {
-        
-        presenter.loadItems()
+
+        presenter.loadItems(isReloading: true)
     }
 }
 
@@ -340,16 +340,21 @@ extension LifestyleViewController: UISearchResultsUpdating {
 
 extension LifestyleViewController: LifestyleView {
     
-    func loadingDisposableItems(with state: LoadingState) {
+    func loadingDisposableItems(with info: LoadInfo) {
         
-        switch state {
+        switch info.state {
         case .willLoad:
-            break
-//            info.type == .fullReload ? refreshControl.beginRefreshing() : Void()
+            guard info.type == .loadNew else { break }
+            LoaderView.shared.start(in: view) { [weak self] in
+                guard let self = self else { return }
+                view.insertSubview($0, aboveSubview: self.collectionView)
+            }
         case .failLoading:
+            LoaderView.shared.stop()
             refreshControl.endRefreshing()
             configureBackgroundView(for: .error)
         case .didLoad:
+            LoaderView.shared.stop()
             refreshControl.endRefreshing()
             refreshItems(animatingDifferences: true)
         case .isLoading: break

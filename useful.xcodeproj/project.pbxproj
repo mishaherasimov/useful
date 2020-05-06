@@ -15,13 +15,14 @@
 		840AF24A246107100062DBF9 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF249246107100062DBF9 /* HTTPMethod.swift */; };
 		840AF24C246108220062DBF9 /* NetworkSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF24B246108220062DBF9 /* NetworkSessionManager.swift */; };
 		840AF250246116960062DBF9 /* GetDisposableItemsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF24F246116960062DBF9 /* GetDisposableItemsCall.swift */; };
-		840AF25224611B1D0062DBF9 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF25124611B1D0062DBF9 /* LoadingState.swift */; };
+		840AF25224611B1D0062DBF9 /* LoadingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF25124611B1D0062DBF9 /* LoadingInfo.swift */; };
 		840AF255246125160062DBF9 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 840AF254246125160062DBF9 /* Kingfisher */; };
 		840AF25824612D990062DBF9 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 840AF25724612D990062DBF9 /* Lottie */; };
 		840AF25A246130D20062DBF9 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 840AF259246130D10062DBF9 /* loading.json */; };
 		840AF25D246131F80062DBF9 /* CustomIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF25C246131F80062DBF9 /* CustomIndicator.swift */; };
 		840AF260246202C00062DBF9 /* EvenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF25F246202BF0062DBF9 /* EvenView.swift */; };
 		840AF262246264480062DBF9 /* UnderConstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF261246264480062DBF9 /* UnderConstructionViewController.swift */; };
+		840AF265246272B90062DBF9 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF264246272B90062DBF9 /* LoaderView.swift */; };
 		8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD46245635E400C301D3 /* AppDelegate.swift */; };
 		8433FD49245635E400C301D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD48245635E400C301D3 /* SceneDelegate.swift */; };
 		8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD4A245635E400C301D3 /* LifestyleViewController.swift */; };
@@ -71,11 +72,12 @@
 		840AF249246107100062DBF9 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		840AF24B246108220062DBF9 /* NetworkSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSessionManager.swift; sourceTree = "<group>"; };
 		840AF24F246116960062DBF9 /* GetDisposableItemsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDisposableItemsCall.swift; sourceTree = "<group>"; };
-		840AF25124611B1D0062DBF9 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
+		840AF25124611B1D0062DBF9 /* LoadingInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingInfo.swift; sourceTree = "<group>"; };
 		840AF259246130D10062DBF9 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		840AF25C246131F80062DBF9 /* CustomIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIndicator.swift; sourceTree = "<group>"; };
 		840AF25F246202BF0062DBF9 /* EvenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvenView.swift; sourceTree = "<group>"; };
 		840AF261246264480062DBF9 /* UnderConstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderConstructionViewController.swift; sourceTree = "<group>"; };
+		840AF264246272B90062DBF9 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		8433FD43245635E400C301D3 /* Useful.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Useful.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8433FD46245635E400C301D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8433FD48245635E400C301D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 			children = (
 				840AF25C246131F80062DBF9 /* CustomIndicator.swift */,
 				840AF25F246202BF0062DBF9 /* EvenView.swift */,
+				840AF264246272B90062DBF9 /* LoaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -231,7 +234,7 @@
 			children = (
 				84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */,
 				84BB0CEF245A257300D080D5 /* DateFormatPreset.swift */,
-				840AF25124611B1D0062DBF9 /* LoadingState.swift */,
+				840AF25124611B1D0062DBF9 /* LoadingInfo.swift */,
 				840AF25E2461373F0062DBF9 /* Views */,
 				84FECEDF2457981700E3D5E6 /* Protocols */,
 				840AF23E246100C60062DBF9 /* Network */,
@@ -409,6 +412,7 @@
 				84BB0CF0245A257300D080D5 /* DateFormatPreset.swift in Sources */,
 				840AF262246264480062DBF9 /* UnderConstructionViewController.swift in Sources */,
 				84FECEEA2457B6F700E3D5E6 /* CALayer+Shadows.swift in Sources */,
+				840AF265246272B90062DBF9 /* LoaderView.swift in Sources */,
 				84FECEF02457EE2500E3D5E6 /* UIFont+Traits.swift in Sources */,
 				840AF2442461062E0062DBF9 /* APIClient.swift in Sources */,
 				840AF250246116960062DBF9 /* GetDisposableItemsCall.swift in Sources */,
@@ -422,7 +426,7 @@
 				84519D84245D5C6D000ABC2D /* CalendarAnimator.swift in Sources */,
 				84FECEEE2457E45A00E3D5E6 /* String+Enhancements.swift in Sources */,
 				84FECEF92458A56700E3D5E6 /* LifestylePresenter.swift in Sources */,
-				840AF25224611B1D0062DBF9 /* LoadingState.swift in Sources */,
+				840AF25224611B1D0062DBF9 /* LoadingInfo.swift in Sources */,
 				8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */,
 				84FECEE424579EAD00E3D5E6 /* Layout+Convenience.swift in Sources */,
 				84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */,

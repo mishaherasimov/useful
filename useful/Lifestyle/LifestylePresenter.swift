@@ -12,9 +12,9 @@ class LifestylePresenter: LifestyleViewPresenter {
     
     var disposableItems: [[DisposableItem]] = []
     
-    var loadState: LoadingState = .didLoad {
+    var loadInfo: LoadInfo = (.didLoad, .fullReload) {
         didSet {
-            view.loadingDisposableItems(with: loadState)
+            view.loadingDisposableItems(with: loadInfo)
         }
     }
     
@@ -39,10 +39,12 @@ class LifestylePresenter: LifestyleViewPresenter {
     
     // MARK: - API requests
 
-    func loadItems() {
+    func loadItems(isReloading: Bool) {
 
-        loadState = .willLoad
-        loadState = .isLoading
+        let type: LoadingType = isReloading ? .fullReload : .loadNew
+        
+        loadInfo = (.willLoad, type)
+        loadInfo = (.isLoading, type)
 
         APIClient().getDisposableItems { [weak self] response in
 
@@ -50,7 +52,7 @@ class LifestylePresenter: LifestyleViewPresenter {
             
             guard let items = response.value else {
 
-                self.loadState = .failLoading
+                self.loadInfo = (.failLoading, type)
                 return
             }
 
@@ -61,7 +63,7 @@ class LifestylePresenter: LifestyleViewPresenter {
             active.append(DisposableItem())
             
             self.disposableItems = [active, completed]
-            self.loadState = .didLoad
+            self.loadInfo = (.didLoad, type)
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  LoadingState.swift
+//  LoadingInfo.swift
 //  useful
 //
 //  Created by Mykhailo Herasimov on 2020-05-05.
@@ -7,6 +7,14 @@
 //
 
 import Foundation
+
+typealias LoadInfo = (state: LoadingState, type: LoadingType)
+
+enum LoadingType {
+
+    case fullReload
+    case loadNew
+}
 
 enum LoadingState {
 
