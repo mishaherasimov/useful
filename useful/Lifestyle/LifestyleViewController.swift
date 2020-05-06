@@ -324,6 +324,11 @@ extension LifestyleViewController: UICollectionViewDelegate {
         let isNegativeDirection = scrollView.contentOffset.y <= -contentTopInset
         elasticTopInset = isNegativeDirection ? abs(scrollView.contentOffset.y) - contentTopInset : 0
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let underConstruction = UnderConstructionViewController()
+        present(underConstruction, animated: true)
+    }
 }
 
 extension LifestyleViewController: UISearchResultsUpdating {

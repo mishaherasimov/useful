@@ -21,6 +21,7 @@
 		840AF25A246130D20062DBF9 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 840AF259246130D10062DBF9 /* loading.json */; };
 		840AF25D246131F80062DBF9 /* CustomIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF25C246131F80062DBF9 /* CustomIndicator.swift */; };
 		840AF260246202C00062DBF9 /* EvenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF25F246202BF0062DBF9 /* EvenView.swift */; };
+		840AF262246264480062DBF9 /* UnderConstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF261246264480062DBF9 /* UnderConstructionViewController.swift */; };
 		8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD46245635E400C301D3 /* AppDelegate.swift */; };
 		8433FD49245635E400C301D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD48245635E400C301D3 /* SceneDelegate.swift */; };
 		8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD4A245635E400C301D3 /* LifestyleViewController.swift */; };
@@ -74,6 +75,7 @@
 		840AF259246130D10062DBF9 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		840AF25C246131F80062DBF9 /* CustomIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIndicator.swift; sourceTree = "<group>"; };
 		840AF25F246202BF0062DBF9 /* EvenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvenView.swift; sourceTree = "<group>"; };
+		840AF261246264480062DBF9 /* UnderConstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderConstructionViewController.swift; sourceTree = "<group>"; };
 		8433FD43245635E400C301D3 /* Useful.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Useful.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8433FD46245635E400C301D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8433FD48245635E400C301D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -159,6 +161,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		840AF263246264590062DBF9 /* UnderConstruction */ = {
+			isa = PBXGroup;
+			children = (
+				840AF261246264480062DBF9 /* UnderConstructionViewController.swift */,
+			);
+			path = UnderConstruction;
+			sourceTree = "<group>";
+		};
 		8433FD3A245635E400C301D3 = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +193,7 @@
 				8433FD46245635E400C301D3 /* AppDelegate.swift */,
 				8433FD48245635E400C301D3 /* SceneDelegate.swift */,
 				84FECED62457845F00E3D5E6 /* Lifestyle */,
+				840AF263246264590062DBF9 /* UnderConstruction */,
 				8433FD4F245635E500C301D3 /* Assets.xcassets */,
 				8433FD51245635E500C301D3 /* LaunchScreen.storyboard */,
 				8433FD54245635E500C301D3 /* Info.plist */,
@@ -396,6 +407,7 @@
 				840AF260246202C00062DBF9 /* EvenView.swift in Sources */,
 				840AF2402461017A0062DBF9 /* APIParser.swift in Sources */,
 				84BB0CF0245A257300D080D5 /* DateFormatPreset.swift in Sources */,
+				840AF262246264480062DBF9 /* UnderConstructionViewController.swift in Sources */,
 				84FECEEA2457B6F700E3D5E6 /* CALayer+Shadows.swift in Sources */,
 				84FECEF02457EE2500E3D5E6 /* UIFont+Traits.swift in Sources */,
 				840AF2442461062E0062DBF9 /* APIClient.swift in Sources */,

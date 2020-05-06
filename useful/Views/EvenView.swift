@@ -11,7 +11,7 @@ import UIKit
 class EventView: UIView {
     
     enum EventType {
-        case empty, error
+        case empty, error, construction
     }
     
     private let contentSpacing: CGFloat = 16
@@ -51,6 +51,9 @@ class EventView: UIView {
     func configure(for type: EventType) {
         
         switch type {
+        case .construction:
+            imageView.image = #imageLiteral(resourceName: "under-construction")
+            contentLabel.text = "It Is under Construction"
         case .empty:
             imageView.image = #imageLiteral(resourceName: "the-list-is-empty")
             contentLabel.text = "No Items Have Been Found for This Week"
