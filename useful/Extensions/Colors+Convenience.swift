@@ -11,7 +11,7 @@ import UIKit
 extension UIColor {
     
     enum Collection: String {
-        case darkGray, olive, midnightBlack, bluishGray, marsh
+        case darkGray, olive, midnightBlack, bluishGray, marsh, dirtySand
     }
     
     convenience init?(collection: Collection) {

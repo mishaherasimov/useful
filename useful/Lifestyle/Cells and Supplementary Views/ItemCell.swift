@@ -23,21 +23,13 @@ class ItemCell: UICollectionViewCell {
     // MARK: - Views
     
     private let nameLabel: UILabel = UILabel.create(fontStyle: .headline, isDynamicallySized: true)
-    
-    private let itemImage: UIImageView = {
-        
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
+    private let itemImage: UIImageView = UIImageView.create()
     
     // MARK: - Overrides
     
     override var isSelected: Bool {
         didSet {
-//            backgroundColor = isSelected ? Theme.reddishColor : .white
-//            floorLabel.textColor = isSelected ? .white : Theme.reddishColor
+            backgroundColor = isSelected ? UIColor(collection: .dirtySand) : .white
         }
     }
     
