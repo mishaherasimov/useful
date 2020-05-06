@@ -40,7 +40,7 @@ class LoaderView: UIView {
         NSLayoutConstraint.snap(blurEffectView, to: self)
         
         addSubview(indicator)
-        NSLayoutConstraint.size(view: indicator, attributes: [.height(value: 150), .width(value: 150)])
+        NSLayoutConstraint.size(view: indicator, attributes: [.height(value: 250), .width(value: 250)])
         NSLayoutConstraint.center(indicator, in: self)
     }
     

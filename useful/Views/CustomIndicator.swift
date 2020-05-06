@@ -12,7 +12,7 @@ import Lottie
 struct CustomIndicator: Indicator {
     
     let indicator: AnimationView = {
-        let view = AnimationView(name: "loading")
+        let view = AnimationView(name: "image-loading")
         view.loopMode = .loop
         return view
     }()
