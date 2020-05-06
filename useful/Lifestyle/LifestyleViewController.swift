@@ -32,12 +32,25 @@ class LifestyleViewController: UIViewController {
     }
     
     var presenter: LifestyleViewPresenter!
-    
     var dataSource: UICollectionViewDiffableDataSource<Section, DisposableItem>! = nil
-    lazy var collectionView: UICollectionView = {
+    
+    // Collection view and related view
+    
+    private lazy var eventView: EventView = EventView(contentVerticalInset: contentTopInset)
+    private var eventViewConstraints: [NSLayoutConstraint] = []
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let control = UIRefreshControl()
+        control.tintColor = .white
+        control.addTarget(self, action: #selector(refreshItems(_:)), for: .valueChanged)
+        return control
+    }()
+    
+    private lazy var collectionView: UICollectionView = {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.contentInset.top = self.contentTopInset
+        collectionView.refreshControl = self.refreshControl
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(ItemCell.self)
         collectionView.register(SuggestedItemsCell.self)
@@ -45,6 +58,9 @@ class LifestyleViewController: UIViewController {
         collectionView.backgroundColor = UIColor(collection: .darkGray)
         return collectionView
     }()
+    
+    
+    // -- Collection view and related view --
     
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -73,14 +89,6 @@ class LifestyleViewController: UIViewController {
         configureCalendarBar()
         
         presenter.loadItems()
-        
-//        let animationView = AnimationView(name: "loading")
-//        animationView.translatesAutoresizingMaskIntoConstraints = false
-//        animationView.loopMode = .loop
-//        view.addSubview(animationView)
-//        NSLayoutConstraint.center(animationView, in: view)
-//        NSLayoutConstraint.size(view: animationView, attributes: [.height(value: 100), .width(value: 100)])
-//        animationView.play()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,6 +110,30 @@ class LifestyleViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    // MARK: View logic
+    
+    private func refreshItems(animatingDifferences: Bool) {
+        
+        guard !self.presenter.disposableItems.isEmpty else {
+            
+            configureBackgroundView(for: .empty)
+            return
+        }
+        
+        collectionView.backgroundView = nil
+        var snapshot = NSDiffableDataSourceSnapshot<Section, DisposableItem>()
+        Section.allCases.forEach {
+            snapshot.appendSections([$0])
+            snapshot.appendItems(self.presenter.disposableItems[$0.rawValue])
+        }
+        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+    }
+    
+    @objc private func refreshItems(_ sender: UIRefreshControl) {
+        
+        presenter.loadItems()
     }
 }
 
@@ -169,6 +201,17 @@ extension LifestyleViewController {
             
             clearButton.setImage(clearGlyph?.withRenderingMode(.alwaysTemplate), for: .normal)
         }
+    }
+    
+    func configureBackgroundView(for event: EventView.EventType) {
+    
+        eventView.removeConstraints(eventViewConstraints)
+        eventView.configure(for: event)
+        collectionView.backgroundView = eventView
+        
+        let sideConstraint = NSLayoutConstraint.snap(eventView, to: view, for: [.left, .right, .bottom])
+        let topConstraint = eventView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).activate()
+        eventViewConstraints = Array(sideConstraint.values) + [topConstraint]
     }
 }
 
@@ -267,16 +310,6 @@ extension LifestyleViewController {
         // Initial data
         refreshItems(animatingDifferences: false)
     }
-    
-    func refreshItems(animatingDifferences: Bool) {
-        guard !self.presenter.disposableItems.isEmpty else { return }
-        var snapshot = NSDiffableDataSourceSnapshot<Section, DisposableItem>()
-        Section.allCases.forEach {
-            snapshot.appendSections([$0])
-            snapshot.appendItems(self.presenter.disposableItems[$0.rawValue])
-        }
-        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
-    }
 }
 
 extension LifestyleViewController: UICollectionViewDelegate {
@@ -307,11 +340,11 @@ extension LifestyleViewController: LifestyleView {
         case .willLoad:
             break
 //            info.type == .fullReload ? refreshControl.beginRefreshing() : Void()
-        case let .failLoading(title, message):
-            
-            //showAlert(title: title, message: message)
-            fallthrough
+        case .failLoading:
+            refreshControl.endRefreshing()
+            configureBackgroundView(for: .error)
         case .didLoad:
+            refreshControl.endRefreshing()
             refreshItems(animatingDifferences: true)
         case .isLoading: break
         }

@@ -49,11 +49,8 @@ class LifestylePresenter: LifestyleViewPresenter {
             guard let self = self else { return }
             
             guard let items = response.value else {
-                
-                let localizedMessage = NSLocalizedString("Something went wrong. Please try again later.", comment: "Message of alert presented on referrals load failure.")
-                let localizedTitle = NSLocalizedString("Unable to load referrals.", comment: "Title of alert presented on raferrals load failure.")
 
-                self.loadState = .failLoading(title: localizedTitle, message: localizedMessage)
+                self.loadState = .failLoading
                 return
             }
 

@@ -12,7 +12,7 @@ enum LoadingState {
 
     case willLoad
     case isLoading
-    case failLoading(title: String, message: String)
+    case failLoading
     case didLoad
 
     var isActive: Bool {

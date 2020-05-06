@@ -8,6 +8,18 @@
 
 import UIKit
 
+extension UIImageView {
+    
+    class func create(image: UIImage? = nil, contentMode: UIView.ContentMode = .scaleAspectFit) -> UIImageView {
+        
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = image
+        imageView.contentMode = contentMode
+        return imageView
+    }
+}
+
 extension UIView {
     
     class func create(backgroundColor: UIColor?, cornerRadius: CGFloat = 0) -> UIView {

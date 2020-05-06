@@ -22,10 +22,6 @@ public enum APIResponse<Value> {
         }
     }
 
-    public var isFailure: Bool {
-        return !isSuccess
-    }
-
     public var value: Value? {
         switch self {
         case let .success(value):
