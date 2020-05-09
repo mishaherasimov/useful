@@ -27,12 +27,8 @@ class LifestyleViewController: UIViewController {
     private let calendarHeight: CGFloat = 280
     private let titleInsets: UIEdgeInsets = .create(left: 18)
     
-    enum Section: Int, CaseIterable {
-        case ongoing, completed
-    }
-    
     var presenter: LifestyleViewPresenter!
-    var dataSource: UICollectionViewDiffableDataSource<Section, DisposableItem>! = nil
+    var dataSource: UICollectionViewDiffableDataSource<LifeStyleSection, DisposableItem>! = nil
     
     // Collection view and related view
     
@@ -114,19 +110,22 @@ class LifestyleViewController: UIViewController {
     
     // MARK: View logic
     
-    private func refreshItems(animatingDifferences: Bool) {
+    func refreshDisposableItems(animatingDifferences: Bool) {
         
-        guard !self.presenter.disposableItems.isEmpty else {
+        let content = presenter.disposableItems
+        
+        guard !content.isEmpty else {
             
             configureBackgroundView(for: .empty)
+            dataSource.apply(NSDiffableDataSourceSnapshot<LifeStyleSection, DisposableItem>(), animatingDifferences: animatingDifferences)
             return
         }
         
         collectionView.backgroundView = nil
-        var snapshot = NSDiffableDataSourceSnapshot<Section, DisposableItem>()
-        Section.allCases.forEach {
-            snapshot.appendSections([$0])
-            snapshot.appendItems(self.presenter.disposableItems[$0.rawValue])
+        var snapshot = NSDiffableDataSourceSnapshot<LifeStyleSection, DisposableItem>()
+        content.forEach { (section, items) in
+            snapshot.appendSections([section])
+            snapshot.appendItems(items)
         }
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
@@ -281,17 +280,19 @@ extension LifestyleViewController {
     
     func configureDataSource() {
         
-        dataSource = UICollectionViewDiffableDataSource<Section, DisposableItem>(collectionView: collectionView) {  [weak self]
+        dataSource = UICollectionViewDiffableDataSource<LifeStyleSection, DisposableItem>(collectionView: collectionView) {  [weak self]
             (collectionView: UICollectionView, indexPath: IndexPath, disposableItem: DisposableItem) -> UICollectionViewCell? in
             
-            guard let self = self, let section = Section(rawValue: indexPath.section)  else { return nil }
+            guard let self = self else { return nil }
+            
+            let content = self.presenter.disposableItems[indexPath.section]
             
             // print("The identifider is \(disposableItem) the index path is \(indexPath)")
             
-            let isLast = disposableItem == self.presenter.disposableItems[indexPath.section].last
+            let isLast = disposableItem == self.presenter.disposableItems[indexPath.section].items.last
             
             // If last item in a first section
-            if isLast, section == .ongoing {
+            if isLast, content.section == .ongoing {
                 
                 let cell: SuggestedItemsCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.configure(items: 6)
@@ -299,7 +300,7 @@ extension LifestyleViewController {
             } else {
                 
                 let cell: ItemCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.configure(name: disposableItem.name, imageURL: disposableItem.imageURL, isCompleted: section == .completed)
+                cell.configure(name: disposableItem.name, imageURL: disposableItem.imageURL, isCompleted: disposableItem.isCompleted == true)
                 return cell
             }
         }
@@ -309,17 +310,15 @@ extension LifestyleViewController {
             
             guard let self = self else { return nil }
             
+            let header = self.presenter.disposableItems[indexPath.section].section.headerInfo
             let supplementaryView: TitleSupplementaryView = collectionView.dequeueReusableSupplementaryView(for: indexPath, kind: kind)
-            
-            if let section = Section(rawValue: indexPath.section) {
-                supplementaryView.configure(header: self.presenter.header(for: section))
-            }
+            supplementaryView.configure(header: header)
             
             return supplementaryView
         }
         
         // Initial data
-        refreshItems(animatingDifferences: false)
+        refreshDisposableItems(animatingDifferences: false)
     }
 }
 
@@ -346,6 +345,7 @@ extension LifestyleViewController: UICollectionViewDelegate {
 extension LifestyleViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
+        presenter.filterDisposableItems(query: searchController.searchBar.text)
     }
 }
 
@@ -367,7 +367,7 @@ extension LifestyleViewController: LifestyleView {
         case .didLoad:
             LoaderView.shared.stop()
             refreshControl.endRefreshing()
-            refreshItems(animatingDifferences: true)
+            refreshDisposableItems(animatingDifferences: true)
         case .isLoading: break
         }
     }

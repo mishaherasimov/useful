@@ -57,7 +57,7 @@ class EventView: UIView {
             contentLabel.text = "It Is under Construction"
         case .empty:
             imageView.image = #imageLiteral(resourceName: "the-list-is-empty")
-            contentLabel.text = "No Items Have Been Found for This Week"
+            contentLabel.text = "No Items Have Been Found"
         case .error:
             imageView.image = #imageLiteral(resourceName: "fatal-error")
             contentLabel.text = "An Error Occurred. Try to Refresh Content"

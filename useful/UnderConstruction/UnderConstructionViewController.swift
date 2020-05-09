@@ -11,13 +11,25 @@ import UIKit
 class UnderConstructionViewController: UIViewController {
     
     private let closeButtonInsets: UIEdgeInsets = .create(top: 45, right: 32)
+    private let closeButtonSize: CGFloat = 34
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .clear
-        
-        // -- Blur view --
+    
+        configureBlurView()
+        configureEventView()
+        configureCloseButton()
+    }
+    
+    @objc private func close(_ button: UIButton) {
+        dismiss(animated: true)
+    }
+    
+    // MARK: Configurations
+    
+    private func configureBlurView() {
         
         let blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -26,23 +38,24 @@ class UnderConstructionViewController: UIViewController {
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         view.addSubview(blurEffectView)
-        
-        // -- Event view --
+    }
+    
+    private func configureEventView() {
         
         let eventView = EventView(contentVerticalInset: 0, textColor: traitCollection.userInterfaceStyle == .dark ? .white : UIColor(collection: .midnightBlack))
         eventView.configure(for: .construction)
         view.addSubview(eventView)
         NSLayoutConstraint.snap(eventView, to: view)
-        
-        
-        // -- Close button --
+    }
+    
+    private func configureCloseButton() {
         
         let closeButton = UIButton()
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         closeButton.addTarget(self, action: #selector(close(_:)), for: .touchUpInside)
         closeButton.tintColor = .white
         
-        let configuration = UIImage.SymbolConfiguration(pointSize: 34)
+        let configuration = UIImage.SymbolConfiguration(pointSize: closeButtonSize)
         closeButton.setImage(UIImage(systemName: "xmark.circle.fill", withConfiguration: configuration), for: .normal)
         
         view.addSubview(closeButton)
@@ -50,9 +63,5 @@ class UnderConstructionViewController: UIViewController {
             closeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: closeButtonInsets.top),
             closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -closeButtonInsets.right)
         ])
-    }
-    
-    @objc private func close(_ button: UIButton) {
-        dismiss(animated: true)
     }
 }
