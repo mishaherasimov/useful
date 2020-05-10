@@ -17,7 +17,7 @@ class TitleSupplementaryView: UICollectionReusableView {
     // MARK: - Views
     
     private let titleLabel: UILabel = UILabel.create(fontStyle: .title2, fontTrait: .traitBold)
-    private let annotationLabel: UILabel = UILabel.create(fontStyle: .footnote, textColor: UIColor(collection: .bluishGray))
+    private let annotationLabel: UILabel = UILabel.create(fontStyle: .footnote, textColor: UIColor.secondaryLabel)
     
     // MARK: - Initializers
     

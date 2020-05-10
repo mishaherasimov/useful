@@ -51,7 +51,7 @@ class LifestyleViewController: UIViewController {
         collectionView.register(ItemCell.self)
         collectionView.register(SuggestedItemsCell.self)
         collectionView.register(TitleSupplementaryView.self, kind: .header)
-        collectionView.backgroundColor = UIColor(collection: .darkGray)
+        collectionView.backgroundColor = UIColor(collection: .background)
         return collectionView
     }()
     
@@ -79,7 +79,7 @@ class LifestyleViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.title = "Lifestyle"
-        view.backgroundColor = UIColor(collection: .olive)
+        view.backgroundColor = UIColor(collection: .primary)
         configureHierarchy()
         configureDataSource()
         configureCalendarBar()
@@ -143,7 +143,7 @@ extension LifestyleViewController {
         // -- Container view --
         // Helps to handle collection view oscillation
         
-        let containerView = UIView.create(backgroundColor: UIColor(collection: .olive), cornerRadius: calendarContainerCornerRadius)
+        let containerView = UIView.create(backgroundColor: UIColor(collection: .primary), cornerRadius: calendarContainerCornerRadius)
         view.addSubview(containerView)
         let containerConstraints = NSLayoutConstraint.snap(containerView, to: collectionView, for: [.left, .right, .top])
         if let containerTopConstraint = containerConstraints[.top] {
@@ -152,7 +152,7 @@ extension LifestyleViewController {
         
         // -- Calendar header --
         
-        let titleBackgroundView = UIView.create(backgroundColor: UIColor(collection: .olive))
+        let titleBackgroundView = UIView.create(backgroundColor: UIColor(collection: .primary))
         let titleLabel: UILabel = UILabel.create(fontStyle: .headline, textColor: .white)
         titleLabel.text = Date().formatted(as: .custom(style: .monthYear, timeZone: .current))
         

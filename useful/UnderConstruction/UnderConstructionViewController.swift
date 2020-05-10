@@ -42,7 +42,7 @@ class UnderConstructionViewController: UIViewController {
     
     private func configureEventView() {
         
-        let eventView = EventView(contentVerticalInset: 0, textColor: traitCollection.userInterfaceStyle == .dark ? .white : UIColor(collection: .midnightBlack))
+        let eventView = EventView(contentVerticalInset: 0)
         eventView.configure(for: .construction)
         view.addSubview(eventView)
         NSLayoutConstraint.snap(eventView, to: view)

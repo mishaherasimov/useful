@@ -19,7 +19,7 @@ class CustomNavigationController: UINavigationController {
         navBarAppearance.configureWithTransparentBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBarAppearance.backgroundColor = UIColor(collection: .olive)
+        navBarAppearance.backgroundColor = UIColor(collection: .primary)
         
         navigationBar.standardAppearance = navBarAppearance
         navigationBar.scrollEdgeAppearance = navBarAppearance

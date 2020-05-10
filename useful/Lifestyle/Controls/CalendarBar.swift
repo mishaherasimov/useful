@@ -65,7 +65,7 @@ class CalendarBar: UIView {
     
     private func configureUI() {
         
-        backgroundColor = UIColor(collection: .olive)
+        backgroundColor = UIColor(collection: .primary)
         layer.cornerRadius = cornerRadius
         layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         translatesAutoresizingMaskIntoConstraints = false

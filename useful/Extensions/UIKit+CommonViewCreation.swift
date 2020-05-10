@@ -50,7 +50,7 @@ extension UILabel {
     class func create(fontStyle: UIFont.TextStyle,
                       fontTrait: UIFontDescriptor.SymbolicTraits? = nil,
                       text: String? = nil,
-                      textColor: UIColor? = UIColor(collection: .midnightBlack),
+                      textColor: UIColor? = UIColor(collection: .label),
                       textAlignment: NSTextAlignment = .left,
                       isDynamicallySized: Bool = false,
                       contentPriority axies: [NSLayoutConstraint.PriorityAxis] = []) -> UILabel {

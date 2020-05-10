@@ -15,7 +15,7 @@ class LoaderView: UIView {
     
     private var sideConstraints: [NSLayoutConstraint] = []
     private let indicator: AnimationView = {
-        let view = AnimationView(name: "loading")
+        let view = AnimationView(name: UITraitCollection.current.userInterfaceStyle == .dark ? "loading-dark" : "loading")
         view.translatesAutoresizingMaskIntoConstraints = false
         view.loopMode = .loop
         return view

@@ -23,7 +23,6 @@
 		840AF262246264480062DBF9 /* UnderConstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF261246264480062DBF9 /* UnderConstructionViewController.swift */; };
 		840AF265246272B90062DBF9 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840AF264246272B90062DBF9 /* LoaderView.swift */; };
 		840AF26824630A7E0062DBF9 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 840AF26624630A7D0062DBF9 /* loading.json */; };
-		840AF26924630A7E0062DBF9 /* image-loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 840AF26724630A7E0062DBF9 /* image-loading.json */; };
 		8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD46245635E400C301D3 /* AppDelegate.swift */; };
 		8433FD49245635E400C301D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD48245635E400C301D3 /* SceneDelegate.swift */; };
 		8433FD4B245635E400C301D3 /* LifestyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8433FD4A245635E400C301D3 /* LifestyleViewController.swift */; };
@@ -36,6 +35,9 @@
 		84BB0CF2245A56C000D080D5 /* CalendarItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CF1245A56C000D080D5 /* CalendarItemCell.swift */; };
 		84BB0CF4245A8FE700D080D5 /* Calendar+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CF3245A8FE700D080D5 /* Calendar+Operations.swift */; };
 		84BB0CF8245B61F900D080D5 /* WeekBackgroundDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CF7245B61F900D080D5 /* WeekBackgroundDecorationView.swift */; };
+		84EE06E824677F6800B3F5EF /* loading-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 84EE06E724677F6800B3F5EF /* loading-dark.json */; };
+		84EE06EC246781DF00B3F5EF /* image-loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 84EE06EA246781DF00B3F5EF /* image-loading.json */; };
+		84EE06EE2467831F00B3F5EF /* image-loading-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 84EE06ED2467831F00B3F5EF /* image-loading-dark.json */; };
 		84FECED82457915B00E3D5E6 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */; };
 		84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */; };
 		84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDD245797E200E3D5E6 /* ReusableView.swift */; };
@@ -79,7 +81,6 @@
 		840AF261246264480062DBF9 /* UnderConstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderConstructionViewController.swift; sourceTree = "<group>"; };
 		840AF264246272B90062DBF9 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		840AF26624630A7D0062DBF9 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
-		840AF26724630A7E0062DBF9 /* image-loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "image-loading.json"; sourceTree = "<group>"; };
 		8433FD43245635E400C301D3 /* Useful.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Useful.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8433FD46245635E400C301D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8433FD48245635E400C301D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +97,9 @@
 		84BB0CF1245A56C000D080D5 /* CalendarItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarItemCell.swift; sourceTree = "<group>"; };
 		84BB0CF3245A8FE700D080D5 /* Calendar+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Operations.swift"; sourceTree = "<group>"; };
 		84BB0CF7245B61F900D080D5 /* WeekBackgroundDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekBackgroundDecorationView.swift; sourceTree = "<group>"; };
+		84EE06E724677F6800B3F5EF /* loading-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "loading-dark.json"; sourceTree = "<group>"; };
+		84EE06EA246781DF00B3F5EF /* image-loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "image-loading.json"; sourceTree = "<group>"; };
+		84EE06ED2467831F00B3F5EF /* image-loading-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "image-loading-dark.json"; sourceTree = "<group>"; };
 		84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+CellHandling.swift"; sourceTree = "<group>"; };
 		84FECEDD245797E200E3D5E6 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
@@ -151,7 +155,9 @@
 		840AF25B246130D90062DBF9 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
-				840AF26724630A7E0062DBF9 /* image-loading.json */,
+				84EE06ED2467831F00B3F5EF /* image-loading-dark.json */,
+				84EE06EA246781DF00B3F5EF /* image-loading.json */,
+				84EE06E724677F6800B3F5EF /* loading-dark.json */,
 				840AF26624630A7D0062DBF9 /* loading.json */,
 			);
 			path = Animations;
@@ -388,9 +394,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84EE06EC246781DF00B3F5EF /* image-loading.json in Resources */,
+				84EE06E824677F6800B3F5EF /* loading-dark.json in Resources */,
 				8433FD53245635E500C301D3 /* LaunchScreen.storyboard in Resources */,
 				8433FD50245635E500C301D3 /* Assets.xcassets in Resources */,
-				840AF26924630A7E0062DBF9 /* image-loading.json in Resources */,
+				84EE06EE2467831F00B3F5EF /* image-loading-dark.json in Resources */,
 				840AF26824630A7E0062DBF9 /* loading.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

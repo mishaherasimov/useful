@@ -69,8 +69,8 @@ class SuggestedItemsCell: UICollectionViewCell {
         contentView.addSubview(disclosureImageView)
         
         layer.cornerRadius = cornerRadius
-        layer.applyShadow(color: UIColor(collection: .marsh), blur: blur, spread: spread)
-        backgroundColor = UIColor(collection: .marsh)
+        layer.applyShadow(color: UIColor(collection: .secondary), blur: blur, spread: spread)
+        backgroundColor = UIColor(collection: .secondary)
         
         stackView.items = [annotationLabel, itemsLabel]
         NSLayoutConstraint.snap(stackView, to: contentView, with: contentInsets)

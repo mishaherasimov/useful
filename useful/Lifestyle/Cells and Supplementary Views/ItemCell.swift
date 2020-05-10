@@ -30,7 +30,7 @@ class ItemCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            backgroundColor = isSelected ? UIColor(collection: .dirtySand) : .white
+            backgroundColor = isSelected ? UIColor(collection: .selected) : UIColor(collection: .backgroundElevated)
         }
     }
     
@@ -58,8 +58,11 @@ class ItemCell: UICollectionViewCell {
     private func configureUI() {
         
         layer.cornerRadius = cornerRadius
-        layer.applyShadow(blur: blur, spread: spread)
-        backgroundColor = .white
+        backgroundColor = UIColor(collection: .backgroundElevated)
+        
+        contentView.layer.cornerRadius = cornerRadius
+        contentView.layer.applyShadow(blur: blur, spread: spread)
+        contentView.backgroundColor = UIColor(collection: .backgroundElevated)
         
         contentView.addSubview(nameLabel)
         contentView.addSubview(itemImage)

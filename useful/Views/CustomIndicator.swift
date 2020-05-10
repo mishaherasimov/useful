@@ -8,11 +8,12 @@
 
 import Kingfisher
 import Lottie
+import UIKit
 
 struct CustomIndicator: Indicator {
     
     let indicator: AnimationView = {
-        let view = AnimationView(name: "image-loading")
+        let view = AnimationView(name: UITraitCollection.current.userInterfaceStyle == .dark ? "image-loading-dark" : "image-loading")
         view.loopMode = .loop
         return view
     }()
@@ -32,6 +33,6 @@ struct CustomIndicator: Indicator {
     }
     
     public func sizeStrategy(in imageView: KFCrossPlatformImageView) -> IndicatorSizeStrategy {
-        return .size(.init(width: 50, height: 50))
+        return .size(.init(width: 100, height: 100))
     }
 }
