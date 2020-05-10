@@ -84,7 +84,7 @@ class LifestyleViewController: UIViewController {
         configureDataSource()
         configureCalendarBar()
         
-        presenter.loadItems(isReloading: false)
+        presenter.loadItems(isReloading: false, selectedWeek: (calendarBar.selectedWeek.rawValue, Date()))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -127,17 +127,18 @@ class LifestyleViewController: UIViewController {
             snapshot.appendSections([section])
             snapshot.appendItems(items)
         }
+        
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
     
     @objc private func refreshItems(_ sender: UIRefreshControl) {
-
-        presenter.loadItems(isReloading: true)
+        
+        presenter.loadItems(isReloading: true, selectedWeek: nil)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
+        
         guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
         refreshDisposableItems(animatingDifferences: false)
     }
@@ -177,6 +178,7 @@ extension LifestyleViewController {
         // -- Calendar --
         
         containerView.addSubview(calendarBar)
+        calendarBar.delegate = self
         
         let calendarConstraint = NSLayoutConstraint.snap(calendarBar, to: containerView, for: [.left, .right, .top], sizeAttributes: [.height(value: calendarHeight)], with: .create(top: calendarInset))
         
@@ -212,7 +214,7 @@ extension LifestyleViewController {
     }
     
     func configureBackgroundView(for event: EventView.EventType) {
-    
+        
         eventView.removeConstraints(eventViewConstraints)
         eventView.configure(for: event)
         collectionView.backgroundView = eventView
@@ -320,9 +322,9 @@ extension LifestyleViewController {
             
             guard let self = self else { return nil }
             
-            let header = self.presenter.disposableItems[indexPath.section].section.headerInfo
+            let section = self.presenter.disposableItems[indexPath.section].section
             let supplementaryView: TitleSupplementaryView = collectionView.dequeueReusableSupplementaryView(for: indexPath, kind: kind)
-            supplementaryView.configure(header: header)
+            supplementaryView.configure(header: self.presenter.header(for: section))
             
             return supplementaryView
         }
@@ -356,6 +358,22 @@ extension LifestyleViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         presenter.filterDisposableItems(query: searchController.searchBar.text)
+    }
+}
+
+extension LifestyleViewController: CalendarBarDelegate {
+    func didSelectWeek(with index: Int, selected date: Date?) {
+        guard let date = date else { return }
+        
+        presenter.loadItems(isReloading: false, selectedWeek: (index, date))
+        calendarAnimator?.closeBar()
+        
+        // Reload header info
+        var snapshot = dataSource.snapshot()
+        if presenter.disposableItems.map({ $0.section }).contains(.ongoing) {
+            snapshot.reloadSections([.ongoing])
+            dataSource.apply(snapshot)
+        }
     }
 }
 

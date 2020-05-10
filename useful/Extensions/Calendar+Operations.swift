@@ -16,10 +16,6 @@ extension Calendar {
         return range(of: .day, in: .month, for: date)?.count
     }
     
-    func previousMonth(from currentDate: Date) -> Date? {
-        return date(byAdding: .month, value: -1, to: currentDate)
-    }
-    
     func date(from components: Set<Component>, with date: Date) -> Date? {
         return self.date(from: dateComponents(components, from: date))
     }

@@ -10,6 +10,10 @@ import Foundation
 
 extension Date {
     
+    var previousMonth: Date? {
+        return Calendar.gregorian.date(byAdding: .month, value: -1, to: self)
+    }
+    
     var startOfMonth: Date? {
         return Calendar.gregorian.date(from: [.year, .month], with: self)
     }

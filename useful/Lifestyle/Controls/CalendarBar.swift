@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol CalendarBarDelegate: class {
+    func didSelectWeek(with index: Int, selected date: Date?)
+}
+
 class CalendarBar: UIView {
     
     enum Week: Int, CaseIterable {
@@ -29,6 +33,10 @@ class CalendarBar: UIView {
     private var calendarHeight: CGFloat { return daysGroupHeight * CGFloat(Week.allCases.count) }
     
     // -- Constants --
+
+    private lazy var calendarInfo: (days: [Int], currentMonth: Range<Int>)? = calculateCalendar()
+    
+    weak var delegate: CalendarBarDelegate?
     
     // Views
     
@@ -44,7 +52,7 @@ class CalendarBar: UIView {
     // -- Views --
     
     private var dataSource: UICollectionViewDiffableDataSource<Week, Int>! = nil
-    private var selectedWeek: Week = .week3 {
+    private (set) var selectedWeek: Week = .week1 {
         didSet {
             guard oldValue != selectedWeek else { return }
             var snapshot = dataSource.snapshot()
@@ -56,6 +64,14 @@ class CalendarBar: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        // Calculate index of the week with the current date
+        if let info = calendarInfo,
+           let day = Calendar.gregorian.dateComponents([.day], from: Date()).day,
+           let index = Array(info.days[info.currentMonth]).firstIndex(of: day),
+           let week = Week(rawValue: Int(floor(Double((index + info.currentMonth.lowerBound) / 7)))) {
+            selectedWeek = week
+        }
+            
         configureUI()
     }
     
@@ -98,6 +114,48 @@ class CalendarBar: UIView {
         stackView.items = legends
         NSLayoutConstraint.snap(stackView, to: collectionView, for: [.left, .right])
         stackView.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -legendBottomSpacing).isActive = true
+    }
+    
+    // Calculate current month information
+    
+    func calculateCalendar() -> (days: [Int], currentMonth: Range<Int>)? {
+        
+        let calendar = Calendar.gregorian
+        let currentDate = Date()
+        
+        if let firstDate = currentDate.startOfMonth {
+            
+            // Get the short name of the first day of the month. e.g. "Mon"
+            let weekDay = firstDate.formatted(as: .custom(style: .day, timeZone: .current))
+            
+            // Calculate number of days in current month an the previous one;
+            // Find week day for the 1st day of current month
+            guard let currentMonthDaysCount = calendar.monthDays(from: firstDate),
+                let weekDayIndex = calendar.shortWeekdaySymbols.firstIndex(of: weekDay),
+                let previousMonth = firstDate.previousMonth,
+                let previousMonthDaysCount = calendar.monthDays(from: previousMonth) else { return nil }
+            
+            // Offset in days for the 1st day of the month e.g. "Mon", "Tue", "Wed" -> "29", "30", "1"
+            let weekDayOffset = calendar.shortWeekdaySymbols.prefix(upTo: Int(weekDayIndex)).indices.last ?? 0
+            // Indexes for current month
+            let currentMonthDays = Array(1...currentMonthDaysCount)
+            
+            // If 1th day is the first day of the week day
+            if weekDayOffset == 0 {
+                
+                let remainingDays = Array(1...numberOfCells - currentMonthDaysCount)
+                return (currentMonthDays + remainingDays, 0..<currentMonthDaysCount)
+            } else {
+                
+                let previousMonthDays = Array((previousMonthDaysCount - weekDayOffset)...previousMonthDaysCount)
+                let joinedDaysTotal = previousMonthDays.count + currentMonthDays.count
+                let remainingDays = joinedDaysTotal < numberOfCells ? Array(1...(numberOfCells - joinedDaysTotal)) : []
+                let offset = weekDayOffset + 1
+                return (previousMonthDays + currentMonthDays + remainingDays, offset..<currentMonthDaysCount + offset)
+            }
+        }
+        
+        return nil
     }
 }
 
@@ -156,13 +214,13 @@ extension CalendarBar {
     
     func configureDataSource() {
         
-        let calendarData = calculateCalendar()
+        let calendar = calendarInfo
         
         dataSource = UICollectionViewDiffableDataSource<Week, Int>(collectionView: collectionView) {
             (collectionView: UICollectionView, indexPath: IndexPath, index: Int) -> UICollectionViewCell? in
             
             let cell: CalendarItemCell = collectionView.dequeueReusableCell(for: indexPath)
-            if let (days, currentMonth) = calendarData {
+            if let (days, currentMonth) = calendar {
                 cell.configure(day: days[index], isCurrentMonth: currentMonth.contains(index))
             }
             return cell
@@ -179,53 +237,37 @@ extension CalendarBar {
         
         dataSource.apply(snapshot, animatingDifferences: false)
     }
-    
-    func calculateCalendar() -> (days: [Int], currentMonth: Range<Int>)? {
-        
-        let calendar = Calendar.current
-        let currentDate = Date()
-        
-        if let firstDate = currentDate.startOfMonth {
-            
-            // Get the short name of the first day of the month. e.g. "Mon"
-            let weekDay = firstDate.formatted(as: .custom(style: .day, timeZone: .current))
-            
-            // Calculate number of days in current month an the previous one;
-            // Find week day for the 1st day of current month
-            guard let currentMonthDaysCount = calendar.monthDays(from: firstDate),
-                let weekDayIndex = calendar.shortWeekdaySymbols.firstIndex(of: weekDay),
-                let previousMonth = calendar.previousMonth(from: firstDate),
-                let previousMonthDaysCount = calendar.monthDays(from: previousMonth) else { return nil }
-            
-            // Offset in days for the 1st day of the month e.g. "Mon", "Tue", "Wed" -> "29", "30", "1"
-            let weekDayOffset = calendar.shortWeekdaySymbols.prefix(upTo: Int(weekDayIndex)).indices.last ?? 0
-            // Indexes for current month
-            let currentMonthDays = Array(1...currentMonthDaysCount)
-            
-            // If 1th day is the first day of the week day
-            if weekDayOffset == 0 {
-                
-                let remainingDays = Array(1...numberOfCells - currentMonthDaysCount)
-                return (currentMonthDays + remainingDays, 0..<currentMonthDaysCount)
-            } else {
-                
-                let previousMonthDays = Array((previousMonthDaysCount - weekDayOffset)...previousMonthDaysCount)
-                let joinedDaysTotal = previousMonthDays.count + currentMonthDays.count
-                let remainingDays = joinedDaysTotal < numberOfCells ? Array(1...(numberOfCells - joinedDaysTotal)) : []
-                let offset = weekDayOffset + 1
-                return (previousMonthDays + currentMonthDays + remainingDays, offset..<currentMonthDaysCount + offset)
-            }
-        }
-        
-        return nil
-    }
 }
 
 extension CalendarBar: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let newSelectedWeek = Week(rawValue: indexPath.section) else { return }
+        let valueIndex = (7 * indexPath.section + indexPath.row) // formula -- number of days in a week * offset in weeks + offset in current weekdays
+        guard let newSelectedWeek = Week(rawValue: indexPath.section),
+              selectedWeek != newSelectedWeek,
+              let calendarInfo = calendarInfo,
+              calendarInfo.days.indices ~= valueIndex
+              else { return }
         selectedWeek = newSelectedWeek
+        
+        let day = calendarInfo.days[valueIndex]
+
+        var components = Calendar.gregorian.dateComponents([.day, .month, .year], from: Date())
+        components.day = day
+        
+        if let month = components.month {
+            
+            switch valueIndex {
+            case ..<calendarInfo.currentMonth.startIndex:
+                components.month = month - 1
+            case calendarInfo.currentMonth.endIndex...:
+                components.month = month + 1
+            default:
+                break
+            }
+            
+            delegate?.didSelectWeek(with: indexPath.section, selected: Calendar.gregorian.date(from: components))
+        }
     }
 }
 

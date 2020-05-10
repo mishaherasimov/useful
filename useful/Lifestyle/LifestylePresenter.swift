@@ -10,6 +10,8 @@ import Foundation
 
 class LifestylePresenter: LifestyleViewPresenter {
     
+    private var currentWeek: (week: Int, date: Date)?
+    
     private var originalItems: [[DisposableItem]] = [] {
         didSet {
             filterDisposableItems(query: nil)
@@ -28,19 +30,18 @@ class LifestylePresenter: LifestyleViewPresenter {
         }
     }
     
-    
     unowned let view: LifestyleView
-    
-    // MARK: - Initializers
     
     required init(view: LifestyleView) {
         
         self.view = view
     }
     
-    // MARK: - API requests
+    // API requests
     
-    func loadItems(isReloading: Bool) {
+    func loadItems(isReloading: Bool, selectedWeek: (week: Int, date: Date)?) {
+        
+        currentWeek = selectedWeek ?? currentWeek
         
         let type: LoadingType = isReloading ? .fullReload : .loadNew
         
@@ -48,7 +49,7 @@ class LifestylePresenter: LifestyleViewPresenter {
         loadInfo = (.isLoading, type)
         
         APIClient().getDisposableItems { [weak self] response in
-        
+            
             guard let self = self else { return }
             
             guard let items = response.value else {
@@ -68,7 +69,7 @@ class LifestylePresenter: LifestyleViewPresenter {
         }
     }
     
-    // MARK: - Search
+    // Search
     
     func filterDisposableItems(query: String?) {
         
@@ -81,5 +82,23 @@ class LifestylePresenter: LifestyleViewPresenter {
         let items = originalItems.flatMap({ $0 })
         let filteredItems = items.filter { $0.name.lowercased().contains(query.lowercased()) }
         disposableItems = !filteredItems.isEmpty ? [(.search, filteredItems)] : []
+    }
+    
+    // -- Search --
+    
+    func header(for section: LifeStyleSection) -> (title: String, annotation: String) {
+        
+        switch section {
+        case .ongoing:
+            guard let date = currentWeek?.date,
+                  let endOfweek = date.endOfWeek?.formatted(as: .custom(style: .weekDay, timeZone: .current)),
+                  let startOfweek = date.startOfWeek?.formatted(as: .custom(style: .weekDay, timeZone: .current)) else { return (.empty, .empty)}
+            let weekInfo = String(format: "%@ - %@", startOfweek, endOfweek)
+            return (weekInfo, "Current week")
+        case .completed:
+            return ("Completed items", .empty)
+        case .search:
+            return ("Search result items", .empty)
+        }
     }
 }
