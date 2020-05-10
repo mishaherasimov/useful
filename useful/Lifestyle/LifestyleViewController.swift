@@ -134,6 +134,13 @@ class LifestyleViewController: UIViewController {
 
         presenter.loadItems(isReloading: true)
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+        refreshDisposableItems(animatingDifferences: false)
+    }
 }
 
 extension LifestyleViewController {
@@ -300,7 +307,10 @@ extension LifestyleViewController {
             } else {
                 
                 let cell: ItemCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.configure(name: disposableItem.name, imageURL: disposableItem.imageURL, isCompleted: disposableItem.isCompleted == true)
+                cell.configure(name: disposableItem.name,
+                               imageURL: disposableItem.imageURL,
+                               imageURLDark: disposableItem.imageURLDark,
+                               isCompleted: disposableItem.isCompleted == true)
                 return cell
             }
         }

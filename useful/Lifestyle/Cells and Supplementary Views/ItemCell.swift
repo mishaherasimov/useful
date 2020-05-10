@@ -30,7 +30,7 @@ class ItemCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            backgroundColor = isSelected ? UIColor(collection: .selected) : UIColor(collection: .backgroundElevated)
+            contentView.backgroundColor = isSelected ? UIColor(collection: .selected) : UIColor(collection: .backgroundElevated)
         }
     }
     
@@ -53,10 +53,25 @@ class ItemCell: UICollectionViewCell {
         configureUI()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+        configureBorderIfNeeded()
+    }
+    
     // MARK: - Configurations
+    
+    private func configureBorderIfNeeded() {
+        
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        contentView.layer.borderWidth = isDarkMode ? 1 : 0
+        contentView.layer.borderColor = UIColor.separator.cgColor
+    }
     
     private func configureUI() {
         
+        configureBorderIfNeeded()
         layer.cornerRadius = cornerRadius
         backgroundColor = UIColor(collection: .backgroundElevated)
         
@@ -74,15 +89,15 @@ class ItemCell: UICollectionViewCell {
         itemImage.topAnchor.constraint(greaterThanOrEqualTo: nameLabel.bottomAnchor, constant: spacing).activate()
     }
     
-    func configure(name: String, imageURL: String, isCompleted: Bool) {
+    func configure(name: String, imageURL: String, imageURLDark: String, isCompleted: Bool) {
         
         nameLabel.text = name
         
-        if let imageURL = URL(string: imageURL) {
+        if let imageURL = traitCollection.userInterfaceStyle == .dark ? URL(string: imageURLDark) : URL(string: imageURL) {
             itemImage.kf.indicatorType = .custom(indicator: CustomIndicator())
             itemImage.kf.setImage(with: imageURL)
         }
-
+        
         contentView.alpha = isCompleted ? 0.6 : 1.0
     }
 }
