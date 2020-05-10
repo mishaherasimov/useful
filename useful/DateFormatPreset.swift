@@ -14,6 +14,7 @@ enum DateFormatPreset {
 
         case monthYear = "MMMM yyyy"
         case day = "EE"
+        case weekDay = "MMM dd"
     }
 
     case system(dateStyle: DateFormatter.Style, timeStyle: DateFormatter.Style, timeZone: TimeZone?)

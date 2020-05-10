@@ -14,7 +14,10 @@ enum LifeStyleSection {
     var headerInfo: (title: String, annotation: String) {
         switch self {
         case .ongoing:
-            return ("Mar 8 - Mar 14", "Current week")
+            guard let endOfweek = Date().endOfWeek?.formatted(as: .custom(style: .weekDay, timeZone: .current)),
+                  let startOfweek = Date().startOfWeek?.formatted(as: .custom(style: .weekDay, timeZone: .current)) else { return (.empty, .empty)}
+            let weekInfo = String(format: "%@ - %@", startOfweek, endOfweek)
+            return (weekInfo, "Current week")
         case .completed:
             return ("Completed items", .empty)
         case .search:

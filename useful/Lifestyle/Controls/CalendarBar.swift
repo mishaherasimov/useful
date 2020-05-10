@@ -185,7 +185,7 @@ extension CalendarBar {
         let calendar = Calendar.current
         let currentDate = Date()
         
-        if let firstDate = calendar.firstMonthDay(based: currentDate) {
+        if let firstDate = currentDate.startOfMonth {
             
             // Get the short name of the first day of the month. e.g. "Mon"
             let weekDay = firstDate.formatted(as: .custom(style: .day, timeZone: .current))
