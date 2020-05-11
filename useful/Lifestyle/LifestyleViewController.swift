@@ -304,7 +304,7 @@ extension LifestyleViewController {
             if isLast, content.section == .ongoing {
                 
                 let cell: SuggestedItemsCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.configure(items: 6)
+                cell.configure(items: Int.random(in: 2..<10))
                 return cell
             } else {
                 
