@@ -24,6 +24,13 @@ The set of features include:
 
 ### The demo screenshots
 
+<table>
+ <tr>
+    <td>
+      <img src="demo/image_3.png"/>
+    </td>
+ </tr>
+</table>
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 1rem;">
     <img src="demo/image_3.png" witdh="750" style="grid-column: span 3">
     <img src="demo/image_0.png" width="250">
