@@ -365,8 +365,8 @@ extension LifestyleViewController: CalendarBarDelegate {
     func didSelectWeek(with index: Int, selected date: Date?) {
         guard let date = date else { return }
         
-        presenter.loadItems(isReloading: false, selectedWeek: (index, date))
         calendarAnimator?.closeBar()
+        presenter.loadItems(isReloading: false, selectedWeek: (index, date))
         
         // Reload header info
         var snapshot = dataSource.snapshot()

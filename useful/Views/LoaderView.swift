@@ -13,9 +13,12 @@ class LoaderView: UIView {
     
     static let shared = LoaderView()
     
+    private let darkAnimation = Animation.named("loading-dark")
+    private let lightAnimation = Animation.named("loading")
+    
     private var sideConstraints: [NSLayoutConstraint] = []
     private let indicator: AnimationView = {
-        let view = AnimationView(name: UITraitCollection.current.userInterfaceStyle == .dark ? "loading-dark" : "loading")
+        let view = AnimationView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.loopMode = .loop
         return view
@@ -50,6 +53,7 @@ class LoaderView: UIView {
         let outerConstraints = NSLayoutConstraint.snap(self, to: view, for: [.left, .right, .bottom])
         let topConstraint = topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).activate()
         sideConstraints = Array(outerConstraints.values) + [topConstraint]
+        indicator.animation = UITraitCollection.current.userInterfaceStyle == .dark ? darkAnimation : lightAnimation
         indicator.play()
     }
     
