@@ -8,7 +8,7 @@ The current application is the implementation of the design prepared for the uni
 
 ## Purpose
 
-The purpose of the application - to create a tool for people that would help to reduce waste. In the full design version, the application has four tabs: _challanges_, _groups_, _lifestyle_ and _personal impact_. Each of them has a specific purpose in helping to reach a zero-waste lifestyle.
+The purpose of the application - to create a tool for people that would help to reduce waste. In the full design version, the application has four tabs: _challanges_, _activities_, _lifestyle_ and _personal impact_. Each of them has a specific purpose in helping to reach a zero-waste lifestyle.
 
 ## Demo
 
@@ -24,11 +24,11 @@ The set of features include:
 
 ### The demo screenshots
 
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 1rem">
-    <img src="demo/image_3.png" style="grid-column: span 3">
-    <img src="demo/image_0.png">
-    <img src="demo/image_1.png">
-    <img src="demo/image_2.png">
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 1rem;">
+    <img src="demo/image_3.png" witdh="750" style="grid-column: span 3">
+    <img src="demo/image_0.png" width="250">
+    <img src="demo/image_1.png" width="250">
+    <img src="demo/image_2.png" width="250">
 </div>
 
 ### Libraries
