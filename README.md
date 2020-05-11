@@ -33,7 +33,7 @@ The set of features include:
 To consume external libraries I used Swift Package Manager.
 
 - [Kingfisher](https://github.com/onevcat/Kingfisher) - helps in asynchronous loading and managing of images
-- [Lottie](https://airbnb.design/lottie/) - simplifies the creation of complex animations buy running exported projects from Adobe After Effect
+- [Lottie](https://airbnb.design/lottie/) - simplifies the creation of complex animations by running exported projects from Adobe After Effect
 
 ## About
 
