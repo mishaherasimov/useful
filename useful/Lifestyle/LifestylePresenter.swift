@@ -42,29 +42,31 @@ class LifestylePresenter: LifestyleViewPresenter {
     func loadItems(isReloading: Bool, selectedWeek: (week: Int, date: Date)?) {
         
         currentWeek = selectedWeek ?? currentWeek
+        guard let week = currentWeek?.week else { return }
         
         let type: LoadingType = isReloading ? .fullReload : .loadNew
         
         loadInfo = (.willLoad, type)
         loadInfo = (.isLoading, type)
         
-        APIClient().getDisposableItems { [weak self] response in
+        APIClient().getDisposableItems(week: week) { [weak self] response in
             
             guard let self = self else { return }
             
-            guard let items = response.value else {
+            guard let values = response.value else {
                 
                 self.loadInfo = (.failLoading, type)
                 return
             }
             
+            let items = Array(values.values)
             let completed = items.filter { $0.isCompleted == true }
             var active = items.filter { $0.isCompleted != true }
             
             // Add empty item to include suggestion item
-            active.append(DisposableItem())
+            if !active.isEmpty { active.append(DisposableItem()) }
             
-            self.originalItems = [active, completed]
+            self.originalItems = [active, completed].filter { !$0.isEmpty }
             self.loadInfo = (.didLoad, type)
         }
     }
@@ -75,11 +77,13 @@ class LifestylePresenter: LifestyleViewPresenter {
         
         guard let query = query, !query.isEmpty else {
             let sections: [LifeStyleSection] = [.ongoing, .completed]
-            disposableItems = originalItems.count == 2 ? Array(zip(sections, originalItems)) : []
+            let subsections = Array(sections[0..<originalItems.indices.upperBound])
+            
+            disposableItems = !originalItems.isEmpty ? Array(zip(subsections, originalItems)) : []
             return
         }
         
-        let items = originalItems.flatMap({ $0 })
+        let items = originalItems.flatMap { $0 }
         let filteredItems = items.filter { $0.name.lowercased().contains(query.lowercased()) }
         disposableItems = !filteredItems.isEmpty ? [(.search, filteredItems)] : []
     }

@@ -8,10 +8,12 @@
 
 import Foundation
 
-struct GetDisposableItemsCall {}
+struct GetDisposableItemsCall {
+    let week: Int
+}
 
 extension GetDisposableItemsCall: APIParser {
-    typealias DecodableType = [DisposableItem]
+    typealias DecodableType = [String: DisposableItem]
 }
 
 extension GetDisposableItemsCall: APIRequest {
@@ -23,12 +25,16 @@ extension GetDisposableItemsCall: APIRequest {
     var url: URL {
         return formatPath(format: "disposables.json")
     }
+    
+    var parameters: [String: Any]? {
+        return ["orderBy": "\"week\"", "equalTo": week]
+    }
 }
 
 extension APIClient {
 
-    func getDisposableItems(_ completion: @escaping (APIResponse<[DisposableItem]>) -> Void) {
-        let call = GetDisposableItemsCall()
+    func getDisposableItems(week: Int, _ completion: @escaping (APIResponse<[String: DisposableItem]>) -> Void) {
+        let call = GetDisposableItemsCall(week: week)
 
         sessionManager.data(call) { response in
             self.handleResponse(call, response: response, completionHandler: completion)
