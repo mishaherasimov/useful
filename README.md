@@ -8,7 +8,7 @@ The current application is the implementation of the design prepared for the uni
 
 ## Purpose
 
-The purpose of the application - to create a tool for people that would help to reduce waste. In the full design version, the application has four tabs: _challanges_, _activities_, _lifestyle_ and _personal impact_. Each of them has a specific purpose in helping to reach a zero-waste lifestyle.
+The purpose of the application - to create a tool for people that would help to reduce waste. In the full design version, the application has four tabs: _challenges_, _activities_, _lifestyle_ and _personal impact_. Each of them has a specific purpose in helping to reach a zero-waste lifestyle.
 
 ## Demo
 
