@@ -59,7 +59,7 @@ class LifestylePresenter: LifestyleViewPresenter {
                 return
             }
             
-            let items = Array(values.values)
+            let items = values.sorted { $0.key > $1.key }.map { $0.value }
             let completed = items.filter { $0.isCompleted == true }
             var active = items.filter { $0.isCompleted != true }
             
