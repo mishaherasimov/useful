@@ -24,9 +24,9 @@ The set of features include:
 
 ### The demo screenshots
 
-| Splash              | Main                  | Calendar              |
-|:-------------------:|:---------------------:|:---------------------:|
-![](demo/image_0.png) |  ![](demo/image_1.png)|  ![](demo/image_2.png)|
+| Splash              | Main                  | Calendar              | Dark mode             |
+|:-------------------:|:---------------------:|:---------------------:|:---------------------:|
+![](demo/image_0.png) |![](demo/image_1.png)  |![](demo/image_2.png)  |![](demo/image_3.png)  |
 
 ### Libraries
 
