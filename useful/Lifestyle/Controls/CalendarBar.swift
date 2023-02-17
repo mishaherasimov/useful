@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CalendarBarDelegate: class {
+protocol CalendarBarDelegate: AnyObject {
     func didSelectWeek(with index: Int, selected date: Date?)
 }
 

@@ -12,8 +12,8 @@ import UIKit
 
 struct CustomIndicator: Indicator {
     
-    let indicator: AnimationView = {
-        let view = AnimationView(name: UITraitCollection.current.userInterfaceStyle == .dark ? "image-loading-dark" : "image-loading")
+    let indicator: LottieAnimationView = {
+        let view = LottieAnimationView(name: UITraitCollection.current.userInterfaceStyle == .dark ? "image-loading-dark" : "image-loading")
         view.loopMode = .loop
         return view
     }()

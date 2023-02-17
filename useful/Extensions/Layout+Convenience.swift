@@ -36,23 +36,6 @@ extension NSLayoutConstraint {
         case right(priority: UILayoutPriority)
 
         static let allCases: [Side] = [.top, .bottom, .left, .right]
-        
-        func hash(into hasher: inout Hasher) {
-            guard let index = Side.allCases.firstIndex(of: self) else { return }
-            hasher.combine(index)
-        }
-        
-        static func == (lhs: Side, rhs: Side) -> Bool {
-            switch (lhs, rhs) {
-            case let (.top(lhsPriority), .top(rhsPriority)),
-                 let (.bottom(lhsPriority), .bottom(rhsPriority)),
-                 let (.left(lhsPriority), .left(rhsPriority)),
-                 let (.right(lhsPriority), .right(rhsPriority)):
-                return lhsPriority == rhsPriority
-            default:
-                return false
-            }
-        }
     }
 
     enum PriorityAxis {

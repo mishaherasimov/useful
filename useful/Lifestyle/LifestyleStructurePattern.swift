@@ -24,7 +24,7 @@ protocol LifestyleViewPresenter {
     func filterDisposableItems(query: String?)
 }
 
-protocol LifestyleView: class {
+protocol LifestyleView: AnyObject {
     
     func loadingDisposableItems(with info: LoadInfo)
     func refreshDisposableItems(animatingDifferences: Bool)

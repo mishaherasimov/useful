@@ -13,12 +13,12 @@ class LoaderView: UIView {
     
     static let shared = LoaderView()
     
-    private let darkAnimation = Animation.named("loading-dark")
-    private let lightAnimation = Animation.named("loading")
+    private let darkAnimation = LottieAnimation.named("loading-dark")
+    private let lightAnimation = LottieAnimation.named("loading")
     
     private var sideConstraints: [NSLayoutConstraint] = []
-    private let indicator: AnimationView = {
-        let view = AnimationView()
+    private let indicator: LottieAnimationView = {
+        let view = LottieAnimationView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.loopMode = .loop
         return view
