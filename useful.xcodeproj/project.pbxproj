@@ -55,6 +55,7 @@
 		84FECEF72458A50500E3D5E6 /* LifestyleStructurePattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF62458A50500E3D5E6 /* LifestyleStructurePattern.swift */; };
 		84FECEF92458A56700E3D5E6 /* LifestylePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */; };
 		84FECF002459F53200E3D5E6 /* CalendarBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */; };
+		92769963299F308300EA4EF3 /* mutate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92769962299F308300EA4EF3 /* mutate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +119,7 @@
 		84FECEF62458A50500E3D5E6 /* LifestyleStructurePattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestyleStructurePattern.swift; sourceTree = "<group>"; };
 		84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestylePresenter.swift; sourceTree = "<group>"; };
 		84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBar.swift; sourceTree = "<group>"; };
+		92769962299F308300EA4EF3 /* mutate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mutate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +245,7 @@
 		84FECED92457930B00E3D5E6 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				92769961299F306D00EA4EF3 /* FreeFunctions */,
 				84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */,
 				84BB0CEF245A257300D080D5 /* DateFormatPreset.swift */,
 				840AF25124611B1D0062DBF9 /* LoadingInfo.swift */,
@@ -306,6 +309,14 @@
 				84519D83245D5C6D000ABC2D /* CalendarAnimator.swift */,
 			);
 			path = Controls;
+			sourceTree = "<group>";
+		};
+		92769961299F306D00EA4EF3 /* FreeFunctions */ = {
+			isa = PBXGroup;
+			children = (
+				92769962299F308300EA4EF3 /* mutate.swift */,
+			);
+			path = FreeFunctions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -459,6 +470,7 @@
 				840AF246246106530062DBF9 /* APIRequest.swift in Sources */,
 				8433FD49245635E400C301D3 /* SceneDelegate.swift in Sources */,
 				840AF25D246131F80062DBF9 /* CustomIndicator.swift in Sources */,
+				92769963299F308300EA4EF3 /* mutate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,13 @@
+//
+//  mutate.swift
+//  useful
+//
+//  Created by Mykhailo Herasimov on 2023-02-16.
+//  Copyright © 2023 Mykhailo Herasimov. All rights reserved.
+//
+
+@discardableResult
+func mutate<T>(_ value: T, _ modifier: (T) -> ()) -> T {
+    modifier(value)
+    return value
+}

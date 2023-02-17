@@ -15,14 +15,15 @@ class CustomNavigationController: UINavigationController {
         
         navigationBar.prefersLargeTitles = true
         
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithTransparentBackground()
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBarAppearance.backgroundColor = UIColor(collection: .primary)
-        
-        navigationBar.standardAppearance = navBarAppearance
-        navigationBar.scrollEdgeAppearance = navBarAppearance
+        mutate(UINavigationBarAppearance()) {
+            $0.configureWithTransparentBackground()
+            $0.titleTextAttributes = [.foregroundColor: UIColor.white]
+            $0.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            $0.backgroundColor = UIColor(collection: .primary)
+            
+            navigationBar.standardAppearance = $0
+            navigationBar.scrollEdgeAppearance = $0
+        }
     }
     
     override var childForStatusBarStyle: UIViewController? {

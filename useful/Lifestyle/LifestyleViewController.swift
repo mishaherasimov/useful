@@ -35,25 +35,20 @@ class LifestyleViewController: UIViewController {
     private lazy var eventView: EventView = EventView(contentVerticalInset: contentTopInset)
     private var eventViewConstraints: [NSLayoutConstraint] = []
     
-    private lazy var refreshControl: UIRefreshControl = {
-        let control = UIRefreshControl()
-        control.tintColor = .white
-        control.addTarget(self, action: #selector(refreshItems(_:)), for: .valueChanged)
-        return control
-    }()
+    private lazy var refreshControl: UIRefreshControl = mutate(UIRefreshControl()) {
+        $0.tintColor = .white
+        $0.addTarget(self, action: #selector(refreshItems(_:)), for: .valueChanged)
+    }
     
-    private lazy var collectionView: UICollectionView = {
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        collectionView.contentInset.top = self.contentTopInset
-        collectionView.refreshControl = self.refreshControl
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(ItemCell.self)
-        collectionView.register(SuggestedItemsCell.self)
-        collectionView.register(TitleSupplementaryView.self, kind: .header)
-        collectionView.backgroundColor = UIColor(collection: .background)
-        return collectionView
-    }()
+    private lazy var collectionView: UICollectionView = mutate(UICollectionView(frame: .zero, collectionViewLayout: createLayout())) {
+        $0.contentInset.top = self.contentTopInset
+        $0.refreshControl = self.refreshControl
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.register(ItemCell.self)
+        $0.register(SuggestedItemsCell.self)
+        $0.register(TitleSupplementaryView.self, kind: .header)
+        $0.backgroundColor = UIColor(collection: .background)
+    }
     
     
     // -- Collection view and related view --
@@ -191,25 +186,25 @@ extension LifestyleViewController {
     }
     
     func configureSearchBar() {
-        
-        let searchBar = searchController.searchBar
-        searchBar.searchTextField.textColor = .white
-        searchBar.searchTextField.backgroundColor = UIColor.white.withAlphaComponent(0.12)
-        searchBar.tintColor = .white
-        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search items", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.6)])
-        
-        let searchGlyph = searchBar.searchTextField.leftView as? UIImageView
-        searchGlyph?.image = searchGlyph?.image?.withRenderingMode(.alwaysTemplate)
-        searchGlyph?.tintColor = .white
-        
-        if let clearButton = searchBar.searchTextField.value(forKey: "clearButton") as? UIButton {
+        mutate(searchController.searchBar) {
+            $0.searchTextField.textColor = .white
+            $0.searchTextField.backgroundColor = UIColor.white.withAlphaComponent(0.12)
+            $0.tintColor = .white
+            $0.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search items", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.6)])
             
-            clearButton.imageView?.tintColor = .white
+            mutate($0.searchTextField.leftView as? UIImageView) { searchGlyph in
+                searchGlyph?.image = searchGlyph?.image?.withRenderingMode(.alwaysTemplate)
+                searchGlyph?.tintColor = .white
+            }
             
-            let configuration = UIImage.SymbolConfiguration(scale: .medium)
-            let clearGlyph = UIImage(systemName: "xmark.circle.fill", withConfiguration: configuration)
-            
-            clearButton.setImage(clearGlyph?.withRenderingMode(.alwaysTemplate), for: .normal)
+            ($0.searchTextField.value(forKey: "clearButton") as? UIButton).map { clearButton in
+                clearButton.imageView?.tintColor = .white
+                
+                let configuration = UIImage.SymbolConfiguration(scale: .medium)
+                let clearGlyph = UIImage(systemName: "xmark.circle.fill", withConfiguration: configuration)
+                
+                clearButton.setImage(clearGlyph?.withRenderingMode(.alwaysTemplate), for: .normal)
+            }
         }
     }
     
