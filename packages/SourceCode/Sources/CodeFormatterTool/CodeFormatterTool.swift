@@ -46,7 +46,7 @@ struct CodeFormatterTool: ParsableCommand {
         try swiftLint.run()
         swiftLint.waitUntilExit()
 
-        if log == true {
+        if log {
             log(swiftFormat.shellCommand)
             log(swiftLint.shellCommand)
             log("SwiftFormat ended with exit code \(swiftFormat.terminationStatus)")
@@ -96,8 +96,6 @@ struct CodeFormatterTool: ParsableCommand {
     }()
 
     private lazy var swiftLint: Process = {
-        print(swiftLintConfig)
-        print(swiftFormatConfig)
         var arguments = directories + [
             "--config", swiftLintConfig,
             // Required for SwiftLint to emit a non-zero exit code on lint failure
