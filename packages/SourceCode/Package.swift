@@ -17,9 +17,7 @@ let package = Package(
         .plugin(
             name: "usefulFormat",
             capability: .command(
-                intent: .custom(
-                    verb: "format",
-                    description: "Formats Swift source files according to the Airbnb Swift Style Guide"),
+                intent: .sourceCodeFormatting(),
                 permissions: [
                     .writeToPackageDirectory(reason: "Format Swift source files"),
                 ]),
