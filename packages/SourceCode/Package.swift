@@ -19,7 +19,6 @@ let package = Package(
             capability: .buildTool(),
             dependencies: [
                 "SwiftLintBinary",
-//                "CodeFormatterTool",
             ]),
         .plugin(
             name: "usefulFormat",
@@ -37,10 +36,6 @@ let package = Package(
             name: "CodeFormatterTool",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-            ],
-            resources: [
-                .process("Resources/useful.swiftformat"),
-                .process("Resources/swiftlint.yml"),
             ]),
         .binaryTarget(
             name: "SwiftFormat",
