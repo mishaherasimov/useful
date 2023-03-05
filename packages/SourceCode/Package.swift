@@ -19,6 +19,7 @@ let package = Package(
             capability: .buildTool(),
             dependencies: [
                 "SwiftLintBinary",
+                "PluginSupport"
             ]),
         .plugin(
             name: "usefulFormat",
@@ -28,15 +29,17 @@ let package = Package(
                     .writeToPackageDirectory(reason: "Format Swift source files"),
                 ]),
             dependencies: [
-                "CodeFormatterTool",
+                "SourceCodeTool",
                 "SwiftFormat",
                 "SwiftLintBinary",
             ]),
         .executableTarget(
-            name: "CodeFormatterTool",
+            name: "SourceCodeTool",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                "PluginSupport"
             ]),
+        .target(name: "PluginSupport"),
         .binaryTarget(
             name: "SwiftFormat",
             url: "https://github.com/calda/SwiftFormat/releases/download/0.51-beta-6/SwiftFormat.artifactbundle.zip",

@@ -29,7 +29,7 @@ struct usefulFormatPlugin {
             })
         }
 
-        let launchPath = try context.tool(named: "CodeFormatterTool").path.string
+        let launchPath = try context.tool(named: "SourceCodeTool").path.string
 
         let arguments = inputPaths + [
             "--swift-lint-config",
