@@ -31,10 +31,10 @@ struct CodeFormatterTool: ParsableCommand {
     var log = false
 
     @Option(help: "The absolute path to the SwiftFormat config file")
-    var swiftFormatConfig = Bundle.module.path(forResource: "useful", ofType: "swiftformat")!
+    var swiftFormatConfig: String
 
     @Option(help: "The absolute path to the SwiftLint config file")
-    var swiftLintConfig = Bundle.module.path(forResource: "swiftlint", ofType: "yml")!
+    var swiftLintConfig: String
 
     @Option(help: "The project's minimum Swift version")
     var swiftVersion: String?
@@ -44,47 +44,6 @@ struct CodeFormatterTool: ParsableCommand {
             try runLinter()
         } else {
             try runLinterAndFormatter()
-        }
-    }
-
-    private mutating func runLinter() throws {
-        try swiftLint.run()
-        swiftLint.waitUntilExit()
-
-        if log {
-            log(swiftLint.shellCommand)
-            log("SwiftLint ended with exit code \(swiftLint.terminationStatus)")
-        }
-    }
-
-    private mutating func runLinterAndFormatter() throws {
-        try swiftFormat.run()
-        swiftFormat.waitUntilExit()
-
-        try swiftLint.run()
-        swiftLint.waitUntilExit()
-
-        if log {
-            log(swiftFormat.shellCommand)
-            log(swiftLint.shellCommand)
-            log("SwiftFormat ended with exit code \(swiftFormat.terminationStatus)")
-            log("SwiftLint ended with exit code \(swiftLint.terminationStatus)")
-        }
-
-        if
-            swiftFormat.terminationStatus == SwiftFormatExitCode.lintFailure ||
-            swiftLint.terminationStatus == SwiftLintExitCode.lintFailure
-        {
-            throw ExitCode.failure
-        }
-
-        // Any other non-success exit code is an unknown failure
-        if swiftFormat.terminationStatus != EXIT_SUCCESS {
-            throw ExitCode(swiftFormat.terminationStatus)
-        }
-
-        if swiftLint.terminationStatus != EXIT_SUCCESS {
-            throw ExitCode(swiftLint.terminationStatus)
         }
     }
 
@@ -136,9 +95,50 @@ struct CodeFormatterTool: ParsableCommand {
         return swiftLint
     }()
 
+    private mutating func runLinter() throws {
+        try swiftLint.run()
+        swiftLint.waitUntilExit()
+
+        if log {
+            log(swiftLint.shellCommand)
+            log("SwiftLint ended with exit code \(swiftLint.terminationStatus)")
+        }
+    }
+
+    private mutating func runLinterAndFormatter() throws {
+        try swiftFormat.run()
+        swiftFormat.waitUntilExit()
+
+        try swiftLint.run()
+        swiftLint.waitUntilExit()
+
+        if log {
+            log(swiftFormat.shellCommand)
+            log(swiftLint.shellCommand)
+            log("SwiftFormat ended with exit code \(swiftFormat.terminationStatus)")
+            log("SwiftLint ended with exit code \(swiftLint.terminationStatus)")
+        }
+
+        if
+            swiftFormat.terminationStatus == SwiftFormatExitCode.lintFailure ||
+            swiftLint.terminationStatus == SwiftLintExitCode.lintFailure
+        {
+            throw ExitCode.failure
+        }
+
+        // Any other non-success exit code is an unknown failure
+        if swiftFormat.terminationStatus != EXIT_SUCCESS {
+            throw ExitCode(swiftFormat.terminationStatus)
+        }
+
+        if swiftLint.terminationStatus != EXIT_SUCCESS {
+            throw ExitCode(swiftLint.terminationStatus)
+        }
+    }
+
     private func log(_ string: String) {
         // swiftlint:disable:next no_direct_standard_out_logs
-        print("[AibnbSwiftFormatTool]", string)
+        print("[CodeFormatterTool]", string)
     }
 
 }

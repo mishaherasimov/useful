@@ -32,6 +32,10 @@ struct usefulFormatPlugin {
         let launchPath = try context.tool(named: "CodeFormatterTool").path.string
 
         let arguments = inputPaths + [
+            "--swift-lint-config",
+            context.pluginWorkDirectory.firstLintConfigurationFileInParentDirectories()?.string ?? "",
+            "--swift-format-config",
+            context.pluginWorkDirectory.firstFormatConfigurationFileInParentDirectories()?.string ?? "",
             "--swift-format-path",
             try context.tool(named: "swiftformat").path.string,
             "--swift-lint-path",
@@ -166,4 +170,64 @@ extension usefulFormatPlugin: XcodeCommandPlugin {
 enum CommandError: Error {
     case lintFailure
     case unknownError(exitCode: Int32)
+}
+
+extension Path {
+
+    // MARK: Internal
+
+    /// Scans the receiver, then all of its parents looking for a configuration file with the name ".swiftlint.yml".
+    ///
+    /// - returns: Path to the configuration file, or nil if one cannot be found.
+    func firstLintConfigurationFileInParentDirectories() -> Path? {
+        let defaultConfigurationFileName = ".swiftlint.yml"
+        let proposedDirectory = sequence(
+            first: self,
+            next: { path in
+                guard path.stem.count > 1 else {
+                    // Check we're not at the root of this filesystem, as `removingLastComponent()`
+                    // will continually return the root from itself.
+                    return nil
+                }
+
+                return path.removingLastComponent()
+            }).first { path in
+            let potentialConfigurationFile = path.appending(subpath: defaultConfigurationFileName)
+            return potentialConfigurationFile.isAccessible()
+        }
+        return proposedDirectory?.appending(subpath: defaultConfigurationFileName)
+    }
+
+    /// Scans the receiver, then all of its parents looking for a configuration file with the name ".swiftlint.yml".
+    ///
+    /// - returns: Path to the configuration file, or nil if one cannot be found.
+    func firstFormatConfigurationFileInParentDirectories() -> Path? {
+        let defaultConfigurationFileName = ".swiftformat"
+        let proposedDirectory = sequence(
+            first: self,
+            next: { path in
+                guard path.stem.count > 1 else {
+                    // Check we're not at the root of this filesystem, as `removingLastComponent()`
+                    // will continually return the root from itself.
+                    return nil
+                }
+
+                return path.removingLastComponent()
+            }).first { path in
+            let potentialConfigurationFile = path.appending(subpath: defaultConfigurationFileName)
+            return potentialConfigurationFile.isAccessible()
+        }
+        return proposedDirectory?.appending(subpath: defaultConfigurationFileName)
+    }
+
+    // MARK: Private
+
+    /// Safe way to check if the file is accessible from within the current process sandbox.
+    private func isAccessible() -> Bool {
+        let result = string.withCString { pointer in
+            access(pointer, R_OK)
+        }
+
+        return result == 0
+    }
 }
