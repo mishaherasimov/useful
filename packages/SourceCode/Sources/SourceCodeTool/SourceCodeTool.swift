@@ -29,7 +29,7 @@ struct SourceCodeTool: ParsableCommand {
     private lazy var formatOptions: [SwiftFormatOption] = [
         .config(swiftFormatConfig),
         .cachePath(swiftFormatCachePath),
-        .version(swiftVersion)
+        .version(swiftVersion),
     ]
     .appending(.lint, condition: lint)
 
@@ -48,7 +48,7 @@ struct SourceCodeTool: ParsableCommand {
         .config(swiftLintConfig),
         .strict,
         .processSourceKit,
-        .cachePath(swiftLintCachePath)
+        .cachePath(swiftLintCachePath),
     ]
     .appending(.fix, condition: !lint)
 
@@ -58,14 +58,12 @@ struct SourceCodeTool: ParsableCommand {
         let linter = Process(
             launchPath: swiftLintPath,
             directories: directories,
-            arguments: lintOptions
-        )
+            arguments: lintOptions)
 
         let formatter = Process(
             launchPath: swiftFormatPath,
             directories: directories,
-            arguments: formatOptions
-        )
+            arguments: formatOptions)
 
         try run(formatter, tool: .formatter)
         try run(linter, tool: .linter)

@@ -19,7 +19,7 @@ let package = Package(
             capability: .buildTool(),
             dependencies: [
                 "SwiftLintBinary",
-                "PluginSupport"
+                "PluginSupport",
             ]),
         .plugin(
             name: "usefulFormat",
@@ -37,7 +37,7 @@ let package = Package(
             name: "SourceCodeTool",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                "PluginSupport"
+                "PluginSupport",
             ]),
         .target(name: "PluginSupport"),
         .binaryTarget(

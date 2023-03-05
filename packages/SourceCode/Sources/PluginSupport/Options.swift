@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - SwiftFormatOption
+
 public enum SwiftFormatOption: OptionConfigurable {
     case config(String?)
     case lint
@@ -13,7 +15,7 @@ public enum SwiftFormatOption: OptionConfigurable {
         case .config(let .some(path)):
             return ["--config", path]
         case .version(let .some(ver)):
-            return ["--version", ver]
+            return ["--swiftversion", ver]
         case .cachePath(let .some(path)):
             return ["--cache", path]
         case .config(.none), .cachePath(.none), .version(.none):
@@ -22,12 +24,16 @@ public enum SwiftFormatOption: OptionConfigurable {
     }
 }
 
+// MARK: - SwiftLintOption
+
 public enum SwiftLintOption: OptionConfigurable {
     case config(String?)
     case strict
     case processSourceKit
     case cachePath(String?)
     case fix
+
+    // MARK: Public
 
     public var arguments: [String] {
         switch self {
@@ -47,13 +53,17 @@ public enum SwiftLintOption: OptionConfigurable {
     }
 }
 
+// MARK: - OptionConfigurable
+
 public protocol OptionConfigurable {
     var arguments: [String] { get }
 }
 
+// MARK: OptionConfigurable
+
 extension [OptionConfigurable]: OptionConfigurable {
     public var arguments: [String] {
-        reduce([], { $0 + $1.arguments })
+        reduce([]) { $0 + $1.arguments }
     }
 }
 
