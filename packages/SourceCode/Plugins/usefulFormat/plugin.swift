@@ -30,7 +30,7 @@ struct usefulFormatPlugin {
         }
 
         let launchPath = try context.tool(named: "CodeFormatterTool").path.string
-        
+
         let arguments = inputPaths + [
             "--swift-format-path",
             try context.tool(named: "swiftformat").path.string,
@@ -42,7 +42,7 @@ struct usefulFormatPlugin {
             "--swift-format-cache-path",
             "\(context.pluginWorkDirectory.string)/swiftformat.cache",
             "--swift-lint-cache-path",
-             "\(context.pluginWorkDirectory.string)/swiftlint.cache",
+            "\(context.pluginWorkDirectory.string)/swiftlint.cache",
         ] + argumentExtractor.remainingArguments
 
         if arguments.contains("--log") {

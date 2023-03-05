@@ -40,10 +40,26 @@ struct CodeFormatterTool: ParsableCommand {
     var swiftVersion: String?
 
     mutating func run() throws {
-        if !lint {
-            try swiftFormat.run()
-            swiftFormat.waitUntilExit()
+        if lint {
+            try runLinter()
+        } else {
+            try runLinterAndFormatter()
         }
+    }
+
+    private mutating func runLinter() throws {
+        try swiftLint.run()
+        swiftLint.waitUntilExit()
+
+        if log {
+            log(swiftLint.shellCommand)
+            log("SwiftLint ended with exit code \(swiftLint.terminationStatus)")
+        }
+    }
+
+    private mutating func runLinterAndFormatter() throws {
+        try swiftFormat.run()
+        swiftFormat.waitUntilExit()
 
         try swiftLint.run()
         swiftLint.waitUntilExit()

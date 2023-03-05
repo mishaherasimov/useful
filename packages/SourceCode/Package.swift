@@ -19,9 +19,8 @@ let package = Package(
             capability: .buildTool(),
             dependencies: [
                 "SwiftLintBinary",
-                "CodeFormatterTool"
-            ]
-        ),
+//                "CodeFormatterTool",
+            ]),
         .plugin(
             name: "usefulFormat",
             capability: .command(
