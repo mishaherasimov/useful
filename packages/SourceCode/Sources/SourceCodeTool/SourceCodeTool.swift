@@ -15,6 +15,9 @@ struct SourceCodeTool: ParsableCommand {
     @Flag(help: "When true, source files are not reformatted")
     var lint = false
 
+    @Flag(help: "When true, log the invocation command and run the result status")
+    var log = false
+
     // MARK: Formatter
 
     @Option(help: "The absolute path to a SwiftFormat binary")
@@ -73,8 +76,10 @@ struct SourceCodeTool: ParsableCommand {
         try process.run()
         process.waitUntilExit()
 
-        log(process.command)
-        log("\(tool.rawValue) ended with exit code \(process.terminationStatus)")
+        if log {
+            log(process.command)
+            log("\(tool.rawValue) ended with exit code \(process.terminationStatus)")
+        }
 
         if SupportExitCode(rawValue: process.terminationStatus) == tool.exitError {
             throw ExitCode.failure
@@ -88,6 +93,6 @@ struct SourceCodeTool: ParsableCommand {
 
     private func log(_ value: String) {
         // swiftlint:disable:next no_direct_standard_out_logs
-        print("[CodeFormatterTool]: ", value)
+        print("[CodeFormatterTool]:", value)
     }
 }
