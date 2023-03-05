@@ -343,7 +343,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				92891A7E29B474A400B1EF2A /* PBXTargetDependency */,
+				92C169DC29B4824B00C2A06D /* PBXTargetDependency */,
 			);
 			name = useful;
 			packageProductDependencies = (
@@ -506,9 +506,9 @@
 			isa = PBXTargetDependency;
 			productRef = 92070EA729B46D9100C440FE /* usefulLint */;
 		};
-		92891A7E29B474A400B1EF2A /* PBXTargetDependency */ = {
+		92C169DC29B4824B00C2A06D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 92891A7D29B474A400B1EF2A /* usefulLint */;
+			productRef = 92C169DB29B4824B00C2A06D /* usefulLint */;
 		};
 /* End PBXTargetDependency section */
 
@@ -786,7 +786,7 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = "plugin:usefulLint";
 		};
-		92891A7D29B474A400B1EF2A /* usefulLint */ = {
+		92C169DB29B4824B00C2A06D /* usefulLint */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "plugin:usefulLint";
 		};
