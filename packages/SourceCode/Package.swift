@@ -4,25 +4,25 @@
 import PackageDescription
 
 let package = Package(
-    name: "sourceCode",
+    name: "SourceCode",
     platforms: [.macOS(.v10_13)],
     products: [
-        .plugin(name: "usefulFormat", targets: ["usefulFormat"]),
-        .plugin(name: "usefulLint", targets: ["usefulLint"]),
+        .plugin(name: "SourceCodeCleaner", targets: ["SourceCodeCleaner"]),
+        .plugin(name: "SourceCodeLinter", targets: ["SourceCodeLinter"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.2"),
     ],
     targets: [
         .plugin(
-            name: "usefulLint",
+            name: "SourceCodeLinter",
             capability: .buildTool(),
             dependencies: [
                 "SwiftLintBinary",
                 "PluginSupport",
             ]),
         .plugin(
-            name: "usefulFormat",
+            name: "SourceCodeCleaner",
             capability: .command(
                 intent: .sourceCodeFormatting(),
                 permissions: [

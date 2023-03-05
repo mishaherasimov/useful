@@ -31,7 +31,9 @@ public enum SwiftLintOption: OptionConfigurable {
     case strict
     case processSourceKit
     case cachePath(String?)
+    case forceExclude
     case fix
+    case quiet
 
     // MARK: Public
 
@@ -49,6 +51,10 @@ public enum SwiftLintOption: OptionConfigurable {
             return ["--cache-path", path]
         case .cachePath(.none), .config(.none):
             return []
+        case .forceExclude:
+            return ["--force-exclude"]
+        case .quiet:
+            return ["--quiet"]
         }
     }
 }

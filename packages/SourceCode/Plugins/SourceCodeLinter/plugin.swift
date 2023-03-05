@@ -67,10 +67,12 @@ struct SwiftLintPlugin: BuildToolPlugin {
         workingDirectory: Path,
         tool: PluginContext.Tool) -> [Command]
     {
-        if inputFiles.isEmpty {
+        guard !inputFiles.isEmpty else {
             // Don't lint anything if there are no Swift source files in this target
             return []
         }
+
+        
 
         var arguments = [
             "lint",
