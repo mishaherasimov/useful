@@ -30,7 +30,7 @@ struct usefulFormatPlugin {
         }
 
         let launchPath = try context.tool(named: "CodeFormatterTool").path.string
-        print(launchPath)
+        
         let arguments = inputPaths + [
             "--swift-format-path",
             try context.tool(named: "swiftformat").path.string,
@@ -40,9 +40,9 @@ struct usefulFormatPlugin {
             // cache file locations, so we pass in our own cache paths from
             // the plugin's work directory.
             "--swift-format-cache-path",
-            context.pluginWorkDirectory.string + "/swiftformat.cache",
+            "\(context.pluginWorkDirectory.string)/swiftformat.cache",
             "--swift-lint-cache-path",
-            context.pluginWorkDirectory.string + "/swiftlint.cache",
+             "\(context.pluginWorkDirectory.string)/swiftlint.cache",
         ] + argumentExtractor.remainingArguments
 
         if arguments.contains("--log") {
@@ -128,9 +128,9 @@ extension usefulFormatPlugin: CommandPlugin {
             includingPropertiesForKeys: nil,
             options: [.skipsHiddenFiles])
 
-        let subdirectories = packageDirectoryContents.filter { $0.hasDirectoryPath }
+        let subdirectories = packageDirectoryContents.filter(\.hasDirectoryPath)
         let rootSwiftFiles = packageDirectoryContents.filter { $0.pathExtension.hasSuffix("swift") }
-        return (subdirectories + rootSwiftFiles).map { $0.path }
+        return (subdirectories + rootSwiftFiles).map(\.path)
     }
 
 }

@@ -8,12 +8,20 @@ let package = Package(
     platforms: [.macOS(.v10_13)],
     products: [
         .plugin(name: "usefulFormat", targets: ["usefulFormat"]),
-        //    .executable(name: "sourceCode", targets: ["CodeFormatterTool"])
+        .plugin(name: "usefulLint", targets: ["usefulLint"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.2"),
     ],
     targets: [
+        .plugin(
+            name: "usefulLint",
+            capability: .buildTool(),
+            dependencies: [
+                "SwiftLintBinary",
+                "CodeFormatterTool"
+            ]
+        ),
         .plugin(
             name: "usefulFormat",
             capability: .command(
@@ -31,11 +39,9 @@ let package = Package(
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ],
-            //              path: "packages/CodeFormatterTool",
-            //              sources: ["main.swift"],
             resources: [
-                .process("useful.swiftformat"),
-                .process("swiftlint.yml"),
+                .process("Resources/useful.swiftformat"),
+                .process("Resources/swiftlint.yml"),
             ]),
         .binaryTarget(
             name: "SwiftFormat",

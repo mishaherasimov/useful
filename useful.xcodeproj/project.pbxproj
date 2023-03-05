@@ -343,6 +343,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				92EF167E29B46371004827D6 /* PBXTargetDependency */,
 			);
 			name = useful;
 			packageProductDependencies = (
@@ -364,6 +365,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				92070EA829B46D9100C440FE /* PBXTargetDependency */,
 				8433FD5B245635E500C301D3 /* PBXTargetDependency */,
 			);
 			name = usefulTests;
@@ -499,6 +501,14 @@
 			isa = PBXTargetDependency;
 			target = 8433FD42245635E400C301D3 /* useful */;
 			targetProxy = 8433FD5A245635E500C301D3 /* PBXContainerItemProxy */;
+		};
+		92070EA829B46D9100C440FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 92070EA729B46D9100C440FE /* usefulLint */;
+		};
+		92EF167E29B46371004827D6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 92EF167D29B46371004827D6 /* usefulLint */;
 		};
 /* End PBXTargetDependency section */
 
@@ -771,6 +781,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 840AF25624612D990062DBF9 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		92070EA729B46D9100C440FE /* usefulLint */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "plugin:usefulLint";
+		};
+		92EF167D29B46371004827D6 /* usefulLint */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "plugin:usefulLint";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

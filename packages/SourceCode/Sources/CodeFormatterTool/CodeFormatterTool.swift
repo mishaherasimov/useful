@@ -40,8 +40,10 @@ struct CodeFormatterTool: ParsableCommand {
     var swiftVersion: String?
 
     mutating func run() throws {
-        try swiftFormat.run()
-        swiftFormat.waitUntilExit()
+        if !lint {
+            try swiftFormat.run()
+            swiftFormat.waitUntilExit()
+        }
 
         try swiftLint.run()
         swiftLint.waitUntilExit()
