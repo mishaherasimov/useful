@@ -19,7 +19,6 @@ let package = Package(
             capability: .buildTool(),
             dependencies: [
                 "SwiftLintBinary",
-                "PluginSupport",
             ]),
         .plugin(
             name: "SourceCodeCleaner",
