@@ -21,6 +21,6 @@ extension Package {
 
         let subdirectories = packageDirectoryContents.filter(\.hasDirectoryPath)
         let rootSwiftFiles = packageDirectoryContents.filter { $0.pathExtension.hasSuffix(swiftExtension) }
-        return (subdirectories + rootSwiftFiles).map(\.path)
+        return subdirectories.appending(rootSwiftFiles).map(\.path)
     }
 }

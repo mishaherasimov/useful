@@ -4,7 +4,7 @@ import PackagePlugin
 import XcodeProjectPlugin
 #endif
 
-let swiftExtension = ".swift"
+let swiftExtension = "swift"
 
 // MARK: - PluginArguments
 
@@ -143,7 +143,7 @@ extension SourceCodeCleaner: CommandPlugin {
             let packageDirectories = try context.package
                 .targets(named: pluginArgs.targets).map(\.directory.string)
 
-            pluginArgs.updateInputPaths(pluginArgs.inputPaths + packageDirectories)
+            pluginArgs.updateInputPaths(pluginArgs.inputPaths.appending(packageDirectories))
         } else if pluginArgs.inputPaths.isEmpty {
             // If no targets or paths listed we default to linting/formatting
             // the entire package directory.
@@ -168,7 +168,7 @@ extension SourceCodeCleaner: XcodeCommandPlugin {
             .filter { inputTargetNames.contains($0.displayName) }
             .flatMap(\.inputFiles)
             .compactMap(\.path.extension)
-            .filter { $0 == "swift" }
+            .filter { $0 == swiftExtension }
 
         pluginArgs.updateInputPaths(Array(inputPaths))
 
