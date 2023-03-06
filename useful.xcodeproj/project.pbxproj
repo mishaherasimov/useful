@@ -343,7 +343,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				92C169DC29B4824B00C2A06D /* PBXTargetDependency */,
+				925DB22F29B54EFA00647D1D /* PBXTargetDependency */,
 			);
 			name = useful;
 			packageProductDependencies = (
@@ -365,7 +365,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				92070EA829B46D9100C440FE /* PBXTargetDependency */,
+				925DB23129B54F0200647D1D /* PBXTargetDependency */,
 				8433FD5B245635E500C301D3 /* PBXTargetDependency */,
 			);
 			name = usefulTests;
@@ -502,13 +502,13 @@
 			target = 8433FD42245635E400C301D3 /* useful */;
 			targetProxy = 8433FD5A245635E500C301D3 /* PBXContainerItemProxy */;
 		};
-		92070EA829B46D9100C440FE /* PBXTargetDependency */ = {
+		925DB22F29B54EFA00647D1D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 92070EA729B46D9100C440FE /* usefulLint */;
+			productRef = 925DB22E29B54EFA00647D1D /* SourceCodeLinter */;
 		};
-		92C169DC29B4824B00C2A06D /* PBXTargetDependency */ = {
+		925DB23129B54F0200647D1D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 92C169DB29B4824B00C2A06D /* usefulLint */;
+			productRef = 925DB23029B54F0200647D1D /* SourceCodeLinter */;
 		};
 /* End PBXTargetDependency section */
 
@@ -782,13 +782,13 @@
 			package = 840AF25624612D990062DBF9 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
-		92070EA729B46D9100C440FE /* usefulLint */ = {
+		925DB22E29B54EFA00647D1D /* SourceCodeLinter */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = "plugin:usefulLint";
+			productName = "plugin:SourceCodeLinter";
 		};
-		92C169DB29B4824B00C2A06D /* usefulLint */ = {
+		925DB23029B54F0200647D1D /* SourceCodeLinter */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = "plugin:usefulLint";
+			productName = "plugin:SourceCodeLinter";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
