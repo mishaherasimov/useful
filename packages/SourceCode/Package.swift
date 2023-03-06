@@ -10,9 +10,6 @@ let package = Package(
         .plugin(name: "SourceCodeCleaner", targets: ["SourceCodeCleaner"]),
         .plugin(name: "SourceCodeLinter", targets: ["SourceCodeLinter"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.2"),
-    ],
     targets: [
         .plugin(
             name: "SourceCodeLinter",
@@ -28,17 +25,9 @@ let package = Package(
                     .writeToPackageDirectory(reason: "Format Swift source files"),
                 ]),
             dependencies: [
-                "SourceCodeTool",
                 "SwiftFormat",
                 "SwiftLintBinary",
             ]),
-        .executableTarget(
-            name: "SourceCodeTool",
-            dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                "PluginSupport",
-            ]),
-        .target(name: "PluginSupport"),
         .binaryTarget(
             name: "SwiftFormat",
             url: "https://github.com/calda/SwiftFormat/releases/download/0.51-beta-6/SwiftFormat.artifactbundle.zip",

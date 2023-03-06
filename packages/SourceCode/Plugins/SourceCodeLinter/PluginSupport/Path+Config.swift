@@ -8,7 +8,7 @@ extension Path {
     /// Scans the receiver, then all of its parents looking for a configuration file with the provided name.
     /// - Parameter file: Configuration file name
     /// - Returns: Path to the configuration file, or nil if one cannot be found.
-    func firstConfigurationFileInParentDirectories(file: String) -> Path? {
+    func firstConfigFileInParentDirectories(for tool: Tool) -> Path? {
         let proposedDirectory = sequence(
             first: self,
             next: { path in
@@ -17,9 +17,9 @@ extension Path {
                 path.stem.count > 1 ? path.removingLastComponent() : nil
             })
             // Check potential configuration file
-            .first { $0.appending(subpath: file).isAccessible() }
+            .first { $0.appending(subpath: tool.configFile).isAccessible() }
 
-        return proposedDirectory?.appending(subpath: file)
+        return proposedDirectory?.appending(subpath: tool.configFile)
     }
 
     // MARK: Private

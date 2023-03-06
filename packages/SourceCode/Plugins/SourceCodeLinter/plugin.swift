@@ -1,13 +1,7 @@
 import Foundation
 import PackagePlugin
 
-// MARK: - Context
-
-private enum Context {
-    static let configFileName = ".swiftlint.yml"
-    static let toolName = "swiftlint"
-    static let fileExtension = "swift"
-}
+private let swiftExtension = "swift"
 
 // MARK: - LinterPlugin
 
@@ -24,7 +18,8 @@ struct LinterPlugin {
             return []
         }
 
-        let configFilePath = packageDirectory.firstConfigurationFileInParentDirectories(file: Context.configFileName)
+        let linter: Tool = .linter
+        let configFilePath = packageDirectory.firstConfigFileInParentDirectories(for: linter)
         let args: [SwiftLintOption] = [
             .quiet,
             .forceExclude,
@@ -37,7 +32,7 @@ struct LinterPlugin {
 
         return [
             .prebuildCommand(
-                displayName: "SwiftLint",
+                displayName: linter.rawValue,
                 executable: tool.path,
                 arguments: (args as [OptionConfigurable]).arguments + inputFiles.map(\.string),
                 outputFilesDirectory: outputFilesDirectory),
@@ -54,10 +49,10 @@ extension LinterPlugin: BuildToolPlugin {
         }
 
         return createBuildCommands(
-            inputFiles: sourceTarget.sourceFiles(withSuffix: Context.fileExtension).map(\.path),
+            inputFiles: sourceTarget.sourceFiles(withSuffix: swiftExtension).map(\.path),
             packageDirectory: context.package.directory,
             workingDirectory: context.pluginWorkDirectory,
-            tool: try context.tool(named: Context.toolName))
+            tool: try context.tool(named: Tool.linter.name))
     }
 }
 
@@ -67,14 +62,14 @@ import XcodeProjectPlugin
 extension LinterPlugin: XcodeBuildToolPlugin {
     func createBuildCommands(context: XcodePluginContext, target: XcodeTarget) throws -> [Command] {
         let inputFilePaths = target.inputFiles
-            .filter { $0.type == .source && $0.path.extension == Context.fileExtension }
+            .filter { $0.type == .source && $0.path.extension == swiftExtension }
             .map(\.path)
 
         return createBuildCommands(
             inputFiles: inputFilePaths,
             packageDirectory: context.xcodeProject.directory,
             workingDirectory: context.pluginWorkDirectory,
-            tool: try context.tool(named: Context.toolName))
+            tool: try context.tool(named: Tool.linter.name))
     }
 }
 #endif

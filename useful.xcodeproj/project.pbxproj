@@ -343,7 +343,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				925DB22F29B54EFA00647D1D /* PBXTargetDependency */,
+				92AECFCF29B5BF9C0088EB38 /* PBXTargetDependency */,
 			);
 			name = useful;
 			packageProductDependencies = (
@@ -365,7 +365,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				925DB23129B54F0200647D1D /* PBXTargetDependency */,
+				92AECFCD29B5BF8B0088EB38 /* PBXTargetDependency */,
 				8433FD5B245635E500C301D3 /* PBXTargetDependency */,
 			);
 			name = usefulTests;
@@ -502,13 +502,13 @@
 			target = 8433FD42245635E400C301D3 /* useful */;
 			targetProxy = 8433FD5A245635E500C301D3 /* PBXContainerItemProxy */;
 		};
-		925DB22F29B54EFA00647D1D /* PBXTargetDependency */ = {
+		92AECFCD29B5BF8B0088EB38 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 925DB22E29B54EFA00647D1D /* SourceCodeLinter */;
+			productRef = 92AECFCC29B5BF8B0088EB38 /* SourceCodeLinter */;
 		};
-		925DB23129B54F0200647D1D /* PBXTargetDependency */ = {
+		92AECFCF29B5BF9C0088EB38 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 925DB23029B54F0200647D1D /* SourceCodeLinter */;
+			productRef = 92AECFCE29B5BF9C0088EB38 /* SourceCodeLinter */;
 		};
 /* End PBXTargetDependency section */
 
@@ -782,11 +782,11 @@
 			package = 840AF25624612D990062DBF9 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
-		925DB22E29B54EFA00647D1D /* SourceCodeLinter */ = {
+		92AECFCC29B5BF8B0088EB38 /* SourceCodeLinter */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "plugin:SourceCodeLinter";
 		};
-		925DB23029B54F0200647D1D /* SourceCodeLinter */ = {
+		92AECFCE29B5BF9C0088EB38 /* SourceCodeLinter */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "plugin:SourceCodeLinter";
 		};
