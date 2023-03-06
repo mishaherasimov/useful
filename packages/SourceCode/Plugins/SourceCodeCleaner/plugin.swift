@@ -4,166 +4,175 @@ import PackagePlugin
 import XcodeProjectPlugin
 #endif
 
+let swiftExtension = ".swift"
+
+// MARK: - PluginArguments
+
+struct PluginArguments {
+
+    // MARK: Lifecycle
+
+    init(_ args: [String], packageVersion: PackagePlugin.ToolsVersion? = nil) {
+        var extractor = ArgumentExtractor(args)
+        inputPaths = extractor.extractOption(named: "paths")
+        targets = extractor.extractOption(named: "target")
+        isLogEnabled = extractor.extractFlag(named: "log") > 0
+        excludedPaths = extractor.extractOption(named: "exclude")
+        isLintMode = extractor.extractFlag(named: "lint") > 0
+
+        let version = packageVersion.map { "\($0.major).\($0.minor)" }
+        swiftVersion = extractor.extractOption(named: "swift-version").last ?? version
+        remainingArguments = extractor.remainingArguments
+    }
+
+    // MARK: Internal
+
+    /// `--log` flag to log events in the plugin
+    let isLogEnabled: Bool
+
+    /// `--exclude` option with list of paths to exclude
+    let excludedPaths: [String]
+
+    /// `--lint` flag
+    let isLintMode: Bool
+
+    /// `--paths` option.
+    /// If given, format only the paths passed to `--paths`
+    var inputPaths: [String]
+
+    /// `--target` option.
+    /// When ran from Xcode, the plugin command is invoked with `--target` arguments,
+    /// specifying the targets selected in the plugin dialog.
+    let targets: [String]
+
+    /// `--swift-version` option.
+    /// When running on a SPM package we infer the minimum Swift version from the
+    /// `swift-tools-version` in `Package.swift` by default if the user doesn't specify one manually
+    let swiftVersion: String?
+
+    /// Remaining arguments that were not processed by the initializer
+    let remainingArguments: [String]
+
+    mutating func updateInputPaths(_ values: [String]) {
+        inputPaths = values
+    }
+}
+
+// MARK: - SourceCodeCleaner
 
 @main
-struct SourceCodeCleaner {
+final class SourceCodeCleaner {
 
-    /// Calls the `usefulFormatTool` executable with the given arguments
-    func performCommand(
-        context: CommandContext,
-        inputPaths: [String],
-        arguments: [String])
-        throws
-    {
-        var argumentExtractor = ArgumentExtractor(arguments)
+    // MARK: Internal
 
-        // Filter out any excluded paths passed in with `--exclude`
-        let excludedPaths = argumentExtractor.extractOption(named: "exclude")
-        let inputPaths = inputPaths.filter { path in
-            !excludedPaths.contains(where: { excludedPath in
-                path.hasSuffix(excludedPath)
-            })
+    var pluginArgs: PluginArguments! = nil
+
+    func performCommand(context: CommandContext) throws {
+        let filteredPaths = pluginArgs.inputPaths.filter { path in
+            !pluginArgs.excludedPaths.contains(where: { path.hasSuffix($0) })
         }
 
-        let launchPath = try context.tool(named: "SourceCodeTool").path.string
+        pluginArgs.updateInputPaths(filteredPaths)
 
-        let arguments = inputPaths + [
-            "--swift-lint-config",
-            context.pluginWorkDirectory.firstLintConfigurationFileInParentDirectories()?.string ?? "",
-            "--swift-format-config",
-            context.pluginWorkDirectory.firstFormatConfigurationFileInParentDirectories()?.string ?? "",
-            "--swift-format-path",
-            try context.tool(named: "swiftformat").path.string,
-            "--swift-lint-path",
-            try context.tool(named: "swiftlint").path.string,
-            // The process we spawn doesn't have read/write access to the default
-            // cache file locations, so we pass in our own cache paths from
-            // the plugin's work directory.
-            "--swift-format-cache-path",
-            "\(context.pluginWorkDirectory.string)/swiftformat.cache",
-            "--swift-lint-cache-path",
-            "\(context.pluginWorkDirectory.string)/swiftlint.cache",
-        ] + argumentExtractor.remainingArguments
+        let workDir = context.pluginWorkDirectory
 
-        if arguments.contains("--log") {
-            // swiftlint:disable:next no_direct_standard_out_logs
-            print("[Plugin]", launchPath, arguments.joined(separator: " "))
-        }
+        let formatOptions: [SwiftFormatOption] = [
+            .config(workDir.firstConfigFileInParentDirectories(for: .formatter)?.string),
+            .cachePath("\(workDir.string)/swiftformat.cache"),
+            .version(pluginArgs.swiftVersion),
+        ]
+        .appending(.lint, condition: pluginArgs.isLintMode)
 
-        let process = Process()
-        process.launchPath = launchPath
-        process.arguments = arguments
+        let lintOptions: [SwiftLintOption] = [
+            .config(workDir.firstConfigFileInParentDirectories(for: .linter)?.string),
+            .strict,
+            .processSourceKit,
+            .cachePath("\(workDir.string)/swiftlint.cache"),
+        ]
+        .appending(.fix, condition: !pluginArgs.isLintMode)
+
+        try run(
+            execPath: try context.path(for: .formatter),
+            tool: .formatter,
+            options: formatOptions)
+
+        try run(
+            execPath: try context.path(for: .linter),
+            tool: .linter,
+            options: lintOptions)
+    }
+
+    // MARK: Private
+
+    private func run(execPath: Path, tool: Tool, options: [OptionConfigurable]) throws {
+        let process = Process(
+            launchPath: execPath.string,
+            directories: pluginArgs.inputPaths.appending(pluginArgs.remainingArguments),
+            arguments: options)
+
         try process.run()
         process.waitUntilExit()
 
-        switch process.terminationStatus {
-        case EXIT_SUCCESS:
-            break
-        case EXIT_FAILURE:
-            throw CommandError.lintFailure
-        default:
-            throw CommandError.unknownError(exitCode: process.terminationStatus)
+        if pluginArgs.isLogEnabled {
+            log(process.command)
+            log("\(tool.rawValue) ended with exit code \(process.terminationStatus)")
+        }
+
+        let exitCode = SupportExitCode(process.terminationStatus)
+        if exitCode != .success {
+            throw exitCode
         }
     }
 
+    private func log(_ value: String) {
+        // swiftlint:disable:next no_direct_standard_out_logs
+        print("[SourceCodePlugin]:", value)
+    }
 }
 
 // MARK: CommandPlugin
 
 extension SourceCodeCleaner: CommandPlugin {
 
-    // MARK: Internal
-
     func performCommand(context: PluginContext, arguments: [String]) async throws {
-        var argumentExtractor = ArgumentExtractor(arguments)
+        pluginArgs = PluginArguments(arguments)
 
-        // When ran from Xcode, the plugin command is invoked with `--target` arguments,
-        // specifying the targets selected in the plugin dialog.
-        let inputTargets = argumentExtractor.extractOption(named: "target")
-
-        // If given, lint only the paths passed to `--paths`
-        var inputPaths = argumentExtractor.extractOption(named: "paths")
-
-        if !inputTargets.isEmpty {
+        if !pluginArgs.targets.isEmpty {
             // If a set of input targets were given, lint/format the directory for each of them
-            inputPaths += try context.package.targets(named: inputTargets).map { $0.directory.string }
-        } else if inputPaths.isEmpty {
-            // Otherwise if no targets or paths listed we default to linting/formatting
+
+            let packageDirectories = try context.package
+                .targets(named: pluginArgs.targets).map(\.directory.string)
+
+            pluginArgs.updateInputPaths(pluginArgs.inputPaths + packageDirectories)
+        } else if pluginArgs.inputPaths.isEmpty {
+            // If no targets or paths listed we default to linting/formatting
             // the entire package directory.
-            inputPaths = try self.inputPaths(for: context.package)
+
+            pluginArgs.updateInputPaths(try context.package.inputPaths())
         }
 
-        // When running on a SPM package we infer the minimum Swift version from the
-        // `swift-tools-version` in `Package.swift` by default if the user doesn't
-        // specify one manually
-        let swiftVersion = argumentExtractor.extractOption(named: "swift-version").last
-            ?? "\(context.package.toolsVersion.major).\(context.package.toolsVersion.minor)"
-
-        let arguments = [
-            "--swift-version",
-            swiftVersion,
-        ] + argumentExtractor.remainingArguments
-
-        try performCommand(
-            context: context,
-            inputPaths: inputPaths,
-            arguments: arguments)
+        try performCommand(context: context)
     }
-
-    // MARK: Private
-
-    /// Retrieves the list of paths that should be formatted / linted
-    ///
-    /// By default this tool runs on all subdirectories of the package's root directory,
-    /// plus any Swift files directly contained in the root directory. This is a
-    /// workaround for two interesting issues:
-    ///  - If we lint `content.package.directory`, then SwiftLint lints the `.build` subdirectory,
-    ///    which includes checkouts for any SPM dependencies, even if we add `.build` to the
-    ///    `excluded` configuration in our `swiftlint.yml`.
-    ///  - We could lint `context.package.targets.map { $0.directory }`, but that excludes
-    ///    plugin targets, which include Swift code that we want to lint.
-    private func inputPaths(for package: Package) throws -> [String] {
-        let packageDirectoryContents = try FileManager.default.contentsOfDirectory(
-            at: URL(fileURLWithPath: package.directory.string),
-            includingPropertiesForKeys: nil,
-            options: [.skipsHiddenFiles])
-
-        let subdirectories = packageDirectoryContents.filter(\.hasDirectoryPath)
-        let rootSwiftFiles = packageDirectoryContents.filter { $0.pathExtension.hasSuffix("swift") }
-        return (subdirectories + rootSwiftFiles).map(\.path)
-    }
-
 }
 
 #if canImport(XcodeProjectPlugin)
 extension SourceCodeCleaner: XcodeCommandPlugin {
-
     func performCommand(context: XcodePluginContext, arguments: [String]) throws {
-        var argumentExtractor = ArgumentExtractor(arguments)
+        pluginArgs = PluginArguments(arguments)
 
-        // When ran from Xcode, the plugin command is invoked with `--target` arguments,
-        // specifying the targets selected in the plugin dialog.
         //  - Unlike SPM targets which are just directories, Xcode targets are
         //    an arbitrary collection of paths.
-        let inputTargetNames = Set(argumentExtractor.extractOption(named: "target"))
+        let inputTargetNames = Set(pluginArgs.inputPaths)
+
         let inputPaths = context.xcodeProject.targets.lazy
             .filter { inputTargetNames.contains($0.displayName) }
-            .flatMap { $0.inputFiles }
-            .map { $0.path.string }
-            .filter { $0.hasSuffix(".swift") }
+            .flatMap(\.inputFiles)
+            .compactMap(\.path.extension)
+            .filter { $0 == "swift" }
 
-        try performCommand(
-            context: context,
-            inputPaths: Array(inputPaths),
-            arguments: argumentExtractor.remainingArguments)
+        pluginArgs.updateInputPaths(Array(inputPaths))
+
+        try performCommand(context: context)
     }
-
 }
 #endif
-
-// MARK: - CommandError
-
-enum CommandError: Error {
-    case lintFailure
-    case unknownError(exitCode: Int32)
-}
