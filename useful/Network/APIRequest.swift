@@ -22,8 +22,8 @@ protocol APIRequest: URLRequestProvider {
 }
 
 extension APIRequest {
-    var parameters: [String: Any]? { return nil }
-    var headers: HTTPHeaders? { return nil }
+    var parameters: [String: Any]? { nil }
+    var headers: HTTPHeaders? { nil }
 }
 
 extension APIRequest {

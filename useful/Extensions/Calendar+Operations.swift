@@ -13,10 +13,10 @@ extension Calendar {
     static let gregorian = Calendar(identifier: .gregorian)
 
     func monthDays(from date: Date) -> Int? {
-        return range(of: .day, in: .month, for: date)?.count
+        range(of: .day, in: .month, for: date)?.count
     }
 
     func date(from components: Set<Component>, with date: Date) -> Date? {
-        return self.date(from: dateComponents(components, from: date))
+        self.date(from: dateComponents(components, from: date))
     }
 }
