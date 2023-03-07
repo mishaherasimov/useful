@@ -15,9 +15,10 @@ extension Path {
                 // Check if we're not at the root of this filesystem, as `removingLastComponent()`
                 // will continually return the root from itself.
                 path.stem.count > 1 ? path.removingLastComponent() : nil
-            })
-            // Check potential configuration file
-            .first { $0.appending(subpath: tool.configFile).isAccessible() }
+            }
+        )
+        // Check potential configuration file
+        .first { $0.appending(subpath: tool.configFile).isAccessible() }
 
         return proposedDirectory?.appending(subpath: tool.configFile)
     }

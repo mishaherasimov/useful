@@ -17,7 +17,8 @@ extension Package {
         let packageDirectoryContents = try FileManager.default.contentsOfDirectory(
             at: URL(fileURLWithPath: directory.string),
             includingPropertiesForKeys: nil,
-            options: [.skipsHiddenFiles])
+            options: [.skipsHiddenFiles]
+        )
 
         let subdirectories = packageDirectoryContents.filter(\.hasDirectoryPath)
         let rootSwiftFiles = packageDirectoryContents.filter { $0.pathExtension.hasSuffix(swiftExtension) }

@@ -13,19 +13,19 @@ enum LifeStyleSection {
 }
 
 protocol LifestyleViewPresenter {
-    
+
     var disposableItems: [(section: LifeStyleSection, items: [DisposableItem])] { get }
-    
+
     init(view: LifestyleView)
-    
+
     func header(for section: LifeStyleSection) -> (title: String, annotation: String)
-    
+
     func loadItems(isReloading: Bool, selectedWeek: (week: Int, date: Date)?)
     func filterDisposableItems(query: String?)
 }
 
 protocol LifestyleView: AnyObject {
-    
+
     func loadingDisposableItems(with info: LoadInfo)
     func refreshDisposableItems(animatingDifferences: Bool)
 }

@@ -11,8 +11,8 @@ struct LinterPlugin {
         inputFiles: [Path],
         packageDirectory: Path,
         workingDirectory: Path,
-        tool: PluginContext.Tool) -> [Command]
-    {
+        tool: PluginContext.Tool
+    ) -> [Command] {
         guard !inputFiles.isEmpty else {
             // Don't lint anything if there are no Swift source files in this target
             return []
@@ -35,7 +35,8 @@ struct LinterPlugin {
                 displayName: linter.rawValue,
                 executable: tool.path,
                 arguments: (args as [OptionConfigurable]).arguments + inputFiles.map(\.string),
-                outputFilesDirectory: outputFilesDirectory),
+                outputFilesDirectory: outputFilesDirectory
+            ),
         ]
     }
 }
@@ -52,7 +53,8 @@ extension LinterPlugin: BuildToolPlugin {
             inputFiles: sourceTarget.sourceFiles(withSuffix: swiftExtension).map(\.path),
             packageDirectory: context.package.directory,
             workingDirectory: context.pluginWorkDirectory,
-            tool: try context.tool(named: Tool.linter.name))
+            tool: try context.tool(named: Tool.linter.name)
+        )
     }
 }
 
@@ -69,7 +71,8 @@ extension LinterPlugin: XcodeBuildToolPlugin {
             inputFiles: inputFilePaths,
             packageDirectory: context.xcodeProject.directory,
             workingDirectory: context.pluginWorkDirectory,
-            tool: try context.tool(named: Tool.linter.name))
+            tool: try context.tool(named: Tool.linter.name)
+        )
     }
 }
 #endif

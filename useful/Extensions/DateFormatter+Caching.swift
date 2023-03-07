@@ -22,12 +22,12 @@ extension DateFormatter {
         let formatter = DateFormatter()
 
         switch preset {
-        case let .system(dateStyle, timeStyle, timeZone):
+        case .system(let dateStyle, let timeStyle, let timeZone):
 
             formatter.dateStyle = dateStyle
             formatter.timeStyle = timeStyle
             formatter.timeZone = timeZone
-        case let .custom(format, timeZone):
+        case .custom(let format, let timeZone):
 
             formatter.calendar = Calendar(identifier: .iso8601)
             formatter.locale = Locale(identifier: "en_US_POSIX")

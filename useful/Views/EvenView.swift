@@ -9,47 +9,47 @@
 import UIKit
 
 class EventView: UIView {
-    
+
     enum EventType {
         case empty, error, construction
     }
-    
+
     private let contentSpacing: CGFloat = 16
     private let imageViewWidth: CGFloat = 245
     private var verticalInset: CGFloat
-    
-    private let imageView: UIImageView = UIImageView.create()
-    private let contentLabel: UILabel = UILabel.create(fontStyle: .subheadline, textAlignment: .center)
-    
+
+    private let imageView = UIImageView.create()
+    private let contentLabel = UILabel.create(fontStyle: .subheadline, textAlignment: .center)
+
     convenience init(contentVerticalInset: CGFloat) {
         self.init(frame: .zero)
-        self.verticalInset = contentVerticalInset
+        verticalInset = contentVerticalInset
     }
-    
+
     override init(frame: CGRect) {
-        self.verticalInset = 0
+        verticalInset = 0
         super.init(frame: frame)
         configureUI()
     }
-    
-    required init?(coder: NSCoder) {
+
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func configureUI() {
-        
+
         translatesAutoresizingMaskIntoConstraints = false
-        
+
         let stackView = UIStackView.create(axis: .vertical, spacing: contentSpacing)
         stackView.items = [imageView, contentLabel]
-        
+
         addSubview(stackView)
-        
+
         NSLayoutConstraint.center(stackView, in: self, for: [.vertical, .horizontal], with: CGPoint(x: 0, y: -verticalInset))
     }
-    
+
     func configure(for type: EventType) {
-        
+
         switch type {
         case .construction:
             imageView.image = #imageLiteral(resourceName: "under-construction")

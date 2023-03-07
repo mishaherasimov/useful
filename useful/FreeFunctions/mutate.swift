@@ -7,7 +7,7 @@
 //
 
 @discardableResult
-func mutate<T>(_ value: T, _ modifier: (T) -> ()) -> T {
+func mutate<T>(_ value: T, _ modifier: (T) -> Void) -> T {
     modifier(value)
     return value
 }

@@ -57,20 +57,30 @@ extension NSLayoutConstraint {
     }
 
     @discardableResult
-    static func snap(_ subview: UIView, to view: UIView, for sides: [Side] = Side.allCases, sizeAttributes: [CGSize.Attributes] = [], with inset: UIEdgeInsets = .zero) -> [Side: NSLayoutConstraint] {
+    static func snap(
+        _ subview: UIView,
+        to view: UIView,
+        for sides: [Side] = Side.allCases,
+        sizeAttributes: [CGSize.Attributes] = [],
+        with inset: UIEdgeInsets = .zero
+    ) -> [Side: NSLayoutConstraint] {
 
         var constraints: [Side: NSLayoutConstraint] = [:]
-        
+
         for side in sides {
             switch side {
-            case let .top(priority):
-                constraints[side] = subview.topAnchor.constraint(equalTo: view.topAnchor, constant: inset.top).activate(with: priority)
-            case let .bottom(priority):
-                constraints[side] = subview.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -inset.bottom).activate(with: priority)
-            case let .left(priority):
-                constraints[side] = subview.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset.left).activate(with: priority)
-            case let .right(priority):
-                constraints[side] = subview.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset.right).activate(with: priority)
+            case .top(let priority):
+                constraints[side] = subview.topAnchor.constraint(equalTo: view.topAnchor, constant: inset.top)
+                    .activate(with: priority)
+            case .bottom(let priority):
+                constraints[side] = subview.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -inset.bottom)
+                    .activate(with: priority)
+            case .left(let priority):
+                constraints[side] = subview.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset.left)
+                    .activate(with: priority)
+            case .right(let priority):
+                constraints[side] = subview.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset.right)
+                    .activate(with: priority)
             }
         }
 
@@ -82,15 +92,20 @@ extension NSLayoutConstraint {
 
         for attribute in attributes {
             switch attribute {
-            case let .width(value):
+            case .width(let value):
                 view.widthAnchor.constraint(equalToConstant: value).isActive = true
-            case let .height(value):
+            case .height(let value):
                 view.heightAnchor.constraint(equalToConstant: value).isActive = true
             }
         }
     }
 
-    static func center(_ subview: UIView, in view: UIView, for axises: [Axis] = [.vertical, .horizontal], with offset: CGPoint = .zero) {
+    static func center(
+        _ subview: UIView,
+        in view: UIView,
+        for axises: [Axis] = [.vertical, .horizontal],
+        with offset: CGPoint = .zero
+    ) {
 
         for axis in axises {
             switch axis {

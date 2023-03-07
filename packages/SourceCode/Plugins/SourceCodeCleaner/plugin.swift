@@ -94,12 +94,14 @@ final class SourceCodeCleaner {
         try run(
             execPath: try context.path(for: .formatter),
             tool: .formatter,
-            options: formatOptions)
+            options: formatOptions
+        )
 
         try run(
             execPath: try context.path(for: .linter),
             tool: .linter,
-            options: lintOptions)
+            options: lintOptions
+        )
     }
 
     // MARK: Private
@@ -108,7 +110,8 @@ final class SourceCodeCleaner {
         let process = Process(
             launchPath: execPath.string,
             directories: pluginArgs.inputPaths.appending(pluginArgs.remainingArguments),
-            arguments: options)
+            arguments: options
+        )
 
         try process.run()
         process.waitUntilExit()

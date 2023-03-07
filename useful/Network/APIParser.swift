@@ -9,7 +9,7 @@
 import Foundation
 
 protocol APIParser {
-    
+
     associatedtype DecodableType: Decodable
     func parseResponse(_ data: Data) -> APIResponse<DecodableType>
 }
