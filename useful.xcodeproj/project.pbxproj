@@ -365,7 +365,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				92AECFCD29B5BF8B0088EB38 /* PBXTargetDependency */,
 				8433FD5B245635E500C301D3 /* PBXTargetDependency */,
 			);
 			name = usefulTests;
@@ -501,10 +500,6 @@
 			isa = PBXTargetDependency;
 			target = 8433FD42245635E400C301D3 /* useful */;
 			targetProxy = 8433FD5A245635E500C301D3 /* PBXContainerItemProxy */;
-		};
-		92AECFCD29B5BF8B0088EB38 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 92AECFCC29B5BF8B0088EB38 /* SourceCodeLinter */;
 		};
 		92AECFCF29B5BF9C0088EB38 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -657,6 +652,9 @@
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.untitled.useful;
 				PRODUCT_NAME = Useful;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -679,6 +677,9 @@
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.untitled.useful;
 				PRODUCT_NAME = Useful;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -690,7 +691,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6TZ4V88Q7B;
+				DEVELOPMENT_TEAM = YV7R9K2K52;
 				INFOPLIST_FILE = usefulTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -700,9 +701,12 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.herasimov.usefulTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/useful.app/useful";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Useful.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Useful";
 			};
 			name = Debug;
 		};
@@ -712,7 +716,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6TZ4V88Q7B;
+				DEVELOPMENT_TEAM = YV7R9K2K52;
 				INFOPLIST_FILE = usefulTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -722,9 +726,12 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.herasimov.usefulTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/useful.app/useful";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Useful.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Useful";
 			};
 			name = Release;
 		};
@@ -789,10 +796,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 840AF25624612D990062DBF9 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
-		};
-		92AECFCC29B5BF8B0088EB38 /* SourceCodeLinter */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = "plugin:SourceCodeLinter";
 		};
 		92AECFCE29B5BF9C0088EB38 /* SourceCodeLinter */ = {
 			isa = XCSwiftPackageProductDependency;
