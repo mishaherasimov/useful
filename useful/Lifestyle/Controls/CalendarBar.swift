@@ -29,8 +29,8 @@ class CalendarBar: UIView {
     private let legendBottomSpacing: CGFloat = 10
     private let daysGroupHeight: CGFloat = 32
     private let calendarInsets: UIEdgeInsets = .create(right: 12, bottom: 26, left: 12)
-    private var numberOfCells: Int { return 7 * Week.allCases.count }
-    private var calendarHeight: CGFloat { return daysGroupHeight * CGFloat(Week.allCases.count) }
+    private var numberOfCells: Int { 7 * Week.allCases.count }
+    private var calendarHeight: CGFloat { daysGroupHeight * CGFloat(Week.allCases.count) }
 
     // -- Constants --
 
@@ -298,7 +298,7 @@ extension CalendarBar: UICollectionViewDelegate {
 
 extension Array {
     fileprivate func chunked(into size: Int) -> [[Element]] {
-        return stride(from: 0, to: count, by: size).map {
+        stride(from: 0, to: count, by: size).map {
             Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
