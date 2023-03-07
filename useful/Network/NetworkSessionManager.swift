@@ -9,27 +9,27 @@
 import Foundation
 
 final class NetworkSessionManager: NSObject {
-    
+
     var session: URLSession!
-    
+
     override init() {
         session = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: nil)
     }
-    
+
     @discardableResult
     public func data(_ request: URLRequestProvider, completionBlock: @escaping (DataResponse) -> Void) -> URLSessionDataTask {
-        
+
         let urlRequest = request.urlRequest
-        
+
         let task = session.dataTask(with: urlRequest) { data, response, error in
             let dataResponse = DataResponse(request: urlRequest, response: response as? HTTPURLResponse, data: data, error: error)
             DispatchQueue.main.async {
                 completionBlock(dataResponse)
             }
         }
-        
+
         task.resume()
-        
+
         return task
     }
 }

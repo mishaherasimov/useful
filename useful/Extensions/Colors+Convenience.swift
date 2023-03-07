@@ -9,13 +9,12 @@
 import UIKit
 
 extension UIColor {
-    
+
     enum Collection: String {
         case background, primary, label, secondary, backgroundElevated, selected
     }
-    
+
     convenience init?(collection: Collection) {
         self.init(named: collection.rawValue)
     }
 }
-

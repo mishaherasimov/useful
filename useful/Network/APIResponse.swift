@@ -9,7 +9,7 @@
 import Foundation
 
 public enum APIResponse<Value> {
-    
+
     case success(Value)
     case failure(APIError)
 
@@ -24,7 +24,7 @@ public enum APIResponse<Value> {
 
     public var value: Value? {
         switch self {
-        case let .success(value):
+        case .success(let value):
             return value
         case .failure:
             return nil
@@ -35,7 +35,7 @@ public enum APIResponse<Value> {
         switch self {
         case .success:
             return nil
-        case let .failure(error):
+        case .failure(let error):
             return error
         }
     }
