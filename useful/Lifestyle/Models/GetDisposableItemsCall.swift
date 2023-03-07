@@ -25,7 +25,7 @@ extension GetDisposableItemsCall: APIRequest {
     var url: URL {
         return formatPath(format: "disposables.json")
     }
-    
+
     var parameters: [String: Any]? {
         return ["orderBy": "\"week\"", "equalTo": week]
     }

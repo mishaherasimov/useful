@@ -39,17 +39,23 @@ final class APIClient {
         self.sessionManager = sessionManager
     }
 
-    func handleResponse<P: APIParser>(_ parser: P, response: DataResponse, completionHandler: (APIResponse<P.DecodableType>) -> Void) {
+    func handleResponse<P: APIParser>(
+        _ parser: P,
+        response: DataResponse,
+        completionHandler: (APIResponse<P.DecodableType>) -> Void
+    ) {
         let result: APIResponse<P.DecodableType>
-        
+
         if let error = response.error {
             result = .failure(.unknown(error))
         } else if let httpStatusCode = response.response?.statusCode {
-            result = APIClient.isSuccess(httpStatusCode: httpStatusCode) ? parser.parseResponse(response.data ?? Data()) : .failure(.requestError(statusCode: httpStatusCode))
+            result = APIClient.isSuccess(httpStatusCode: httpStatusCode)
+                ? parser.parseResponse(response.data ?? Data())
+                : .failure(.requestError(statusCode: httpStatusCode))
         } else {
             result = .failure(.unknown(nil))
         }
-        
+
         completionHandler(result)
     }
 }
