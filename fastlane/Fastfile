@@ -20,7 +20,8 @@ platform :ios do
   lane :beta do
   build_app(
     scheme: "useful",
-    include_bitcode: false
+    include_bitcode: false,
+    skip_codesigning: true
     )
   end
 end
