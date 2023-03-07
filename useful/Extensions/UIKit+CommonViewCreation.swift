@@ -100,7 +100,7 @@ extension UIStackView {
             newValue.forEach { addArrangedSubview($0) }
         }
         get {
-            return arrangedSubviews
+            arrangedSubviews
         }
     }
 }

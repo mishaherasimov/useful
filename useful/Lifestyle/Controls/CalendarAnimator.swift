@@ -129,7 +129,7 @@ class CalendarAnimator {
     }
 
     private func project(initialVelocity: CGFloat, decelerationRate: CGFloat) -> CGFloat {
-        return (initialVelocity / 1000) * decelerationRate / (1 - decelerationRate)
+        (initialVelocity / 1000) * decelerationRate / (1 - decelerationRate)
     }
 
     // -- Animator --

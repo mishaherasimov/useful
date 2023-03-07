@@ -12,7 +12,7 @@ public enum SupplementaryViewKind: String {
     case header, footer, background
 
     func kindIdentifier<T: UICollectionReusableView>(_: T.Type) -> String {
-        return T.defaultReuseIdentifier + rawValue
+        T.defaultReuseIdentifier + rawValue
     }
 }
 

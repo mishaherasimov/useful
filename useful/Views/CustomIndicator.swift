@@ -33,10 +33,10 @@ struct CustomIndicator: Indicator {
     }
 
     public var view: IndicatorView {
-        return indicator
+        indicator
     }
 
     public func sizeStrategy(in _: KFCrossPlatformImageView) -> IndicatorSizeStrategy {
-        return .size(.init(width: 100, height: 100))
+        .size(.init(width: 100, height: 100))
     }
 }

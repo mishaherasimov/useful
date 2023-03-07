@@ -27,6 +27,6 @@ class CustomNavigationController: UINavigationController {
     }
 
     override var childForStatusBarStyle: UIViewController? {
-        return topViewController
+        topViewController
     }
 }
