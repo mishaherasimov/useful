@@ -16,12 +16,12 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Build an app"
-  lane :beta do
-  build_app(
-    scheme: "useful",
-    include_bitcode: false,
-    skip_codesigning: true
-    )
-  end
+    desc "Builds and runs Unit Tests."
+    lane :unit_test do
+        run_tests(
+           scheme: "useful",
+           include_simulator_logs: false,
+           device: "iPhone 8"
+        )
+    end
 end
