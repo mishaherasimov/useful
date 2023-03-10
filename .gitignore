@@ -40,6 +40,7 @@ playground.xcworkspace
 # Package.resolved
 .build/
 .swiftpm/xcode
+packages/*/.swiftpm/xcode
 
 # CocoaPods
 # We recommend against adding the Pods directory to your .gitignore. However
