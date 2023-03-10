@@ -15,12 +15,30 @@ Install _fastlane_ using
 or alternatively using `brew install fastlane`
 
 # Available Actions
+### produce_app
+```
+fastlane produce_app
+```
+
+
+----
+
 ## iOS
-### ios unit_test
+### ios load_codesign
 ```
-fastlane ios unit_test
+fastlane ios load_codesign
 ```
-Builds and runs Unit Tests.
+Sync and sign certificates
+### ios build
+```
+fastlane ios build
+```
+Build and sign the app
+### ios upload_for_testing
+```
+fastlane ios upload_for_testing
+```
+Build and upload the app to TestFlight
 
 ----
 

@@ -1,27 +1,28 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
+fastlane_require 'dotenv'
 
 default_platform(:ios)
 
+lane :produce_app do 
+    create_app_online
+end
+
 platform :ios do
-    desc "Builds and runs Unit Tests."
-    lane :unit_test do
-        run_tests(
-           scheme: "useful",
-           include_simulator_logs: false,
-           device: "iPhone 8"
-        )
+    desc "Sync and sign certificates"
+    lane :load_codesign do
+        sync_code_signing
+    end
+
+    desc "Build and sign the app"
+    lane :build do
+        load_codesign
+
+        build_app
+    end
+
+    desc "Build and upload the app to TestFlight"
+    lane :upload_for_testing do
+        build
+
+        upload_to_testflight
     end
 end
