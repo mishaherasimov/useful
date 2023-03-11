@@ -6,7 +6,7 @@ before_all do
     Dotenv.load('.env.secret')
 end
 
-desc "Create an app on the app store connect"
+desc "Create an app on the app store connect. Produce"
 lane :produce_app do 
     create_app_online
 end
@@ -29,21 +29,25 @@ end
 platform :ios do
     before_all do
         Dotenv.load('.env.ios')
+
+        if ENV["CIRCLE_CI"] then
+            setup_circle_ci
+        end
     end
 
-    desc "Sync and sign certificates"
+    desc "Sync and sign certificates. Match"
     lane :load_codesign do
         sync_code_signing
     end
 
-    desc "Build and sign the app"
+    desc "Build and sign the app. Gym"
     lane :build do
         load_codesign
 
         build_ios_app
     end
 
-    desc "Build and upload the app to TestFlight"
+    desc "Build and upload the app to TestFlight. Pilot"
     lane :upload_for_testing do
         build
 
@@ -59,12 +63,9 @@ platform :ios do
         push_git_tags
     end
 
-    lane :update_version_and_send do 
-        
-    end
-
     # Testing
 
+    desc "Build the app and run unit tests. Scan"
     lane :unit_test do
         run_tests
     end
