@@ -99,3 +99,4 @@ iOSInjectionProject/
 
 ## Credentials
 **/app-store-connect-key.json
+*.secret
