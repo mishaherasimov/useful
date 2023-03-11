@@ -2,11 +2,19 @@ fastlane_require 'dotenv'
 
 default_platform(:ios)
 
+before_all do
+    Dotenv.load('.env.secret')
+end
+
 lane :produce_app do 
     create_app_online
 end
 
 platform :ios do
+    before_all do
+        Dotenv.load('.env.ios')
+    end
+
     desc "Sync and sign certificates"
     lane :load_codesign do
         sync_code_signing
@@ -16,7 +24,7 @@ platform :ios do
     lane :build do
         load_codesign
 
-        build_app
+        build_ios_app
     end
 
     desc "Build and upload the app to TestFlight"

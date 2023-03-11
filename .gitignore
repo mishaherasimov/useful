@@ -96,3 +96,6 @@ iOSInjectionProject/
 
 ### Xcode Patch ###
 **/xcshareddata/WorkspaceSettings.xcsettings
+
+## Credentials
+**/app-store-connect-key.json
