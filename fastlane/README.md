@@ -19,7 +19,19 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane produce_app
 ```
 
+Create an app on the app store connect
 
+### bump_version
+
+```sh
+[bundle exec] fastlane bump_version
+```
+
+Increments build number and marketing version
+
+To update marketing version provide `include_marketing` option (e.g. include_marketing:true)
+
+To update specific semver item provide `type` option (e.g. type:major)
 
 ----
 
@@ -49,6 +61,30 @@ Build and sign the app
 ```
 
 Build and upload the app to TestFlight
+
+### ios release_to_app_store
+
+```sh
+[bundle exec] fastlane ios release_to_app_store
+```
+
+Create a new tag and send it to the remote to trigger the release lane on CI
+
+### ios update_version_and_send
+
+```sh
+[bundle exec] fastlane ios update_version_and_send
+```
+
+
+
+### ios unit_test
+
+```sh
+[bundle exec] fastlane ios unit_test
+```
+
+
 
 ----
 
