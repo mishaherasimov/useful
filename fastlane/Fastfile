@@ -30,14 +30,14 @@ platform :ios do
     before_all do
         Dotenv.load('.env.ios')
 
-        if ENV["CIRCLE_CI"] then
+        if ENV["CIRCLECI"] then
             setup_circle_ci
         end
     end
 
     desc "Sync and sign certificates. Match"
     lane :load_codesign do
-        sync_code_signing
+        sync_code_signing(readonly: ENV["CI"])
     end
 
     desc "Build and sign the app. Gym"
