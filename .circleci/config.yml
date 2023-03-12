@@ -22,7 +22,7 @@ jobs:
       - macos/preboot-simulator:
           version: "16.0"
           platform: "iOS"
-          device: "iPhone 8"
+          device: "iPhone 14"
       - run_lane:
           lane: unit_test
       # - store_artifacts:
