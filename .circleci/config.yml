@@ -29,6 +29,9 @@ jobs:
             xcrun simctl boot "$UDID"
       - macos/switch-ruby:
           version: 2.7.2
+      - run:
+          name: Install gems
+          command: bundle check || bundle install --path vendor/bundle
       - run_lane:
           lane: unit_test
       # - store_artifacts:
