@@ -36,7 +36,7 @@ jobs:
           platform: iOS
           device: "iPhone 8"
       - run_lane:
-          lane: unit_test
+          lane: "unit_test"
       # - store_artifacts:
       #     path: output
       - store_test_results:
