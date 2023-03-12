@@ -85,10 +85,10 @@ workflows:
             branches:
               only:
                 - develop
-                - master
   upload_test_flight_build:
     jobs:
       - test_flight:
+          context: app_store
           filters:
             branches:
               ignore: /.*/
