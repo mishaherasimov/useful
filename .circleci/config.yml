@@ -1,0 +1,93 @@
+# .circleci/config.yml
+
+version: 2.1
+
+keys:
+  - &gem_cache_key gem-cache-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+executors:
+  ios:
+    macos:
+      xcode: 14.2.0
+    working_directory: /Users/distiller/project
+    shell: /bin/bash --login -o pipefail
+    environment:
+      FL_OUTPUT_DIR: output
+      LANG: en_US.UTF-8
+
+jobs:
+  test_flight:
+    executor: ios
+    steps:
+      - run_lane:
+          lane: upload_for_testing
+
+  unit_test:
+    executor: ios
+    environment:
+      SCAN_DEVICE: iPhone 14
+      IOS_VERSION: 16.2
+    steps:
+      - run:
+          name: Pre-boot iOS Simulator
+          command: |
+            UDID=$(xcrun xctrace list devices 2>&1 | grep "$SCAN_DEVICE Simulator ($IOS_VERSION) (" | awk -F'[()]' '{print $4}')
+            xcrun simctl boot "$UDID"
+      - run_lane:
+          lane: unit_test
+      - store_artifacts:
+          path: output
+          # destination: test_report.junit
+      - store_test_results:
+          path: output
+
+commands:
+  restore_all_cache:
+    description: "Restore cache for all types of dependencies: Ruby, SPM"
+    steps:
+      - restore_cache:
+          name: "Restore bundler cache"
+          key: *gem_cache_key
+
+  save_all_cache:
+    description: "Save cache for all dependencies: Ruby: SPM"
+    steps:
+      - save_cache:
+          name: "Save bundler cache"
+          key: *gem_cache_key
+          paths:
+            - vendor/bundle
+
+  run_lane:
+    description: "Run a specific lane using Fastlane"
+    parameters:
+      lane:
+        type: string
+    steps:
+      - checkout
+      - restore_all_cache
+      - run:
+          name: Install gems
+          command: bundle check || bundle install --path vendor/bundle
+      - save_all_cache
+      - run:
+          name: "Run Fastlane's lane"
+          command: bundle exec fastlane << parameters.lane >>
+
+workflows:
+  run_unit_tests:
+    jobs:
+      - unit_test:
+          filters:
+            branches:
+              only:
+                - develop
+                - master
+  upload_test_flight_build:
+    jobs:
+      - test_flight:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+.\d+.\d+_\d+/

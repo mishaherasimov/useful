@@ -14,7 +14,7 @@ public protocol ReusableView: AnyObject {
 
 extension ReusableView where Self: UIView {
     public static var defaultReuseIdentifier: String {
-        NSStringFromClass(self).components(separatedBy: ".").last!
+        String(describing: Self.self)
     }
 }
 
