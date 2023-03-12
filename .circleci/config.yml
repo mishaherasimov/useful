@@ -23,6 +23,9 @@ jobs:
       IOS_VERSION: 16.2
     steps:
       - run:
+          name: "Ruby version"
+          command: which ruby
+      - run:
           name: Pre-boot iOS Simulator
           command: |
             UDID=$(xcrun xctrace list devices 2>&1 | grep "$IOS_DEVICE Simulator ($IOS_VERSION) (" | awk -F'[()]' '{print $4}')
