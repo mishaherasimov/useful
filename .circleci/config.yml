@@ -16,12 +16,9 @@ jobs:
   unit_test:
     executor: ios
     environment:
-      IOS_DEVICE: iPhone 14
+      SCAN_DEVICE: iPhone 14
       IOS_VERSION: 16.2
     steps:
-      - run:
-          name: "Ruby version"
-          command: ruby -v
       - run:
           name: Pre-boot iOS Simulator
           command: |
@@ -29,10 +26,11 @@ jobs:
             xcrun simctl boot "$UDID"
       - run_lane:
           lane: unit_test
-      # - store_artifacts:
-      #     path: output
+      - store_artifacts:
+          path: output/report.junit
+          destination: test_report.junit
       - store_test_results:
-          path: output/scan
+          path: output/report.html
 
 commands:
   run_lane:
@@ -46,7 +44,7 @@ commands:
           name: Install gems
           command: bundle check || bundle install --path vendor/bundle
       - run:
-          name: "Run lane in Fastlane"
+          name: "Run ${LANE} lane in Fastlane"
           command: bundle exec fastlane << parameters.lane >>
 
 workflows:
