@@ -30,10 +30,10 @@ jobs:
       - run_lane:
           lane: unit_test
       - store_artifacts:
-          path: output/report.junit
-          destination: test_report.junit
+          path: output
+          # destination: test_report.junit
       - store_test_results:
-          path: output/report.html
+          path: output
 
 commands:
   restore_all_cache:
@@ -53,7 +53,7 @@ commands:
             - vendor/bundle
 
   run_lane:
-    description: "Run specifc lane using Fastlane"
+    description: "Run a specific lane using Fastlane"
     parameters:
       lane:
         type: string
