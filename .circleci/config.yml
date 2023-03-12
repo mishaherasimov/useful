@@ -24,18 +24,18 @@ jobs:
     steps:
       - run:
           name: "Ruby version"
-          command: which ruby
-      - run:
-          name: Pre-boot iOS Simulator
-          command: |
-            UDID=$(xcrun xctrace list devices 2>&1 | grep "$IOS_DEVICE Simulator ($IOS_VERSION) (" | awk -F'[()]' '{print $4}')
-            xcrun simctl boot "$UDID"
-      - run_lane:
-          lane: unit_test
-      # - store_artifacts:
-      #     path: output
-      - store_test_results:
-          path: output/scan
+          command: ruby -v
+      # - run:
+      #     name: Pre-boot iOS Simulator
+      #     command: |
+      #       UDID=$(xcrun xctrace list devices 2>&1 | grep "$IOS_DEVICE Simulator ($IOS_VERSION) (" | awk -F'[()]' '{print $4}')
+      #       xcrun simctl boot "$UDID"
+      # - run_lane:
+      #     lane: unit_test
+      # # - store_artifacts:
+      # #     path: output
+      # - store_test_results:
+      #     path: output/scan
 
 commands:
   run_lane:
