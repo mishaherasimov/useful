@@ -45,7 +45,7 @@ commands:
 
   save_all_cache:
     description: "Save cache for all dependencies: Ruby: SPM"
-    step:
+    steps:
       - save_cache:
           name: "Save bundler cache"
           key: *gem_cache_key
