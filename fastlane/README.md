@@ -19,7 +19,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane produce_app
 ```
 
-Create an app on the app store connect
+Create an app on the app store connect. Produce
 
 ### bump_version
 
@@ -44,7 +44,7 @@ To update specific semver item provide `type` option (e.g. type:major)
 [bundle exec] fastlane ios load_codesign
 ```
 
-Sync and sign certificates
+Sync and sign certificates. Match
 
 ### ios build
 
@@ -52,7 +52,7 @@ Sync and sign certificates
 [bundle exec] fastlane ios build
 ```
 
-Build and sign the app
+Build and sign the app. Gym
 
 ### ios upload_for_testing
 
@@ -60,7 +60,7 @@ Build and sign the app
 [bundle exec] fastlane ios upload_for_testing
 ```
 
-Build and upload the app to TestFlight
+Build and upload the app to TestFlight. Pilot
 
 ### ios release_to_app_store
 
@@ -70,21 +70,13 @@ Build and upload the app to TestFlight
 
 Create a new tag and send it to the remote to trigger the release lane on CI
 
-### ios update_version_and_send
-
-```sh
-[bundle exec] fastlane ios update_version_and_send
-```
-
-
-
 ### ios unit_test
 
 ```sh
 [bundle exec] fastlane ios unit_test
 ```
 
-
+Build the app and run unit tests. Scan
 
 ----
 

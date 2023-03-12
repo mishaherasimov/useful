@@ -2,6 +2,9 @@
 
 version: 2.1
 
+keys:
+  - &gem_cache_key gem-cache-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
 executors:
   ios:
     macos:
@@ -26,13 +29,30 @@ jobs:
             xcrun simctl boot "$UDID"
       - run_lane:
           lane: unit_test
-      # - store_artifacts:
-      #     path: output/report.junit
-      #     destination: test_report.junit
-      # - store_test_results:
-      #     path: output/report.html
+      - store_artifacts:
+          path: output/report.junit
+          destination: test_report.junit
+      - store_test_results:
+          path: output/report.html
 
 commands:
+  restore_all_cache:
+    description: "Restore cache for all types of dependencies: Ruby, SPM"
+    steps:
+      - restore_cache:
+          name: "Restore bundler cache"
+          key: *gem_cache_key
+
+  save_all_cache:
+    description: "Save cache for all dependencies: Ruby: SPM"
+    step:
+      - save_cache:
+          name: "Save bundler cache"
+          key: *gem_cache_key
+          paths:
+            - vendor/bundle
+
+
   run_lane:
     description: "Run specifc lane using Fastlane"
     parameters:
@@ -40,20 +60,19 @@ commands:
         type: string
     steps:
       - checkout
+      - restore_all_cache
       - run:
           name: Install gems
           command: bundle check || bundle install --path vendor/bundle
+      - save_all_cache
       - run:
-          name: "Run ${lane} lane in Fastlane"
+          name: "Run Fastlane's lane"
           command: bundle exec fastlane << parameters.lane >>
 
 workflows:
   run_unit_tests:
     jobs:
       - unit_test
-      # - adhoc:
-      #     filters:
-      #       branches:
-      #         only: development
-      #     requires:
-      #       - build-and-test
+          filters:
+            branches:
+              only: develop
