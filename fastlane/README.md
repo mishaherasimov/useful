@@ -62,10 +62,10 @@ Build and sign the app. Gym
 
 Build and upload the app to TestFlight. Pilot
 
-### ios release_to_app_store
+### ios prepare_new_build
 
 ```sh
-[bundle exec] fastlane ios release_to_app_store
+[bundle exec] fastlane ios prepare_new_build
 ```
 
 Create a new tag and send it to the remote to trigger the release lane on CI
@@ -77,14 +77,6 @@ Create a new tag and send it to the remote to trigger the release lane on CI
 ```
 
 Build the app and run unit tests. Scan
-
-### ios print_tag
-
-```sh
-[bundle exec] fastlane ios print_tag
-```
-
-
 
 ----
 
