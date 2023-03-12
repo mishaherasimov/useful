@@ -16,18 +16,6 @@ executors:
       LANG: en_US.UTF-8
 
 jobs:
-  run_lane:
-    description: "Run specifc lane using Fastlane"
-    executor: ios
-    parameters:
-      lane:
-        type: string
-    steps:
-      - checkout
-      - run:
-          name: "Run lane in Fastlane"
-          command: bundle exec fastlane ${{parameters.lane}}
-
   unit_test:
     executor: ios
     steps:
@@ -36,11 +24,23 @@ jobs:
           platform: iOS
           device: "iPhone 8"
       - run_lane:
-          lane: "unit_test"
+          lane: unit_test
       # - store_artifacts:
       #     path: output
       - store_test_results:
           path: output/scan
+
+commands:
+  run_lane:
+    description: "Run specifc lane using Fastlane"
+    parameters:
+      lane:
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: "Run lane in Fastlane"
+          command: bundle exec fastlane ${{parameters.lane}}
 
 workflows:
   run_unit_tests:
