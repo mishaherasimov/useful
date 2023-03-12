@@ -19,10 +19,10 @@ jobs:
   unit_test:
     executor: ios
     steps:
-      # - macos/preboot-simulator:
-      #     version: "16.0"
-      #     platform: "iOS"
-      #     device: "iPhone 14"
+      - macos/preboot-simulator:
+          version: "14.5"
+          platform: "iOS"
+          device: "iPhone 12"
       - run_lane:
           lane: unit_test
       # - store_artifacts:
@@ -40,7 +40,7 @@ commands:
       - checkout
       - run:
           name: "Run lane in Fastlane"
-          command: bundle exec fastlane ${{parameters.lane}}
+          command: bundle exec fastlane << parameters.lane >>
 
 workflows:
   run_unit_tests:
