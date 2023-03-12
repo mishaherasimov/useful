@@ -77,14 +77,17 @@ commands:
 workflows:
   run_unit_tests:
     jobs:
-      - unit_test
+      - unit_test:
           filters:
             branches:
-              only: 
+              only:
                 - develop
+                - master
   upload_test_flight_build:
     jobs:
-      - test_flight
+      - test_flight:
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v\d+.\d+.\d+_\d+/
