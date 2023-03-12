@@ -21,7 +21,7 @@ jobs:
     steps:
       - macos/preboot-simulator:
           version: "16.0"
-          platform: iOS
+          platform: "iOS"
           device: "iPhone 8"
       - run_lane:
           lane: unit_test
