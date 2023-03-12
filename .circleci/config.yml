@@ -27,6 +27,8 @@ jobs:
           command: |
             UDID=$(xcrun xctrace list devices 2>&1 | grep "$IOS_DEVICE Simulator ($IOS_VERSION) (" | awk -F'[()]' '{print $4}')
             xcrun simctl boot "$UDID"
+      - macos/switch-ruby:
+          version: 2.7.2
       - run_lane:
           lane: unit_test
       # - store_artifacts:
