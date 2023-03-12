@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Pre-boot iOS Simulator
           command: |
-            UDID=$(xcrun xctrace list devices 2>&1 | grep '$IOS_DEVICE Simulator ($IOS_VERSION) (' | awk -F'[()]' '{print $4}')
+            UDID=$(xcrun xctrace list devices 2>&1 | grep "$IOS_DEVICE Simulator ($IOS_VERSION)" | awk -F'[()]' '{print $4}')
             xcrun simctl boot "$UDID"
       - run_lane:
           lane: unit_test
