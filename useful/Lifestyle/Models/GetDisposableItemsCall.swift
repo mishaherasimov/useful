@@ -19,15 +19,15 @@ extension GetDisposableItemsCall: APIParser {
 extension GetDisposableItemsCall: APIRequest {
 
     var method: HTTPMethod {
-        return .get
+        .get
     }
 
     var url: URL {
-        return formatPath(format: "disposables.json")
+        formatPath(format: "disposables.json")
     }
-    
+
     var parameters: [String: Any]? {
-        return ["orderBy": "\"week\"", "equalTo": week]
+        ["orderBy": "\"week\"", "equalTo": week]
     }
 }
 

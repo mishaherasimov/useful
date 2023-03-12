@@ -9,7 +9,7 @@
 import Foundation
 
 public enum APIError {
-    
+
     case decodingError(Error?)
     case unknown(Error?)
     case requestError(statusCode: Int)
@@ -17,11 +17,11 @@ public enum APIError {
 
 extension APIError: CustomStringConvertible {
     public var description: String {
-        
+
         switch self {
-        case let .requestError(statusCode):
+        case .requestError(let statusCode):
             return "Request error with statusCode: \(statusCode)"
-        case let .decodingError(error):
+        case .decodingError(let error):
             return "Decoding error: \(String(describing: error))"
         case .unknown:
             return "Unable to connect. Please try again later."

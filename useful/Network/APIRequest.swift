@@ -22,14 +22,14 @@ protocol APIRequest: URLRequestProvider {
 }
 
 extension APIRequest {
-    var parameters: [String: Any]? { return nil }
-    var headers: HTTPHeaders? { return nil }
+    var parameters: [String: Any]? { nil }
+    var headers: HTTPHeaders? { nil }
 }
 
 extension APIRequest {
-    
+
     var urlRequest: URLRequest {
-        
+
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30)
         request.httpMethod = method.rawValue
 
@@ -68,9 +68,9 @@ extension APIRequest {
 }
 
 extension APIRequest {
-    
+
     func formatPath(format: String, _ arguments: CVarArg...) -> Foundation.URL {
-        
+
         let formattedPath = String(format: format, arguments: arguments)
         let url = APIClient.baseUrl.appendingPathComponent(formattedPath)
         return url

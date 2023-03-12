@@ -6,47 +6,47 @@
 //  Copyright © 2020 Mykhailo Herasimov. All rights reserved.
 //
 
-import UIKit
 import Lottie
+import UIKit
 
 class LoaderView: UIView {
-    
+
     static let shared = LoaderView()
-    
-    private let darkAnimation = Animation.named("loading-dark")
-    private let lightAnimation = Animation.named("loading")
-    
+
+    private let darkAnimation = LottieAnimation.named("loading-dark")
+    private let lightAnimation = LottieAnimation.named("loading")
+
     private var sideConstraints: [NSLayoutConstraint] = []
-    private let indicator: AnimationView = {
-        let view = AnimationView()
+    private let indicator: LottieAnimationView = {
+        let view = LottieAnimationView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.loopMode = .loop
         return view
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
     }
-    
-    required init?(coder: NSCoder) {
+
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func configureUI() {
         translatesAutoresizingMaskIntoConstraints = false
-        
+
         let blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(blurEffectView)
         NSLayoutConstraint.snap(blurEffectView, to: self)
-        
+
         addSubview(indicator)
         NSLayoutConstraint.size(view: indicator, attributes: [.height(value: 250), .width(value: 250)])
         NSLayoutConstraint.center(indicator, in: self)
     }
-    
+
     func start(in view: UIView, configuration: (UIView) -> Void) {
         guard superview == nil else { return }
         configuration(self)
@@ -56,7 +56,7 @@ class LoaderView: UIView {
         indicator.animation = UITraitCollection.current.userInterfaceStyle == .dark ? darkAnimation : lightAnimation
         indicator.play()
     }
-    
+
     func stop() {
         indicator.stop()
         removeConstraints(sideConstraints)

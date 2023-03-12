@@ -9,16 +9,16 @@
 import UIKit
 
 struct DisposableItem: Hashable, Equatable, Decodable {
-    
+
     let name: String
     let imageURL: String
     let imageURLDark: String
     let isCompleted: Bool?
-    
+
     init() {
-        self.name = .empty
-        self.imageURL = .empty
-        self.isCompleted = nil
-        self.imageURLDark = .empty
+        name = .empty
+        imageURL = .empty
+        isCompleted = nil
+        imageURLDark = .empty
     }
 }

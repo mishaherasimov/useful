@@ -16,7 +16,7 @@ enum LoadingType {
     case loadNew
 }
 
-enum LoadingState {
+enum LoadingState: Equatable {
 
     case willLoad
     case isLoading
@@ -29,21 +29,6 @@ enum LoadingState {
         case .isLoading, .willLoad:
             return true
         case .failLoading, .didLoad:
-            return false
-        }
-    }
-}
-
-extension LoadingState: Equatable {
-
-    static func == (lhs: LoadingState, rhs: LoadingState) -> Bool {
-        switch (lhs, rhs) {
-        case (.willLoad, .willLoad),
-             (.isLoading, .isLoading),
-             (.failLoading, .failLoading),
-             (.didLoad, .didLoad):
-            return true
-        default:
             return false
         }
     }

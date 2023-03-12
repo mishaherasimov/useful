@@ -11,28 +11,32 @@ import Lottie
 import UIKit
 
 struct CustomIndicator: Indicator {
-    
-    let indicator: AnimationView = {
-        let view = AnimationView(name: UITraitCollection.current.userInterfaceStyle == .dark ? "image-loading-dark" : "image-loading")
+
+    let indicator: LottieAnimationView = {
+        let view = LottieAnimationView(
+            name: UITraitCollection.current.userInterfaceStyle == .dark
+                ? "image-loading-dark"
+                : "image-loading"
+        )
         view.loopMode = .loop
         return view
     }()
-    
+
     public func startAnimatingView() {
         indicator.isHidden = false
         indicator.play()
     }
-    
+
     public func stopAnimatingView() {
         indicator.stop()
         indicator.isHidden = true
     }
-    
+
     public var view: IndicatorView {
-        return indicator
+        indicator
     }
-    
-    public func sizeStrategy(in imageView: KFCrossPlatformImageView) -> IndicatorSizeStrategy {
-        return .size(.init(width: 100, height: 100))
+
+    public func sizeStrategy(in _: KFCrossPlatformImageView) -> IndicatorSizeStrategy {
+        .size(.init(width: 100, height: 100))
     }
 }

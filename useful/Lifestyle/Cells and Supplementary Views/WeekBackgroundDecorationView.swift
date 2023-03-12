@@ -9,16 +9,16 @@
 import UIKit
 
 class WeekBackgroundDecorationView: UICollectionReusableView {
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
     }
-    
-    required init?(coder: NSCoder) {
+
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func configureUI() {
         backgroundColor = UIColor.white.withAlphaComponent(0.2)
         layer.cornerRadius = 16
