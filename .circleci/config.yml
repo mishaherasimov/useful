@@ -70,6 +70,9 @@ commands:
           name: Install gems
           command: bundle check || bundle install --path vendor/bundle
       - save_all_cache
+      - add_ssh_keys:
+          fingerprints:
+            - "65:6b:44:21:5a:95:77:67:2c:64:ea:02:3f:e3:f6:a1"
       - run:
           name: "Run Fastlane's lane"
           command: bundle exec fastlane << parameters.lane >>
