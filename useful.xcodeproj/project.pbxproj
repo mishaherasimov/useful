@@ -365,6 +365,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				92AECFCD29B5BF8B0088EB38 /* PBXTargetDependency */,
 				8433FD5B245635E500C301D3 /* PBXTargetDependency */,
 			);
 			name = usefulTests;
