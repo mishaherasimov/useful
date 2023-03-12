@@ -78,6 +78,14 @@ Create a new tag and send it to the remote to trigger the release lane on CI
 
 Build the app and run unit tests. Scan
 
+### ios print_tag
+
+```sh
+[bundle exec] fastlane ios print_tag
+```
+
+
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

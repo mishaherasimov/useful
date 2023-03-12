@@ -16,6 +16,12 @@ executors:
       LANG: en_US.UTF-8
 
 jobs:
+  test_flight:
+    executor: ios
+    steps:
+      - run_lane:
+          lane: upload_for_testing
+
   unit_test:
     executor: ios
     environment:
@@ -72,6 +78,13 @@ workflows:
   run_unit_tests:
     jobs:
       - unit_test
-        # filters:
-        #   branches:
-        #     only: develop
+          filters:
+            branches:
+              only: 
+                - develop
+  upload_test_flight_build:
+    jobs:
+      - test_flight
+          filters:
+            tags:
+              only: /^v\d+.\d+.\d+_\d+/

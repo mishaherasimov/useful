@@ -51,16 +51,20 @@ platform :ios do
     lane :upload_for_testing do
         build
 
+        app_store_connect_api_key
+
         upload_to_testflight
     end
 
     desc "Create a new tag and send it to the remote to trigger the release lane on CI"
-    lane :release_to_app_store do
+    lane :prepare_new_build do
         ensure_git_status_clean
         ensure_git_branch
 
         add_git_tag(tag: new_tag)
         push_git_tags
+
+        ensure_git_status_clean
     end
 
     # Testing
