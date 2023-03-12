@@ -52,7 +52,6 @@ commands:
           paths:
             - vendor/bundle
 
-
   run_lane:
     description: "Run specifc lane using Fastlane"
     parameters:
@@ -73,6 +72,6 @@ workflows:
   run_unit_tests:
     jobs:
       - unit_test
-          filters:
-            branches:
-              only: develop
+        # filters:
+        #   branches:
+        #     only: develop
