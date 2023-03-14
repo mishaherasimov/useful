@@ -23,4 +23,4 @@ CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Distribution
 // error. Use in conjunction with [DEVELOPMENT_TEAM] to fully specify provisioning
 // profile.
 
-PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*] = match AppStore com.untitled.useful
+PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*] = match AdHoc com.untitled.useful
