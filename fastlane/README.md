@@ -21,6 +21,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Create an app on the app store connect. Produce
 
+### version
+
+```sh
+[bundle exec] fastlane version
+```
+
+Print current tag, version + build
+
 ### bump_version
 
 ```sh
@@ -32,6 +40,14 @@ Increments build number and marketing version
 To update marketing version provide `include_marketing` option (e.g. include_marketing:true)
 
 To update specific semver item provide `type` option (e.g. type:major)
+
+### prepare_new_build
+
+```sh
+[bundle exec] fastlane prepare_new_build
+```
+
+Create a new tag and send it to the remote to trigger the release lane on CI
 
 ----
 
@@ -62,13 +78,13 @@ Build and sign the app. Gym
 
 Build and upload the app to TestFlight. Pilot
 
-### ios prepare_new_build
+### ios firebase
 
 ```sh
-[bundle exec] fastlane ios prepare_new_build
+[bundle exec] fastlane ios firebase
 ```
 
-Create a new tag and send it to the remote to trigger the release lane on CI
+Prepare Adhoc build and send to Firebase
 
 ### ios unit_test
 
