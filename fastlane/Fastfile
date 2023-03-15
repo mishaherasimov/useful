@@ -47,7 +47,7 @@ platform :ios do
     before_all do |lane|
         Dotenv.load('.env.ios')
 
-        if lane == 'firebase' then
+        if lane == :firebase then
             Dotenv.load('.env.adhoc')
         else
             Dotenv.load('.env.release')
