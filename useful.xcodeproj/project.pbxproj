@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -425,7 +425,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8433FD62245635E500C301D3 /* Build configuration list for PBXNativeTarget "useful" */;
 			buildPhases = (
-				9267C85629C15E300024A220 /* ShellScript */,
 				8433FD3F245635E400C301D3 /* Sources */,
 				8433FD40245635E400C301D3 /* Frameworks */,
 				8433FD41245635E400C301D3 /* Resources */,
@@ -530,28 +529,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		9267C85629C15E300024A220 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo \"🇺🇦 ${FIREBASE_GOOGLE_API_ID}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8433FD3F245635E400C301D3 /* Sources */ = {
