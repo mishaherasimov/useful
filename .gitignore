@@ -100,3 +100,6 @@ iOSInjectionProject/
 ## Credentials
 **/app-store-connect-key.json
 *.secret
+
+## Services
+**/firebase.xcconfig
