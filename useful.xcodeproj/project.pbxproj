@@ -122,6 +122,7 @@
 		84FECEF62458A50500E3D5E6 /* LifestyleStructurePattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestyleStructurePattern.swift; sourceTree = "<group>"; };
 		84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestylePresenter.swift; sourceTree = "<group>"; };
 		84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBar.swift; sourceTree = "<group>"; };
+		9267C84F29C155370024A220 /* Project-Adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Adhoc.xcconfig"; sourceTree = "<group>"; };
 		92769962299F308300EA4EF3 /* mutate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mutate.swift; sourceTree = "<group>"; };
 		92AE5FF129B1B9E0001D5253 /* SourceCode */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SourceCode; path = packages/SourceCode; sourceTree = "<group>"; };
 		92E3773629BEB92200BD6015 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -226,6 +227,7 @@
 		8433FD45245635E400C301D3 /* useful */ = {
 			isa = PBXGroup;
 			children = (
+				92F14FAE29C046900065A5A3 /* configs */,
 				8433FD46245635E400C301D3 /* AppDelegate.swift */,
 				8433FD48245635E400C301D3 /* SceneDelegate.swift */,
 				84FECED62457845F00E3D5E6 /* Lifestyle */,
@@ -244,6 +246,7 @@
 		8433FD5C245635E500C301D3 /* usefulTests */ = {
 			isa = PBXGroup;
 			children = (
+				92F14FB229C046900065A5A3 /* configs */,
 				8433FD5D245635E500C301D3 /* usefulTests.swift */,
 				8433FD5F245635E500C301D3 /* Info.plist */,
 			);
@@ -332,6 +335,37 @@
 			path = Controls;
 			sourceTree = "<group>";
 		};
+		9267C85029C156580024A220 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				92F14FAD29C046900065A5A3 /* Project-Shared.xcconfig */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		9267C85129C156AA0024A220 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				92F14FB029C046900065A5A3 /* useful-Shared.xcconfig */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		9267C85229C156CC0024A220 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				92F14FB429C046900065A5A3 /* usefulTests-Shared.xcconfig */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		9267C85329C159A30024A220 /* services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = services;
+			sourceTree = "<group>";
+		};
 		92769961299F306D00EA4EF3 /* FreeFunctions */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,35 +385,35 @@
 		92F14FAB29C046900065A5A3 /* configs */ = {
 			isa = PBXGroup;
 			children = (
+				9267C84F29C155370024A220 /* Project-Adhoc.xcconfig */,
 				92F14FAC29C046900065A5A3 /* Project-Release.xcconfig */,
-				92F14FAD29C046900065A5A3 /* Project-Shared.xcconfig */,
 				92F14FB629C046900065A5A3 /* Project-Debug.xcconfig */,
-				92F14FAE29C046900065A5A3 /* useful */,
-				92F14FB229C046900065A5A3 /* usefulTests */,
+				9267C85029C156580024A220 /* Shared */,
 			);
 			path = configs;
 			sourceTree = "<group>";
 		};
-		92F14FAE29C046900065A5A3 /* useful */ = {
+		92F14FAE29C046900065A5A3 /* configs */ = {
 			isa = PBXGroup;
 			children = (
+				9267C85329C159A30024A220 /* services */,
 				92F14FBA29C047F90065A5A3 /* useful-Adhoc.xcconfig */,
 				92F14FAF29C046900065A5A3 /* useful-Release.xcconfig */,
-				92F14FB029C046900065A5A3 /* useful-Shared.xcconfig */,
 				92F14FB129C046900065A5A3 /* useful-Debug.xcconfig */,
+				9267C85129C156AA0024A220 /* Shared */,
 			);
-			path = useful;
+			path = configs;
 			sourceTree = "<group>";
 		};
-		92F14FB229C046900065A5A3 /* usefulTests */ = {
+		92F14FB229C046900065A5A3 /* configs */ = {
 			isa = PBXGroup;
 			children = (
 				92F14FBB29C0480F0065A5A3 /* usefulTests-Adhoc.xcconfig */,
 				92F14FB329C046900065A5A3 /* usefulTests-Release.xcconfig */,
-				92F14FB429C046900065A5A3 /* usefulTests-Shared.xcconfig */,
 				92F14FB529C046900065A5A3 /* usefulTests-Debug.xcconfig */,
+				9267C85229C156CC0024A220 /* Shared */,
 			);
-			path = usefulTests;
+			path = configs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -701,6 +735,7 @@
 			baseConfigurationReference = 92F14FB129C046900065A5A3 /* useful-Debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				MARKETING_VERSION = "${MARKETING_VERSION}";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 			};
@@ -711,6 +746,7 @@
 			baseConfigurationReference = 92F14FAF29C046900065A5A3 /* useful-Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				MARKETING_VERSION = "${MARKETING_VERSION}";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 			};
@@ -732,7 +768,7 @@
 		};
 		92F14FB729C0476C0065A5A3 /* Adhoc */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 92F14FAC29C046900065A5A3 /* Project-Release.xcconfig */;
+			baseConfigurationReference = 9267C84F29C155370024A220 /* Project-Adhoc.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
