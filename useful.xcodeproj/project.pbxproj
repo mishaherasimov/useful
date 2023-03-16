@@ -57,8 +57,6 @@
 		84FECF002459F53200E3D5E6 /* CalendarBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */; };
 		92769963299F308300EA4EF3 /* mutate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92769962299F308300EA4EF3 /* mutate.swift */; };
 		92E3773729BEB92200BD6015 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 92E3773629BEB92200BD6015 /* GoogleService-Info.plist */; };
-		92E3773A29BEBA2D00BD6015 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 92E3773929BEBA2D00BD6015 /* FirebaseAnalyticsWithoutAdIdSupport */; };
-		92E3773C29BEBA2D00BD6015 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 92E3773B29BEBA2D00BD6015 /* FirebaseAppDistribution-Beta */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -145,9 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				840AF255246125160062DBF9 /* Kingfisher in Frameworks */,
-				92E3773A29BEBA2D00BD6015 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				840AF25824612D990062DBF9 /* Lottie in Frameworks */,
-				92E3773C29BEBA2D00BD6015 /* FirebaseAppDistribution-Beta in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,8 +424,6 @@
 			packageProductDependencies = (
 				840AF254246125160062DBF9 /* Kingfisher */,
 				840AF25724612D990062DBF9 /* Lottie */,
-				92E3773929BEBA2D00BD6015 /* FirebaseAnalyticsWithoutAdIdSupport */,
-				92E3773B29BEBA2D00BD6015 /* FirebaseAppDistribution-Beta */,
 			);
 			productName = useful;
 			productReference = 8433FD43245635E400C301D3 /* Useful.app */;
@@ -484,7 +478,6 @@
 			packageReferences = (
 				840AF253246125160062DBF9 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				840AF25624612D990062DBF9 /* XCRemoteSwiftPackageReference "lottie-ios" */,
-				92E3773829BEBA2D00BD6015 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 8433FD44245635E400C301D3 /* Products */;
 			projectDirPath = "";
@@ -884,14 +877,6 @@
 				version = 4.1.3;
 			};
 		};
-		92E3773829BEBA2D00BD6015 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = exactVersion;
-				version = 9.6.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -908,16 +893,6 @@
 		92AECFCE29B5BF9C0088EB38 /* SourceCodeLinter */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "plugin:SourceCodeLinter";
-		};
-		92E3773929BEBA2D00BD6015 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 92E3773829BEBA2D00BD6015 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsWithoutAdIdSupport;
-		};
-		92E3773B29BEBA2D00BD6015 /* FirebaseAppDistribution-Beta */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 92E3773829BEBA2D00BD6015 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseAppDistribution-Beta";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
