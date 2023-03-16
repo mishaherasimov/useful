@@ -5,8 +5,6 @@
 // https://buildsettingextractor.com
 //
 
-#include "services/firebase.xcconfig"
-
 // Primary App Icon Set Name
 // 
 // Name of an app icon set for the target's default app icon. The contents will be merged
