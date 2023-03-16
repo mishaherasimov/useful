@@ -83,7 +83,9 @@ platform :ios do
     lane :firebase do
         build
 
-        firebase_app_distribution
+        firebase_app_distribution(
+            debug: true
+        )
     end
 
     # Testing

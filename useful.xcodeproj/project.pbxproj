@@ -123,7 +123,6 @@
 		84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestylePresenter.swift; sourceTree = "<group>"; };
 		84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBar.swift; sourceTree = "<group>"; };
 		9267C84F29C155370024A220 /* Project-Adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Adhoc.xcconfig"; sourceTree = "<group>"; };
-		9267C85429C15A350024A220 /* firebase.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = firebase.xcconfig; sourceTree = "<group>"; };
 		92769962299F308300EA4EF3 /* mutate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mutate.swift; sourceTree = "<group>"; };
 		92AE5FF129B1B9E0001D5253 /* SourceCode */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SourceCode; path = packages/SourceCode; sourceTree = "<group>"; };
 		92E3773629BEB92200BD6015 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -360,14 +359,6 @@
 			name = Shared;
 			sourceTree = "<group>";
 		};
-		9267C85329C159A30024A220 /* services */ = {
-			isa = PBXGroup;
-			children = (
-				9267C85429C15A350024A220 /* firebase.xcconfig */,
-			);
-			path = services;
-			sourceTree = "<group>";
-		};
 		92769961299F306D00EA4EF3 /* FreeFunctions */ = {
 			isa = PBXGroup;
 			children = (
@@ -398,7 +389,6 @@
 		92F14FAE29C046900065A5A3 /* configs */ = {
 			isa = PBXGroup;
 			children = (
-				9267C85329C159A30024A220 /* services */,
 				92F14FBA29C047F90065A5A3 /* useful-Adhoc.xcconfig */,
 				92F14FAF29C046900065A5A3 /* useful-Release.xcconfig */,
 				92F14FB129C046900065A5A3 /* useful-Debug.xcconfig */,
