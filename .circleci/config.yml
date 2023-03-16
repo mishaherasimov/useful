@@ -15,6 +15,11 @@ executors:
       FL_OUTPUT_DIR: output
       LANG: en_US.UTF-8
 
+parameters:
+  firebase_beta:
+    type: boolean
+    default: false
+
 jobs:
   firebase_distribution:
     executor: ios
@@ -84,7 +89,8 @@ commands:
           command: bundle exec fastlane << parameters.lane >>
 
 workflows:
-  when: << pipeline.parameters.firebase >>
+  upload_adhoc_build:
+    when: << pipeline.parameters.firebase_beta >>
     jobs:
       - firebase_distribution:
           context: google_firebase
