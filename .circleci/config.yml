@@ -9,13 +9,25 @@ executors:
   ios:
     macos:
       xcode: 14.2.0
+    resource_class: macos.x86.medium.gen2
     working_directory: /Users/distiller/project
     shell: /bin/bash --login -o pipefail
     environment:
       FL_OUTPUT_DIR: output
       LANG: en_US.UTF-8
 
+parameters:
+  firebase_beta:
+    type: boolean
+    default: false
+
 jobs:
+  firebase_distribution:
+    executor: ios
+    steps:
+      - run_lane:
+          lane: firebase
+
   test_flight:
     executor: ios
     steps:
@@ -78,6 +90,17 @@ commands:
           command: bundle exec fastlane << parameters.lane >>
 
 workflows:
+  upload_adhoc_build:
+    when: << pipeline.parameters.firebase_beta >>
+    jobs:
+      - firebase_distribution:
+          context: google_firebase
+          filters:
+            branches:
+              ignore:
+                - develop
+                - master
+
   run_unit_tests:
     jobs:
       - unit_test:

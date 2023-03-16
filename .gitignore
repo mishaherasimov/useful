@@ -100,3 +100,10 @@ iOSInjectionProject/
 ## Credentials
 **/app-store-connect-key.json
 *.secret
+
+## Services
+useful/GoogleService-Info.plist
+
+
+### CirleCI ###
+output/

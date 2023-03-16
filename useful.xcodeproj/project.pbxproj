@@ -119,8 +119,20 @@
 		84FECEF62458A50500E3D5E6 /* LifestyleStructurePattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestyleStructurePattern.swift; sourceTree = "<group>"; };
 		84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestylePresenter.swift; sourceTree = "<group>"; };
 		84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBar.swift; sourceTree = "<group>"; };
+		9267C84F29C155370024A220 /* Project-Adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Adhoc.xcconfig"; sourceTree = "<group>"; };
 		92769962299F308300EA4EF3 /* mutate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mutate.swift; sourceTree = "<group>"; };
 		92AE5FF129B1B9E0001D5253 /* SourceCode */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SourceCode; path = packages/SourceCode; sourceTree = "<group>"; };
+		92F14FAC29C046900065A5A3 /* Project-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Release.xcconfig"; sourceTree = "<group>"; };
+		92F14FAD29C046900065A5A3 /* Project-Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Shared.xcconfig"; sourceTree = "<group>"; };
+		92F14FAF29C046900065A5A3 /* useful-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "useful-Release.xcconfig"; sourceTree = "<group>"; };
+		92F14FB029C046900065A5A3 /* useful-Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "useful-Shared.xcconfig"; sourceTree = "<group>"; };
+		92F14FB129C046900065A5A3 /* useful-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "useful-Debug.xcconfig"; sourceTree = "<group>"; };
+		92F14FB329C046900065A5A3 /* usefulTests-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "usefulTests-Release.xcconfig"; sourceTree = "<group>"; };
+		92F14FB429C046900065A5A3 /* usefulTests-Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "usefulTests-Shared.xcconfig"; sourceTree = "<group>"; };
+		92F14FB529C046900065A5A3 /* usefulTests-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "usefulTests-Debug.xcconfig"; sourceTree = "<group>"; };
+		92F14FB629C046900065A5A3 /* Project-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Debug.xcconfig"; sourceTree = "<group>"; };
+		92F14FBA29C047F90065A5A3 /* useful-Adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "useful-Adhoc.xcconfig"; sourceTree = "<group>"; };
+		92F14FBB29C0480F0065A5A3 /* usefulTests-Adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "usefulTests-Adhoc.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				92AE5FF029B1B9E0001D5253 /* Packages */,
+				92F14FAB29C046900065A5A3 /* configs */,
 				8433FD45245635E400C301D3 /* useful */,
 				8433FD5C245635E500C301D3 /* usefulTests */,
 				8433FD44245635E400C301D3 /* Products */,
@@ -208,6 +221,7 @@
 		8433FD45245635E400C301D3 /* useful */ = {
 			isa = PBXGroup;
 			children = (
+				92F14FAE29C046900065A5A3 /* configs */,
 				8433FD46245635E400C301D3 /* AppDelegate.swift */,
 				8433FD48245635E400C301D3 /* SceneDelegate.swift */,
 				84FECED62457845F00E3D5E6 /* Lifestyle */,
@@ -225,6 +239,7 @@
 		8433FD5C245635E500C301D3 /* usefulTests */ = {
 			isa = PBXGroup;
 			children = (
+				92F14FB229C046900065A5A3 /* configs */,
 				8433FD5D245635E500C301D3 /* usefulTests.swift */,
 				8433FD5F245635E500C301D3 /* Info.plist */,
 			);
@@ -313,6 +328,30 @@
 			path = Controls;
 			sourceTree = "<group>";
 		};
+		9267C85029C156580024A220 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				92F14FAD29C046900065A5A3 /* Project-Shared.xcconfig */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		9267C85129C156AA0024A220 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				92F14FB029C046900065A5A3 /* useful-Shared.xcconfig */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		9267C85229C156CC0024A220 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				92F14FB429C046900065A5A3 /* usefulTests-Shared.xcconfig */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
 		92769961299F306D00EA4EF3 /* FreeFunctions */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,6 +366,39 @@
 				92AE5FF129B1B9E0001D5253 /* SourceCode */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		92F14FAB29C046900065A5A3 /* configs */ = {
+			isa = PBXGroup;
+			children = (
+				9267C84F29C155370024A220 /* Project-Adhoc.xcconfig */,
+				92F14FAC29C046900065A5A3 /* Project-Release.xcconfig */,
+				92F14FB629C046900065A5A3 /* Project-Debug.xcconfig */,
+				9267C85029C156580024A220 /* Shared */,
+			);
+			path = configs;
+			sourceTree = "<group>";
+		};
+		92F14FAE29C046900065A5A3 /* configs */ = {
+			isa = PBXGroup;
+			children = (
+				92F14FBA29C047F90065A5A3 /* useful-Adhoc.xcconfig */,
+				92F14FAF29C046900065A5A3 /* useful-Release.xcconfig */,
+				92F14FB129C046900065A5A3 /* useful-Debug.xcconfig */,
+				9267C85129C156AA0024A220 /* Shared */,
+			);
+			path = configs;
+			sourceTree = "<group>";
+		};
+		92F14FB229C046900065A5A3 /* configs */ = {
+			isa = PBXGroup;
+			children = (
+				92F14FBB29C0480F0065A5A3 /* usefulTests-Adhoc.xcconfig */,
+				92F14FB329C046900065A5A3 /* usefulTests-Release.xcconfig */,
+				92F14FB529C046900065A5A3 /* usefulTests-Debug.xcconfig */,
+				9267C85229C156CC0024A220 /* Shared */,
+			);
+			path = configs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -365,7 +437,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				92AECFCD29B5BF8B0088EB38 /* PBXTargetDependency */,
 				8433FD5B245635E500C301D3 /* PBXTargetDependency */,
 			);
 			name = usefulTests;
@@ -522,6 +593,7 @@
 /* Begin XCBuildConfiguration section */
 		8433FD60245635E500C301D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92F14FB629C046900065A5A3 /* Project-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -578,11 +650,13 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
 		8433FD61245635E500C301D3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92F14FAC29C046900065A5A3 /* Project-Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -632,123 +706,120 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		8433FD63245635E500C301D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92F14FB129C046900065A5A3 /* useful-Debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YV7R9K2K52;
-				INFOPLIST_FILE = useful/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "useful guide";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = "$(MARKETING_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.untitled.useful;
-				PRODUCT_NAME = Useful;
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development com.untitled.useful";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				MARKETING_VERSION = "${MARKETING_VERSION}";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		8433FD64245635E500C301D3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92F14FAF29C046900065A5A3 /* useful-Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YV7R9K2K52;
-				INFOPLIST_FILE = useful/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "useful guide";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = "$(MARKETING_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.untitled.useful;
-				PRODUCT_NAME = Useful;
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore com.untitled.useful";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				MARKETING_VERSION = "${MARKETING_VERSION}";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 		8433FD66245635E500C301D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92F14FB529C046900065A5A3 /* usefulTests-Debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YV7R9K2K52;
-				INFOPLIST_FILE = usefulTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.herasimov.usefulTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Useful.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Useful";
 			};
 			name = Debug;
 		};
 		8433FD67245635E500C301D3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92F14FB329C046900065A5A3 /* usefulTests-Release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YV7R9K2K52;
-				INFOPLIST_FILE = usefulTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.herasimov.usefulTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Useful.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Useful";
 			};
 			name = Release;
+		};
+		92F14FB729C0476C0065A5A3 /* Adhoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9267C84F29C155370024A220 /* Project-Adhoc.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = "";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Adhoc;
+		};
+		92F14FB829C0476C0065A5A3 /* Adhoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92F14FBA29C047F90065A5A3 /* useful-Adhoc.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+			};
+			name = Adhoc;
+		};
+		92F14FB929C0476C0065A5A3 /* Adhoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92F14FBB29C0480F0065A5A3 /* usefulTests-Adhoc.xcconfig */;
+			buildSettings = {
+			};
+			name = Adhoc;
 		};
 /* End XCBuildConfiguration section */
 
@@ -758,27 +829,30 @@
 			buildConfigurations = (
 				8433FD60245635E500C301D3 /* Debug */,
 				8433FD61245635E500C301D3 /* Release */,
+				92F14FB729C0476C0065A5A3 /* Adhoc */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		8433FD62245635E500C301D3 /* Build configuration list for PBXNativeTarget "useful" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8433FD63245635E500C301D3 /* Debug */,
 				8433FD64245635E500C301D3 /* Release */,
+				92F14FB829C0476C0065A5A3 /* Adhoc */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		8433FD65245635E500C301D3 /* Build configuration list for PBXNativeTarget "usefulTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8433FD66245635E500C301D3 /* Debug */,
 				8433FD67245635E500C301D3 /* Release */,
+				92F14FB929C0476C0065A5A3 /* Adhoc */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
