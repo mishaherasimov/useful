@@ -9,6 +9,7 @@ executors:
   ios:
     macos:
       xcode: 14.2.0
+    resource_class: macos.x86.medium.gen2
     working_directory: /Users/distiller/project
     shell: /bin/bash --login -o pipefail
     environment:
