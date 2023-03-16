@@ -56,7 +56,6 @@
 		84FECEF92458A56700E3D5E6 /* LifestylePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */; };
 		84FECF002459F53200E3D5E6 /* CalendarBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */; };
 		92769963299F308300EA4EF3 /* mutate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92769962299F308300EA4EF3 /* mutate.swift */; };
-		92E3773729BEB92200BD6015 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 92E3773629BEB92200BD6015 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,7 +122,6 @@
 		9267C84F29C155370024A220 /* Project-Adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Adhoc.xcconfig"; sourceTree = "<group>"; };
 		92769962299F308300EA4EF3 /* mutate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mutate.swift; sourceTree = "<group>"; };
 		92AE5FF129B1B9E0001D5253 /* SourceCode */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SourceCode; path = packages/SourceCode; sourceTree = "<group>"; };
-		92E3773629BEB92200BD6015 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		92F14FAC29C046900065A5A3 /* Project-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Release.xcconfig"; sourceTree = "<group>"; };
 		92F14FAD29C046900065A5A3 /* Project-Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Shared.xcconfig"; sourceTree = "<group>"; };
 		92F14FAF29C046900065A5A3 /* useful-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "useful-Release.xcconfig"; sourceTree = "<group>"; };
@@ -231,7 +229,6 @@
 				8433FD4F245635E500C301D3 /* Assets.xcassets */,
 				8433FD51245635E500C301D3 /* LaunchScreen.storyboard */,
 				8433FD54245635E500C301D3 /* Info.plist */,
-				92E3773629BEB92200BD6015 /* GoogleService-Info.plist */,
 				84FECED92457930B00E3D5E6 /* Shared */,
 				840AF25B246130D90062DBF9 /* Animations */,
 				84FECEDC2457973100E3D5E6 /* Extensions */,
@@ -500,7 +497,6 @@
 				8433FD50245635E500C301D3 /* Assets.xcassets in Resources */,
 				84EE06EE2467831F00B3F5EF /* image-loading-dark.json in Resources */,
 				840AF26824630A7E0062DBF9 /* loading.json in Resources */,
-				92E3773729BEB92200BD6015 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
