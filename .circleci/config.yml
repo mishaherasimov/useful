@@ -16,6 +16,12 @@ executors:
       LANG: en_US.UTF-8
 
 jobs:
+  firebase_distribution:
+    executor: ios
+    steps:
+      - run_lane:
+          lane: firebase
+
   test_flight:
     executor: ios
     steps:
@@ -78,6 +84,16 @@ commands:
           command: bundle exec fastlane << parameters.lane >>
 
 workflows:
+  when: << pipeline.parameters.firebase >>
+    jobs:
+      - firebase_distribution:
+          context: google_firebase
+          filters:
+            branches:
+              ignore:
+                - develop
+                - master
+
   run_unit_tests:
     jobs:
       - unit_test:
