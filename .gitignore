@@ -102,4 +102,8 @@ iOSInjectionProject/
 *.secret
 
 ## Services
-**/firebase.xcconfig
+useful/GoogleService-Info.plist
+
+
+### CirleCI ###
+output/
