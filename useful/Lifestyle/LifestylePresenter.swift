@@ -8,7 +8,7 @@
 
 import Foundation
 
-class LifestylePresenter: LifestyleViewPresenter {
+final class LifestylePresenter: LifestyleViewPresenter {
 
     private var currentWeek: (week: Int, date: Date)?
 

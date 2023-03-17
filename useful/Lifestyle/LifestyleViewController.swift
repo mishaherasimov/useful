@@ -9,7 +9,7 @@
 import Lottie
 import UIKit
 
-class LifestyleViewController: UIViewController {
+final class LifestyleViewController: UIViewController {
 
     // MARK: Sizing constants
 
@@ -319,7 +319,7 @@ extension LifestyleViewController {
 
                 let content = self.presenter.disposableItems[indexPath.section]
 
-                // print("The identifider is \(disposableItem) the index path is \(indexPath)")
+                // print("The identifier is \(disposableItem) the index path is \(indexPath)")
 
                 let isLast = disposableItem == self.presenter.disposableItems[indexPath.section].items.last
 

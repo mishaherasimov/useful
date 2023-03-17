@@ -55,6 +55,7 @@
 		84FECEF72458A50500E3D5E6 /* LifestyleStructurePattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF62458A50500E3D5E6 /* LifestyleStructurePattern.swift */; };
 		84FECEF92458A56700E3D5E6 /* LifestylePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEF82458A56700E3D5E6 /* LifestylePresenter.swift */; };
 		84FECF002459F53200E3D5E6 /* CalendarBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEFF2459F53200E3D5E6 /* CalendarBar.swift */; };
+		9229985B29C414E700B3A3D2 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 9229985A29C414E700B3A3D2 /* ComposableArchitecture */; };
 		92769963299F308300EA4EF3 /* mutate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92769962299F308300EA4EF3 /* mutate.swift */; };
 /* End PBXBuildFile section */
 
@@ -130,6 +131,7 @@
 			files = (
 				840AF255246125160062DBF9 /* Kingfisher in Frameworks */,
 				840AF25824612D990062DBF9 /* Lottie in Frameworks */,
+				9229985B29C414E700B3A3D2 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +351,7 @@
 			packageProductDependencies = (
 				840AF254246125160062DBF9 /* Kingfisher */,
 				840AF25724612D990062DBF9 /* Lottie */,
+				9229985A29C414E700B3A3D2 /* ComposableArchitecture */,
 			);
 			productName = useful;
 			productReference = 8433FD43245635E400C301D3 /* Useful.app */;
@@ -404,6 +407,7 @@
 			packageReferences = (
 				840AF253246125160062DBF9 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				840AF25624612D990062DBF9 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				9229985929C414E700B3A3D2 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 8433FD44245635E400C301D3 /* Products */;
 			projectDirPath = "";
@@ -769,6 +773,14 @@
 				version = 4.1.3;
 			};
 		};
+		9229985929C414E700B3A3D2 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = exactVersion;
+				version = 0.52.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -781,6 +793,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 840AF25624612D990062DBF9 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		9229985A29C414E700B3A3D2 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9229985929C414E700B3A3D2 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
 		};
 		92AECFCC29B5BF8B0088EB38 /* SourceCodeLinter */ = {
 			isa = XCSwiftPackageProductDependency;
