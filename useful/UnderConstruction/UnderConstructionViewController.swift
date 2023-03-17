@@ -8,10 +8,11 @@
 
 import UIKit
 
-class UnderConstructionViewController: UIViewController {
-
-    private let closeButtonInsets: UIEdgeInsets = .create(top: 45, right: 32)
-    private let closeButtonSize: CGFloat = 34
+final class UnderConstructionViewController: UIViewController {
+    private enum Constants {
+        static let closeButtonInsets: UIEdgeInsets = .create(top: 45, right: 32)
+        static let closeButtonSize: CGFloat = 34
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,21 +51,25 @@ class UnderConstructionViewController: UIViewController {
     }
 
     private func configureCloseButton() {
+        let closeButton = mutate(UIButton()) {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.addTarget(self, action: #selector(close(_:)), for: .touchUpInside)
+            $0.tintColor = .white
 
-        let closeButton = UIButton()
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.addTarget(self, action: #selector(close(_:)), for: .touchUpInside)
-        closeButton.tintColor = .white
-
-        let configuration = UIImage.SymbolConfiguration(pointSize: closeButtonSize)
-        closeButton.setImage(UIImage(systemName: "xmark.circle.fill", withConfiguration: configuration), for: .normal)
+            let configuration = UIImage.SymbolConfiguration(pointSize: Constants.closeButtonSize)
+            let image = UIImage(systemName: "xmark.circle.fill", withConfiguration: configuration)
+            $0.setImage(image, for: .normal)
+        }
 
         view.addSubview(closeButton)
         NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: closeButtonInsets.top),
+            closeButton.topAnchor.constraint(
+                equalTo: view.topAnchor,
+                constant: Constants.closeButtonInsets.top
+            ),
             closeButton.trailingAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                constant: -closeButtonInsets.right
+                constant: -Constants.closeButtonInsets.right
             ),
         ])
     }
