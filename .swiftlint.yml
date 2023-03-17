@@ -1,137 +1,82 @@
-disabled_rules: # rule identifiers to exclude from running
-  - identifier_name
-  - todo
-  - line_length
-  - function_parameter_count
-  - private_over_fileprivate
-  - multiple_closures_with_trailing_closure
-  - block_based_kvo
-  - legacy_hashing
-  - unused_setter_value
-  - vertical_parameter_alignment
-  - orphaned_doc_comment
-  - trailing_comma
-  - opening_brace
-  - valid_ibinspectable
-  - nimble_operator
-
 opt_in_rules:
-  - unused_declaration
-  - unused_import
+  - force_cast
   - force_unwrapping
   - empty_count
   - explicit_init
-  - nimble_operator
   - overridden_super_call
+  - void_return
   - private_outlet
   - redundant_nil_coalescing
-  - file_header
   - prohibited_super_call
-  - fatal_error_message
   - implicit_return
+  - fatal_error_message
   - prefer_self_type_over_type_of_self
+  - unused_optional_binding
+  - implicitly_unwrapped_optional
+  - colon
+  - trailing_newline
+  - return_arrow_whitespace
+  - vertical_whitespace
+  - operator_usage_whitespace
+  - legacy_cggeometry_functions
+  - legacy_constant
+  - legacy_constructor
+  - legacy_nsgeometry_functions
+  - valid_ibinspectable
+  - first_where
+  - nesting
+  - trailing_semicolon
+  - custom_rules
+
+disabled_rules:
   - conditional_returns_on_newline
-  - self_binding
+  - identifier_name
+  - todo
+  - function_parameter_count
+  - multiple_closures_with_trailing_closure
+  - unused_setter_value
+  - trailing_comma
+  - opening_brace
+  - line_length
+  - file_header
+  - shorthand_operator
 
 excluded:
-  - Tuist/Dependencies
   - Carthage
   - Pods
-  - "Generated"
-  - "*/Generated"
-  - "*/*/Generated"
-  - "*/*/*/Generated"
-  - "*/*/*/*/Generated"
-  - ".build"
   - "*/.build"
-  - "*/*/.build"
-  - "*/*/*/.build"
-  - "*/*/*/*/.build"
-  - "*/R.generated.swift"
-  - "*/*/R.generated.swift"
-  - "*/*/*/R.generated.swift"
-  - "*/*/*/*/R.generated.swift"
-  - "*Tests/"
-  - "*/*Tests/"
-  - "*/*/*Tests/"
-  - "*/*/*/*Tests/"
-  - "*/*/*/*/*Tests/"
-  - "Tests/"
-  - "*/Tests/"
-  - "*/*/Tests/"
-  - "*/*/*/Tests/"
-  - "*/*/*/*/Tests/"
-  - "Example/"
-  - "*/Example/"
-  - "*/*/Example/"
-  - "*/*/*/Example/"
-  - "*/*/*/*/Example/"
-  - ".spm-sources"
-  - vendor
 
-# parameterized rules can be customized from this configuration file
-cyclomatic_complexity:
-  ignores_case_statements: true
-implicit_return:
-  included: [closure]
-switch_case_alignment:
-  indented_cases: true
-private_outlet:
-  allow_private_set: true
+analyzer_rules:
+  - unused_declaration
+  - unused_import
+
+indentation: 4
+
+nesting:
+  type_level: 2
+empty_count:
+  severity: warning
+force_cast:
+  severity: warning
+trailing_whitespace:
+  ignores_empty_lines: true
+type_body_length:
+  - 500 # warning
+  - 1000 # error
 file_length:
   - 1000 # warning
-  - 9999 # error
-function_body_length:
-  - 100 # warning
-  - 9999 # error
-# parameterized rules are first parameterized as a warning level, then error level.
-trailing_whitespace:
-  ignores_empty_lines: false
-large_tuple:
-  - 4 # warning
-  - 5 # error
-type_body_length:
-  - 550 # warning
-  - 9999 # error
+  - 2000 # error
 type_name:
-  min_length: 2 # only warning
-  max_length: # warning and error
+  min_length: 2
+  max_length:
     warning: 50
     error: 60
-conditional_returns_on_newline:
-  if_only: true
+
 custom_rules:
-  view_with_tag_usage:
-    name: "View With Tag usage"
-    regex: "(viewWithTag)"
+  no_direct_standard_out_logs:
+    name: "Writing log messages directly to standard out is disallowed"
+    regex: "(\\bprint|\\bdebugPrint|\\bdump|Swift\\.print|Swift\\.debugPrint|Swift\\.dump)\\s*\\("
     match_kinds:
       - identifier
-    message: "A Kitten dies everytime you use viewWithTag, do not use viewWithTag"
-    severity: error
-  superview_superview_usage:
-    name: "superview.superview usage"
-    regex: '(superview\?.superview)'
-    match_kinds:
-      - identifier
-    message: "Using superview?.superview is never a good idea, think of other options or ask for help"
-    severity: error
-  no_device_or_bundle_inits:
-    name: "No UIDevice or Bundle inits"
-    regex: '(UIDevice\(\)|Bundle\(\))'
-    match_kinds:
-      - identifier
-    message: "We should never call UIDevice() or Bundle(), use UIDevice.current or Bundle.main/Bundle(for:) instead"
-    severity: error
-  rx_driver_hides_error:
-    name: "Rx driver conversion hides error"
-    regex: 'asDriver\(onErrorJustReturn'
-    message: "Consider if what you are driving should ever fail. It's likely that you are hiding errors, and allowing for undefined application state. Use `asInfallibleDriver` instead."
-  rx_data_source_broken:
-    name: "RxCocoa Data Source Binding"
-    regex: 'rx\.items\(dataSource'
-    message: "This functionality is broken. Consider using updating the datasource directly and attaching it manually. See: https://github.com/ReactiveX/RxSwift/issues/2368"
-  swiftgen_strings:
-    name: "Direct reference to NSLocalizedString"
-    regex: "NSLocalizedString"
-    message: "Use L10n.key instead. If SwiftGen is not available in this module, use RStrings instead"
-    severity: error
+    message: "Don't commit `print(…)`, `debugPrint(…)`, or `dump(…)` as they write to standard out in release. Either log to a dedicated logging system or silence this warning in debug-only scenarios explicitly using `// swiftlint:disable:next no_direct_standard_out_logs`"
+    severity: warning

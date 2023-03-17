@@ -1,0 +1,114 @@
+fastlane_require 'dotenv'
+fastlane_require 'Xcodeproj'
+
+default_platform(:ios)
+
+before_all do
+    Dotenv.load('.env.secret')
+end
+
+desc "Create an app on the app store connect. Produce"
+lane :produce_app do 
+    create_app_online
+end
+
+desc "Print current tag, version + build"
+lane :version do 
+    puts "🍏 Current version is #{new_tag}"
+end
+
+desc "Increments build number and marketing version"
+desc "To update marketing version provide `include_marketing` option (e.g. include_marketing:true)"
+desc "To update specific semver item provide `type` option (e.g. type:major)"
+lane :bump_version do |options|
+    increment_build_number
+
+    if options[:include_marketing]
+        increment_version_number(
+            bump_type:options[:type]
+        )
+    end
+
+    puts "⚙️ The project version was update to: #{new_tag}"
+end
+
+desc "Create a new tag and send it to the remote to trigger the release lane on CI"
+lane :prepare_new_build do
+    ensure_git_status_clean
+    ensure_git_branch
+
+    add_git_tag(tag: new_tag)
+    push_git_tags
+
+    ensure_git_status_clean
+end
+
+platform :ios do
+    before_all do |lane|
+        Dotenv.load('.env.ios')
+
+        if lane == :firebase then
+            Dotenv.load('.env.adhoc')
+        else
+            Dotenv.load('.env.release')
+        end
+
+        if ENV["CIRCLECI"] then
+            setup_circle_ci
+        end
+    end
+
+    desc "Sync and sign certificates. Match"
+    lane :load_codesign do
+        sync_code_signing(readonly: ENV["CI"])
+    end
+
+    desc "Build and sign the app. Gym"
+    lane :build do
+        load_codesign
+
+        build_ios_app
+    end
+
+    desc "Build and upload the app to TestFlight. Pilot"
+    lane :upload_for_testing do
+        build
+
+        app_store_connect_api_key
+
+        upload_to_testflight
+    end
+
+    desc "Prepare Adhoc build and send to Firebase"
+    lane :firebase do
+        build
+
+        firebase_app_distribution
+    end
+
+    # Testing
+
+    desc "Build the app and run unit tests. Scan"
+    lane :unit_test do
+        run_tests
+    end
+end
+
+# Get and return current build number and marketing version 
+def new_tag
+    return "v#{marketing_version}_#{build_number}"
+end
+
+def load_version_config
+    Xcodeproj::Config.new("../useful/configs/useful-Shared.xcconfig")
+end
+
+def build_number
+    cfg = load_version_config
+    return cfg.attributes['CURRENT_PROJECT_VERSION']
+end
+
+def marketing_version
+    cfg = load_version_config
+    return cfg.attributes['MARKETING_VERSION']
+end

@@ -11,29 +11,27 @@ import UIKit
 extension UIImageView {
 
     class func create(image: UIImage? = nil, contentMode: UIView.ContentMode = .scaleAspectFit) -> UIImageView {
-
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = image
-        imageView.contentMode = contentMode
-        return imageView
+        mutate(UIImageView()) {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.image = image
+            $0.contentMode = contentMode
+        }
     }
 }
 
 extension UIView {
 
     class func create(backgroundColor: UIColor?, cornerRadius: CGFloat = 0) -> UIView {
-
-        let view = UIView()
-        view.layer.cornerRadius = cornerRadius
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = backgroundColor ?? .white
-        return view
+        mutate(UIView()) {
+            $0.layer.cornerRadius = cornerRadius
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.backgroundColor = backgroundColor ?? .white
+        }
     }
 
-    func configureRequiredPriorities(for axies: [NSLayoutConstraint.PriorityAxis]) {
+    func configureRequiredPriorities(for axis: [NSLayoutConstraint.PriorityAxis]) {
 
-        axies.forEach {
+        axis.forEach {
 
             switch $0 {
             case .horizontal(let priority), .vertical(let priority):
@@ -54,24 +52,21 @@ extension UILabel {
         textColor: UIColor? = UIColor(collection: .label),
         textAlignment: NSTextAlignment = .left,
         isDynamicallySized: Bool = false,
-        contentPriority axies: [NSLayoutConstraint.PriorityAxis] = []
+        contentPriority axis: [NSLayoutConstraint.PriorityAxis] = []
     )
-        -> UILabel {
-
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.preferredFont(forTextStyle: fontStyle)
-        label.text = text
-        label.numberOfLines = isDynamicallySized ? 0 : 1
-        label.textAlignment = textAlignment
-        label.textColor = textColor
-        label.configureRequiredPriorities(for: axies)
-
-        if let trait = fontTrait {
-            label.font = label.font.withTraits(traits: trait)
+    -> UILabel {
+        mutate(UILabel()) {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.font = UIFont.preferredFont(forTextStyle: fontStyle)
+            $0.text = text
+            $0.numberOfLines = isDynamicallySized ? 0 : 1
+            $0.textAlignment = textAlignment
+            $0.textColor = textColor
+            $0.configureRequiredPriorities(for: axis)
+            if let trait = fontTrait {
+                $0.font = $0.font.withTraits(traits: trait)
+            }
         }
-
-        return label
     }
 }
 
@@ -83,24 +78,23 @@ extension UIStackView {
         distribution: Distribution = .fill,
         alignment: Alignment = .fill
     )
-        -> UIStackView {
-
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = spacing
-        stackView.axis = axis
-        stackView.alignment = alignment
-        stackView.distribution = distribution
-        return stackView
+    -> UIStackView {
+        mutate(UIStackView()) {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.spacing = spacing
+            $0.axis = axis
+            $0.alignment = alignment
+            $0.distribution = distribution
+        }
     }
 
     var items: [UIView] {
+        get {
+            arrangedSubviews
+        }
         set {
             arrangedSubviews.forEach { removeArrangedSubview($0) }
             newValue.forEach { addArrangedSubview($0) }
-        }
-        get {
-            arrangedSubviews
         }
     }
 }
