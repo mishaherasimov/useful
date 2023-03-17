@@ -174,7 +174,7 @@ extension CalendarBar {
         let layout =
             UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
-                guard let self = self, let sectionType = Week(rawValue: sectionIndex) else { return nil }
+                guard let self, let sectionType = Week(rawValue: sectionIndex) else { return nil }
 
                 // --- Item ---
 
@@ -219,6 +219,7 @@ extension CalendarBar {
 }
 
 extension CalendarBar {
+    typealias CalendarDataSource = UICollectionViewDiffableDataSource<Week, Int>
 
     func configureHierarchy() {
 
@@ -234,17 +235,17 @@ extension CalendarBar {
     }
 
     func configureDataSource() {
-
         let calendar = calendarInfo
 
-        dataSource = UICollectionViewDiffableDataSource<Week, Int>(collectionView: collectionView) {
-            (collectionView: UICollectionView, indexPath: IndexPath, index: Int) -> UICollectionViewCell? in
-
-            let cell: CalendarItemCell = collectionView.dequeueReusableCell(for: indexPath)
-            if let (days, currentMonth) = calendar {
-                cell.configure(day: days[index], isCurrentMonth: currentMonth.contains(index))
+        dataSource = CalendarDataSource(collectionView: collectionView) {
+            let index = $2
+            return mutate($0.dequeueReusableCell(for: $1) as CalendarItemCell) { cell in
+                guard let (days, currentMonth) = calendar else { return }
+                cell.configure(
+                    day: days[index],
+                    isCurrentMonth: currentMonth.contains(index)
+                )
             }
-            return cell
         }
 
         // Initial data

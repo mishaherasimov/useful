@@ -24,7 +24,7 @@ final class APIClient {
         return url
     }()
 
-    var sessionManager: NetworkSessionManager!
+    let sessionManager: NetworkSessionManager
 
     class func isSuccess(httpStatusCode: Int) -> Bool {
         switch httpStatusCode {

@@ -347,16 +347,16 @@ extension LifestyleViewController {
         )
             -> UICollectionReusableView? in
 
-        guard let self = self else { return nil }
+            guard let self else { return nil }
 
-        let section = self.presenter.disposableItems[indexPath.section].section
-        let supplementaryView: TitleSupplementaryView = collectionView.dequeueReusableSupplementaryView(
-            for: indexPath,
-            kind: kind
-        )
-        supplementaryView.configure(header: self.presenter.header(for: section))
+            let section = self.presenter.disposableItems[indexPath.section].section
+            let supplementaryView: TitleSupplementaryView = collectionView.dequeueReusableSupplementaryView(
+                for: indexPath,
+                kind: kind
+            )
+            supplementaryView.configure(header: self.presenter.header(for: section))
 
-        return supplementaryView
+            return supplementaryView
         }
 
         // Initial data

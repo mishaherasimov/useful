@@ -10,7 +10,7 @@ import Foundation
 
 final class NetworkSessionManager: NSObject {
 
-    var session: URLSession!
+    let session: URLSession
 
     override init() {
         session = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: nil)
