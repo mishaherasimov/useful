@@ -11,3 +11,9 @@ func mutate<T>(_ value: T, _ modifier: (T) -> Void) -> T {
     modifier(value)
     return value
 }
+
+@discardableResult
+func mutate<T>(_ value: inout T, _ modifier: (inout T) -> Void) -> T {
+    modifier(&value)
+    return value
+}

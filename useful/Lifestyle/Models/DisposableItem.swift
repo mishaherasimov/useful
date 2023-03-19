@@ -8,12 +8,20 @@
 
 import UIKit
 
-struct DisposableItem: Hashable, Equatable, Decodable {
+struct DisposableItem: Hashable, Equatable, Codable {
 
+//    let id: UUID = UUID()
     let name: String
     let imageURL: String
     let imageURLDark: String
     let isCompleted: Bool?
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case imageURL
+        case imageURLDark
+        case isCompleted
+    }
 
     init() {
         name = .empty

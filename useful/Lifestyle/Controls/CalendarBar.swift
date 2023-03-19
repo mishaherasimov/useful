@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CalendarBarDelegate: AnyObject {
-    func didSelectWeek(with index: Int, selected date: Date?)
+    func didSelectWeek(with week: CalendarBar.Week, selected date: Date?)
 }
 
 class CalendarBar: UIView {
@@ -292,7 +292,7 @@ extension CalendarBar: UICollectionViewDelegate {
                 break
             }
 
-            delegate?.didSelectWeek(with: indexPath.section, selected: Calendar.gregorian.date(from: components))
+            delegate?.didSelectWeek(with: newSelectedWeek, selected: Calendar.gregorian.date(from: components))
         }
     }
 }

@@ -7,32 +7,28 @@
 //
 
 import Lottie
+import Combine
+import ComposableArchitecture
 import UIKit
 
 final class LifestyleViewController: UIViewController {
+    private let viewStore: ViewStoreOf<LifestyleFeature>
+    private var cancellables: Set<AnyCancellable> = []
 
-    // MARK: Sizing constants
+    init(store: StoreOf<LifestyleFeature>) {
+        self.viewStore = ViewStore(store)
+        super.init(nibName: nil, bundle: nil)
+    }
 
-    private let estimatedHeaderHeight: CGFloat = 54
-    private let estimatedGroupHeight: CGFloat = 186
-    private let sectionInsets = NSDirectionalEdgeInsets(top: 16, leading: 18, bottom: 24, trailing: 20)
-    private let interItemSpacing: CGFloat = 18
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-    /// Top inset for the collection view `calendarBounds.min + 10`
-    private let contentTopInset: CGFloat = 55
-
-    /// Top inset for the calendar bar
-    private var calendarContainerCornerRadius: CGFloat = 20
-    private let calendarInset: CGFloat = -235
-    private let calendarHeight: CGFloat = 280
-    private let titleInsets: UIEdgeInsets = .create(left: 18)
-
-    var presenter: LifestyleViewPresenter!
-    var dataSource: UICollectionViewDiffableDataSource<LifeStyleSection, DisposableItem>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<LifestyleSectionType, DisposableItem>! = nil
 
     // Collection view and related view
 
-    private lazy var eventView = EventView(contentVerticalInset: contentTopInset)
+    private lazy var eventView = EventView(contentVerticalInset: Constants.contentTopInset)
     private var eventViewConstraints: [NSLayoutConstraint] = []
 
     private lazy var refreshControl: UIRefreshControl = mutate(UIRefreshControl()) {
@@ -42,7 +38,7 @@ final class LifestyleViewController: UIViewController {
 
     private lazy var collectionView: UICollectionView =
         mutate(UICollectionView(frame: .zero, collectionViewLayout: createLayout())) {
-            $0.contentInset.top = self.contentTopInset
+            $0.contentInset.top = Constants.contentTopInset
             $0.refreshControl = self.refreshControl
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.register(ItemCell.self)
@@ -79,7 +75,9 @@ final class LifestyleViewController: UIViewController {
         configureDataSource()
         configureCalendarBar()
 
-        presenter.loadItems(isReloading: false, selectedWeek: (calendarBar.selectedWeek.rawValue, Date()))
+        setupBindings()
+
+        viewStore.send(.onViewDidLoad)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -103,43 +101,77 @@ final class LifestyleViewController: UIViewController {
         .lightContent
     }
 
-    // MARK: View logic
+    // MARK: - New Logic
 
-    func refreshDisposableItems(animatingDifferences: Bool) {
+    func setupBindings() {
+        viewStore.publisher
+            .disposableItems
+            .sink { [weak self] in
+                self?.refresh(sections: $0)
+            }
+            .store(in: &cancellables)
 
-        let content = presenter.disposableItems
+        viewStore.publisher
+            .loadInfo
+            .sink { [weak self] in
+                self?.loadingDisposableItems(with: $0)
+            }
+            .store(in: &cancellables)
+    }
 
-        guard !content.isEmpty else {
+    func refresh(sections: [LifestyleSection], animatingDifferences: Bool = true) {
+        guard !sections.isEmpty else {
 
             configureBackgroundView(for: .empty)
             dataSource.apply(
-                NSDiffableDataSourceSnapshot<LifeStyleSection, DisposableItem>(),
+                NSDiffableDataSourceSnapshot<LifestyleSectionType, DisposableItem>(),
                 animatingDifferences: animatingDifferences
             )
             return
         }
 
         collectionView.backgroundView = nil
-        var snapshot = NSDiffableDataSourceSnapshot<LifeStyleSection, DisposableItem>()
-        content.forEach { section, items in
-            snapshot.appendSections([section])
-            snapshot.appendItems(items)
+        var snapshot = NSDiffableDataSourceSnapshot<LifestyleSectionType, DisposableItem>()
+        sections.forEach {
+            snapshot.appendSections([$0.section])
+            snapshot.appendItems($0.items)
         }
 
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
 
+    // MARK: - End New Logic
+
+    private func loadingDisposableItems(with info: LoadInfo) {
+        switch info.state {
+        case .willLoad:
+            guard info.type == .loadNew else { break }
+            LoaderView.shared.start(in: view) { [weak self] in
+                guard let self = self else { return }
+                view.insertSubview($0, aboveSubview: self.collectionView)
+            }
+        case .failLoading:
+            LoaderView.shared.stop()
+            refreshControl.endRefreshing()
+            configureBackgroundView(for: .error)
+        case .didLoad:
+            LoaderView.shared.stop()
+            refreshControl.endRefreshing()
+            refresh(sections: viewStore.disposableItems, animatingDifferences: true)
+        case .isLoading: break
+        }
+    }
+
     @objc
     private func refreshItems(_: UIRefreshControl) {
-
-        presenter.loadItems(isReloading: true, selectedWeek: nil)
+        viewStore.send(.refreshControlTriggered)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
-        refreshDisposableItems(animatingDifferences: false)
+        refresh(sections: viewStore.disposableItems, animatingDifferences: false)
     }
 }
 
@@ -152,7 +184,7 @@ extension LifestyleViewController {
 
         let containerView = UIView.create(
             backgroundColor: UIColor(collection: .primary),
-            cornerRadius: calendarContainerCornerRadius
+            cornerRadius: Constants.calendarContainerCornerRadius
         )
         view.addSubview(containerView)
         let containerConstraints = NSLayoutConstraint.snap(containerView, to: collectionView, for: [.left, .right, .top])
@@ -170,9 +202,11 @@ extension LifestyleViewController {
         NSLayoutConstraint.snap(titleBackgroundView, to: view, for: [.left, .right])
 
         titleBackgroundView.addSubview(titleLabel)
-        NSLayoutConstraint.snap(titleLabel, to: titleBackgroundView, for: [.top, .right, .bottom], with: titleInsets)
-        titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: titleInsets.left)
-            .activate()
+        NSLayoutConstraint.snap(titleLabel, to: titleBackgroundView, for: [.top, .right, .bottom], with: Constants.titleInsets)
+        titleLabel.leadingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+            constant: Constants.titleInsets.left
+        ).activate()
 
         let topHeaderConstraint = titleBackgroundView.topAnchor.constraint(equalTo: collectionView.topAnchor)
         calendarBarHeaderTopConstraint = topHeaderConstraint
@@ -187,15 +221,19 @@ extension LifestyleViewController {
             calendarBar,
             to: containerView,
             for: [.left, .right, .top],
-            sizeAttributes: [.height(value: calendarHeight)],
-            with: .create(top: calendarInset)
+            sizeAttributes: [.height(value: Constants.calendarHeight)],
+            with: .create(top: Constants.calendarInset)
         )
 
         // make container view same height as a calendar bar visible portion
         containerView.bottomAnchor.constraint(equalTo: calendarBar.bottomAnchor).activate(with: .defaultLow)
 
         if let calendarTopConstraint = calendarConstraint[.top] {
-            calendarAnimator = CalendarAnimator(inset: calendarInset, constraint: calendarTopConstraint, calendar: calendarBar)
+            calendarAnimator = CalendarAnimator(
+                inset: Constants.calendarInset,
+                constraint: calendarTopConstraint,
+                calendar: calendarBar
+            )
         }
     }
 
@@ -242,9 +280,7 @@ extension LifestyleViewController {
     func createLayout() -> UICollectionViewLayout {
 
         let layout =
-            UICollectionViewCompositionalLayout { [weak self] (_: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
-                guard let self = self else { return nil }
+            UICollectionViewCompositionalLayout { (_: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
                 // --- Item ---
 
@@ -267,22 +303,22 @@ extension LifestyleViewController {
                 }
                 let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .estimated(self.estimatedGroupHeight)
+                    heightDimension: .estimated(Constants.estimatedGroupHeight)
                 )
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
-                group.interItemSpacing = .fixed(self.interItemSpacing)
+                group.interItemSpacing = .fixed(Constants.interItemSpacing)
 
                 // --- Section ---
 
                 let section = NSCollectionLayoutSection(group: group)
-                section.interGroupSpacing = self.interItemSpacing
-                section.contentInsets = self.sectionInsets
+                section.interGroupSpacing = Constants.interItemSpacing
+                section.contentInsets = Constants.sectionInsets
 
                 // --- Header ---
 
                 let headerSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .estimated(self.estimatedHeaderHeight)
+                    heightDimension: .estimated(Constants.estimatedHeaderHeight)
                 )
                 let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
@@ -299,7 +335,6 @@ extension LifestyleViewController {
 extension LifestyleViewController {
 
     func configureHierarchy() {
-
         collectionView.delegate = self
         view.addSubview(collectionView)
 
@@ -308,20 +343,19 @@ extension LifestyleViewController {
     }
 
     func configureDataSource() {
-
         dataSource = UICollectionViewDiffableDataSource<
-            LifeStyleSection,
+            LifestyleSectionType,
             DisposableItem
         >(collectionView: collectionView) { [weak self]
             (collectionView: UICollectionView, indexPath: IndexPath, disposableItem: DisposableItem) -> UICollectionViewCell? in
 
                 guard let self = self else { return nil }
 
-                let content = self.presenter.disposableItems[indexPath.section]
+                let content = self.viewStore.disposableItems[indexPath.section]
 
                 // print("The identifier is \(disposableItem) the index path is \(indexPath)")
 
-                let isLast = disposableItem == self.presenter.disposableItems[indexPath.section].items.last
+                let isLast = disposableItem == self.viewStore.disposableItems[indexPath.section].items.last
 
                 // If last item in a first section
                 if isLast, content.section == .ongoing {
@@ -349,18 +383,16 @@ extension LifestyleViewController {
 
             guard let self else { return nil }
 
-            let section = self.presenter.disposableItems[indexPath.section].section
+            let section = self.viewStore.disposableItems[indexPath.section].section
             let supplementaryView: TitleSupplementaryView = collectionView.dequeueReusableSupplementaryView(
                 for: indexPath,
                 kind: kind
             )
-            supplementaryView.configure(header: self.presenter.header(for: section))
+
+            supplementaryView.configure(header: ("Test", "Test"))
 
             return supplementaryView
         }
-
-        // Initial data
-        refreshDisposableItems(animatingDifferences: false)
     }
 }
 
@@ -373,8 +405,8 @@ extension LifestyleViewController: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
         // Helps to mimic the behaviour of the stretchy navigation bar
-        let isNegativeDirection = scrollView.contentOffset.y <= -contentTopInset
-        elasticTopInset = isNegativeDirection ? abs(scrollView.contentOffset.y) - contentTopInset : 0
+        let isNegativeDirection = scrollView.contentOffset.y <= -Constants.contentTopInset
+        elasticTopInset = isNegativeDirection ? abs(scrollView.contentOffset.y) - Constants.contentTopInset : 0
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -387,46 +419,42 @@ extension LifestyleViewController: UICollectionViewDelegate {
 extension LifestyleViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
-        presenter.filterDisposableItems(query: searchController.searchBar.text)
+        viewStore.send(.filterQueryChanged(query: searchController.searchBar.text))
     }
 }
 
 extension LifestyleViewController: CalendarBarDelegate {
-    func didSelectWeek(with index: Int, selected date: Date?) {
+    func didSelectWeek(with week: CalendarBar.Week, selected date: Date?) {
         guard let date = date else { return }
 
         calendarAnimator?.closeBar()
-        presenter.loadItems(isReloading: false, selectedWeek: (index, date))
+        viewStore.send(.onSelectedWeek(.init(week, date)))
 
         // Reload header info
         var snapshot = dataSource.snapshot()
-        if presenter.disposableItems.map({ $0.section }).contains(.ongoing) {
+        if viewStore.disposableItems.map(\.section).contains(.ongoing) {
             snapshot.reloadSections([.ongoing])
             dataSource.apply(snapshot)
         }
     }
 }
 
-extension LifestyleViewController: LifestyleView {
+extension LifestyleViewController {
+    private enum Constants {
+        // MARK: Sizing constants
 
-    func loadingDisposableItems(with info: LoadInfo) {
+        static let estimatedHeaderHeight: CGFloat = 54
+        static let estimatedGroupHeight: CGFloat = 186
+        static let sectionInsets = NSDirectionalEdgeInsets(top: 16, leading: 18, bottom: 24, trailing: 20)
+        static let interItemSpacing: CGFloat = 18
 
-        switch info.state {
-        case .willLoad:
-            guard info.type == .loadNew else { break }
-            LoaderView.shared.start(in: view) { [weak self] in
-                guard let self = self else { return }
-                view.insertSubview($0, aboveSubview: self.collectionView)
-            }
-        case .failLoading:
-            LoaderView.shared.stop()
-            refreshControl.endRefreshing()
-            configureBackgroundView(for: .error)
-        case .didLoad:
-            LoaderView.shared.stop()
-            refreshControl.endRefreshing()
-            refreshDisposableItems(animatingDifferences: true)
-        case .isLoading: break
-        }
+        /// Top inset for the collection view `calendarBounds.min + 10`
+        static let contentTopInset: CGFloat = 55
+
+        /// Top inset for the calendar bar
+        static var calendarContainerCornerRadius: CGFloat = 20
+        static let calendarInset: CGFloat = -235
+        static let calendarHeight: CGFloat = 280
+        static let titleInsets: UIEdgeInsets = .create(left: 18)
     }
 }

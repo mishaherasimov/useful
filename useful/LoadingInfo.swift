@@ -8,7 +8,15 @@
 
 import Foundation
 
-typealias LoadInfo = (state: LoadingState, type: LoadingType)
+struct LoadInfo: Equatable {
+    let state: LoadingState
+    let type: LoadingType
+
+    init(_ state: LoadingState, _ type: LoadingType) {
+        self.state = state
+        self.type = type
+    }
+}
 
 enum LoadingType {
 

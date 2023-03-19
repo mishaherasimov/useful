@@ -6,7 +6,19 @@
 //  Copyright © 2020 Mykhailo Herasimov. All rights reserved.
 //
 
+import ComposableArchitecture
 import Foundation
+
+enum APIClientKey: DependencyKey {
+    static let liveValue = APIClient()
+}
+
+extension DependencyValues {
+    var apiClient: APIClient {
+        get { self[APIClientKey.self] }
+        set { self[APIClientKey.self] = newValue }
+    }
+}
 
 typealias DataResponse = (request: URLRequest?, response: HTTPURLResponse?, data: Data?, error: Error?)
 
