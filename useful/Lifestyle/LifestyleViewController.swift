@@ -7,6 +7,7 @@
 //
 
 import Lottie
+import SwiftUI
 import Combine
 import ComposableArchitecture
 import UIKit
@@ -405,7 +406,7 @@ extension LifestyleViewController: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let underConstruction = UnderConstructionViewController()
+        let underConstruction = UIHostingController(rootView: UnderConstructionView())
         present(underConstruction, animated: true)
         collectionView.deselectItem(at: indexPath, animated: true)
     }

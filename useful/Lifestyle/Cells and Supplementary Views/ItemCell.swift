@@ -66,12 +66,14 @@ final class ItemCell: UICollectionViewCell {
         layer.cornerRadius = Constants.cornerRadius
         backgroundColor = UIColor(collection: .backgroundElevated)
 
-        contentView.layer.cornerRadius = Constants.cornerRadius
-        contentView.layer.applyShadow(blur: Constants.blur, spread: Constants.spread)
-        contentView.backgroundColor = UIColor(collection: .backgroundElevated)
+        mutate(contentView) {
+            $0.layer.cornerRadius = Constants.cornerRadius
+            $0.layer.applyShadow(blur: Constants.blur, spread: Constants.spread)
+            $0.backgroundColor = UIColor(collection: .backgroundElevated)
 
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(itemImage)
+            $0.addSubview(nameLabel)
+            $0.addSubview(itemImage)
+        }
 
         NSLayoutConstraint.snap(nameLabel, to: contentView, for: [.left, .right, .top], with: Constants.contentInsets)
         NSLayoutConstraint.snap(itemImage, to: contentView, for: [.bottom], with: Constants.contentInsets)

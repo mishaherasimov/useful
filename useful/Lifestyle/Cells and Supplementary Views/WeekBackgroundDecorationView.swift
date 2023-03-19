@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WeekBackgroundDecorationView: UICollectionReusableView {
+final class WeekBackgroundDecorationView: UICollectionReusableView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
