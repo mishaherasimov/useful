@@ -8,15 +8,7 @@
 
 import UIKit
 
-class SuggestedItemsCell: UICollectionViewCell {
-
-    // MARK: - Insets & constants
-
-    private let contentInsets: UIEdgeInsets = .create(top: 24, right: 12, bottom: 14, left: 16)
-    private let cornerRadius: CGFloat = 15
-    private let spacing: CGFloat = 19
-    private let spread: CGFloat = -20
-    private let blur: CGFloat = 30
+final class SuggestedItemsCell: UICollectionViewCell {
 
     // MARK: - Views
 
@@ -43,13 +35,10 @@ class SuggestedItemsCell: UICollectionViewCell {
         isDynamicallySized: true
     )
 
-    private let itemImage: UIImageView = {
-
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .center
-        return imageView
-    }()
+    private let itemImage: UIImageView = mutate(UIImageView()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.contentMode = .center
+    }
 
     // MARK: - Initializers
 
@@ -69,16 +58,16 @@ class SuggestedItemsCell: UICollectionViewCell {
 
     private func configureUI() {
 
-        let stackView = UIStackView.create(axis: .vertical, spacing: spacing)
+        let stackView = UIStackView.create(axis: .vertical, spacing: Constants.spacing)
         contentView.addSubview(stackView)
         contentView.addSubview(disclosureImageView)
 
-        layer.cornerRadius = cornerRadius
-        layer.applyShadow(color: UIColor(collection: .secondary), blur: blur, spread: spread)
+        layer.cornerRadius = Constants.cornerRadius
+        layer.applyShadow(color: UIColor(collection: .secondary), blur: Constants.blur, spread: Constants.spread)
         backgroundColor = UIColor(collection: .secondary)
 
         stackView.items = [annotationLabel, itemsLabel]
-        NSLayoutConstraint.snap(stackView, to: contentView, with: contentInsets)
+        NSLayoutConstraint.snap(stackView, to: contentView, with: Constants.contentInsets)
 
         NSLayoutConstraint.activate([
             disclosureImageView.bottomAnchor.constraint(equalTo: itemsLabel.topAnchor),
@@ -89,5 +78,15 @@ class SuggestedItemsCell: UICollectionViewCell {
     func configure(items: Int) {
 
         itemsLabel.text = String(format: "%d items", items)
+    }
+}
+
+extension SuggestedItemsCell {
+    enum Constants {
+        static let contentInsets: UIEdgeInsets = .create(top: 24, right: 12, bottom: 14, left: 16)
+        static let cornerRadius: CGFloat = 15
+        static let spacing: CGFloat = 19
+        static let spread: CGFloat = -20
+        static let blur: CGFloat = 30
     }
 }

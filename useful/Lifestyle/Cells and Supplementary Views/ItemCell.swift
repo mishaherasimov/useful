@@ -10,16 +10,7 @@ import Kingfisher
 import Lottie
 import UIKit
 
-class ItemCell: UICollectionViewCell {
-
-    // MARK: - Insets & constants
-
-    private let contentInsets: UIEdgeInsets = .create(top: 24, right: 16, bottom: 36, left: 16)
-    private let cornerRadius: CGFloat = 15
-    private let imageSize = CGSize(width: 80, height: 70)
-    private let spacing: CGFloat = 8
-    private let spread: CGFloat = -20
-    private let blur: CGFloat = 30
+final class ItemCell: UICollectionViewCell {
 
     // MARK: - Views
 
@@ -36,7 +27,7 @@ class ItemCell: UICollectionViewCell {
 
     override func layoutIfNeeded() {
         super.layoutIfNeeded()
-        layer.applyShadow(blur: blur, spread: spread)
+        layer.applyShadow(blur: Constants.blur, spread: Constants.spread)
     }
 
     // MARK: - Initializers
@@ -72,21 +63,21 @@ class ItemCell: UICollectionViewCell {
     private func configureUI() {
 
         configureBorderIfNeeded()
-        layer.cornerRadius = cornerRadius
+        layer.cornerRadius = Constants.cornerRadius
         backgroundColor = UIColor(collection: .backgroundElevated)
 
-        contentView.layer.cornerRadius = cornerRadius
-        contentView.layer.applyShadow(blur: blur, spread: spread)
+        contentView.layer.cornerRadius = Constants.cornerRadius
+        contentView.layer.applyShadow(blur: Constants.blur, spread: Constants.spread)
         contentView.backgroundColor = UIColor(collection: .backgroundElevated)
 
         contentView.addSubview(nameLabel)
         contentView.addSubview(itemImage)
 
-        NSLayoutConstraint.snap(nameLabel, to: contentView, for: [.left, .right, .top], with: contentInsets)
-        NSLayoutConstraint.snap(itemImage, to: contentView, for: [.bottom], with: contentInsets)
-        NSLayoutConstraint.size(view: itemImage, attributes: [.height(value: imageSize.height), .width(value: imageSize.width)])
+        NSLayoutConstraint.snap(nameLabel, to: contentView, for: [.left, .right, .top], with: Constants.contentInsets)
+        NSLayoutConstraint.snap(itemImage, to: contentView, for: [.bottom], with: Constants.contentInsets)
+        NSLayoutConstraint.size(view: itemImage, attributes: [.height(value: Constants.imageSize.height), .width(value: Constants.imageSize.width)])
         NSLayoutConstraint.center(itemImage, in: contentView, for: [.horizontal])
-        itemImage.topAnchor.constraint(greaterThanOrEqualTo: nameLabel.bottomAnchor, constant: spacing).activate()
+        itemImage.topAnchor.constraint(greaterThanOrEqualTo: nameLabel.bottomAnchor, constant: Constants.spacing).activate()
     }
 
     func configure(name: String, imageURL: String, imageURLDark: String, isCompleted: Bool) {
@@ -99,5 +90,16 @@ class ItemCell: UICollectionViewCell {
         }
 
         contentView.alpha = isCompleted ? 0.6 : 1.0
+    }
+}
+
+extension ItemCell {
+    enum Constants {
+        static let contentInsets: UIEdgeInsets = .create(top: 24, right: 16, bottom: 36, left: 16)
+        static let cornerRadius: CGFloat = 15
+        static let imageSize = CGSize(width: 80, height: 70)
+        static let spacing: CGFloat = 8
+        static let spread: CGFloat = -20
+        static let blur: CGFloat = 30
     }
 }

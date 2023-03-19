@@ -34,7 +34,7 @@ final class CalendarBar: UIView {
 
     // -- Views --
 
-    private var dataSource: UICollectionViewDiffableDataSource<Week, Int>! = nil
+    private var dataSource: CalendarDataSource! = nil
     private (set) var selectedWeek: Week = .week1 {
         didSet {
             guard oldValue != selectedWeek else { return }
