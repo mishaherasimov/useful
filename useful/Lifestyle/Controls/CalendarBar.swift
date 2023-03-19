@@ -12,25 +12,11 @@ protocol CalendarBarDelegate: AnyObject {
     func didSelectWeek(with week: CalendarBar.Week, selected date: Date?)
 }
 
-class CalendarBar: UIView {
+final class CalendarBar: UIView {
 
     enum Week: Int, CaseIterable {
         case week1, week2, week3, week4, week5, week6
     }
-
-    // Constants
-
-    private let cornerRadius: CGFloat = 20
-
-    private let indicatorHeight: CGFloat = 5
-    private let indicatorWidth: CGFloat = 48
-    private let indicatorInsets: UIEdgeInsets = .create(bottom: 8)
-
-    private let legendBottomSpacing: CGFloat = 10
-    private let daysGroupHeight: CGFloat = 32
-    private let calendarInsets: UIEdgeInsets = .create(right: 12, bottom: 26, left: 12)
-    private var numberOfCells: Int { 7 * Week.allCases.count }
-    private var calendarHeight: CGFloat { daysGroupHeight * CGFloat(Week.allCases.count) }
 
     // -- Constants --
 
@@ -40,14 +26,11 @@ class CalendarBar: UIView {
 
     // Views
 
-    private lazy var collectionView: UICollectionView = {
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(CalendarItemCell.self)
-        collectionView.backgroundColor = .clear
-        return collectionView
-    }()
+    private lazy var collectionView: UICollectionView = mutate(UICollectionView(frame: .zero, collectionViewLayout: createLayout())) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.register(CalendarItemCell.self)
+        $0.backgroundColor = .clear
+    }
 
     // -- Views --
 
@@ -81,18 +64,18 @@ class CalendarBar: UIView {
     }
 
     private func configureUI() {
-
         backgroundColor = UIColor(collection: .primary)
-        layer.cornerRadius = cornerRadius
+        layer.cornerRadius = Constants.cornerRadius
         layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         translatesAutoresizingMaskIntoConstraints = false
 
         // -- Disclosure indicator --
 
-        let disclosureIndicator = UIView()
-        disclosureIndicator.backgroundColor = .white
-        disclosureIndicator.translatesAutoresizingMaskIntoConstraints = false
-        disclosureIndicator.layer.cornerRadius = indicatorHeight / 2
+        let disclosureIndicator = mutate(UIView()) {
+            $0.backgroundColor = .white
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.layer.cornerRadius = Constants.indicatorHeight / 2
+        }
 
         addSubview(disclosureIndicator)
         NSLayoutConstraint.center(disclosureIndicator, in: self, for: [.horizontal])
@@ -100,8 +83,8 @@ class CalendarBar: UIView {
             disclosureIndicator,
             to: self,
             for: [.bottom],
-            sizeAttributes: [.height(value: indicatorHeight), .width(value: indicatorWidth)],
-            with: indicatorInsets
+            sizeAttributes: [.height(value: Constants.indicatorHeight), .width(value: Constants.indicatorWidth)],
+            with: Constants.indicatorInsets
         )
 
         // -- Calendar --
@@ -120,7 +103,7 @@ class CalendarBar: UIView {
 
         stackView.items = legends
         NSLayoutConstraint.snap(stackView, to: collectionView, for: [.left, .right])
-        stackView.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -legendBottomSpacing).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -Constants.legendBottomSpacing).isActive = true
     }
 
     // Calculate current month information
@@ -151,13 +134,13 @@ class CalendarBar: UIView {
             // If 1th day is the first day of the week day
             if weekDayOffset == 0 {
 
-                let remainingDays = Array(1...numberOfCells - currentMonthDaysCount)
+                let remainingDays = Array(1...Constants.numberOfCells - currentMonthDaysCount)
                 return (currentMonthDays + remainingDays, 0..<currentMonthDaysCount)
             } else {
 
                 let previousMonthDays = Array((previousMonthDaysCount - weekDayOffset)...previousMonthDaysCount)
                 let joinedDaysTotal = previousMonthDays.count + currentMonthDays.count
-                let remainingDays = joinedDaysTotal < numberOfCells ? Array(1...(numberOfCells - joinedDaysTotal)) : []
+                let remainingDays = joinedDaysTotal < Constants.numberOfCells ? Array(1...(Constants.numberOfCells - joinedDaysTotal)) : []
                 let offset = weekDayOffset + 1
                 return (previousMonthDays + currentMonthDays + remainingDays, offset..<currentMonthDaysCount + offset)
             }
@@ -188,7 +171,7 @@ extension CalendarBar {
 
                 let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .absolute(self.daysGroupHeight)
+                    heightDimension: .absolute(Constants.daysGroupHeight)
                 )
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 7)
 
@@ -229,8 +212,8 @@ extension CalendarBar {
             collectionView,
             to: self,
             for: [.left, .right, .bottom],
-            sizeAttributes: [.height(value: calendarHeight)],
-            with: calendarInsets
+            sizeAttributes: [.height(value: Constants.calendarHeight)],
+            with: Constants.calendarInsets
         )
     }
 
@@ -251,7 +234,7 @@ extension CalendarBar {
         // Initial data
         var snapshot = NSDiffableDataSourceSnapshot<Week, Int>()
 
-        let cells = Array(0..<numberOfCells).chunked(into: 7) // -- one month of days + remaining items
+        let cells = Array(0..<Constants.numberOfCells).chunked(into: 7) // -- one month of days + remaining items
         Week.allCases.forEach {
             snapshot.appendSections([$0])
             snapshot.appendItems(cells[$0.rawValue])
@@ -302,5 +285,21 @@ extension Array {
         stride(from: 0, to: count, by: size).map {
             Array(self[$0 ..< Swift.min($0 + size, count)])
         }
+    }
+}
+
+extension CalendarBar {
+    enum Constants {
+        static let cornerRadius: CGFloat = 20
+
+        static let indicatorHeight: CGFloat = 5
+        static let indicatorWidth: CGFloat = 48
+        static let indicatorInsets: UIEdgeInsets = .create(bottom: 8)
+
+        static let legendBottomSpacing: CGFloat = 10
+        static let daysGroupHeight: CGFloat = 32
+        static let calendarInsets: UIEdgeInsets = .create(right: 12, bottom: 26, left: 12)
+        static var numberOfCells: Int { 7 * Week.allCases.count }
+        static var calendarHeight: CGFloat { daysGroupHeight * CGFloat(Week.allCases.count) }
     }
 }

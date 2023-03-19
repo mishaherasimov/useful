@@ -49,7 +49,7 @@ final class LifestyleViewController: UIViewController {
 
     // -- Collection view and related view --
 
-    let searchController = UISearchController(searchResultsController: nil)
+    private let searchController = UISearchController(searchResultsController: nil)
 
     private var elasticTopInset: CGFloat = 0 {
         didSet {
@@ -103,7 +103,7 @@ final class LifestyleViewController: UIViewController {
 
     // MARK: - New Logic
 
-    func setupBindings() {
+    private func setupBindings() {
         viewStore.publisher
             .disposableItems
             .sink { [weak self] in
@@ -119,7 +119,7 @@ final class LifestyleViewController: UIViewController {
             .store(in: &cancellables)
     }
 
-    func refresh(sections: [LifestyleSection], animatingDifferences: Bool = true) {
+    private func refresh(sections: [LifestyleSection], animatingDifferences: Bool = true) {
         guard !sections.isEmpty else {
 
             configureBackgroundView(for: .empty)
@@ -177,7 +177,7 @@ final class LifestyleViewController: UIViewController {
 
 extension LifestyleViewController {
 
-    func configureCalendarBar() {
+    private func configureCalendarBar() {
 
         // -- Container view --
         // Helps to handle collection view oscillation
@@ -237,7 +237,7 @@ extension LifestyleViewController {
         }
     }
 
-    func configureSearchBar() {
+    private func configureSearchBar() {
         mutate(searchController.searchBar) {
             $0.searchTextField.textColor = .white
             $0.searchTextField.backgroundColor = UIColor.white.withAlphaComponent(0.12)
@@ -263,7 +263,7 @@ extension LifestyleViewController {
         }
     }
 
-    func configureBackgroundView(for event: EventView.EventType) {
+    private func configureBackgroundView(for event: EventView.EventType) {
 
         eventView.removeConstraints(eventViewConstraints)
         eventView.configure(for: event)
@@ -277,7 +277,7 @@ extension LifestyleViewController {
 
 extension LifestyleViewController {
 
-    func createLayout() -> UICollectionViewLayout {
+    private func createLayout() -> UICollectionViewLayout {
 
         let layout =
             UICollectionViewCompositionalLayout { (_: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
@@ -334,7 +334,7 @@ extension LifestyleViewController {
 
 extension LifestyleViewController {
 
-    func configureHierarchy() {
+    private func configureHierarchy() {
         collectionView.delegate = self
         view.addSubview(collectionView)
 
@@ -342,12 +342,11 @@ extension LifestyleViewController {
         collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
     }
 
-    func configureDataSource() {
+    private func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<
             LifestyleSectionType,
             DisposableItem
-        >(collectionView: collectionView) { [weak self]
-            (collectionView: UICollectionView, indexPath: IndexPath, disposableItem: DisposableItem) -> UICollectionViewCell? in
+        >(collectionView: collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, disposableItem: DisposableItem) -> UICollectionViewCell? in
 
                 guard let self = self else { return nil }
 
@@ -376,11 +375,7 @@ extension LifestyleViewController {
                 }
         }
 
-        dataSource.supplementaryViewProvider = { [weak self] (
-            collectionView: UICollectionView, kind: String, indexPath: IndexPath
-        )
-            -> UICollectionReusableView? in
-
+        dataSource.supplementaryViewProvider = { [weak self] (collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
             guard let self else { return nil }
 
             let section = self.viewStore.disposableItems[indexPath.section].section
