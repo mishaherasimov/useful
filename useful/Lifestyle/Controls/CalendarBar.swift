@@ -9,15 +9,10 @@
 import UIKit
 
 protocol CalendarBarDelegate: AnyObject {
-    func didSelectWeek(with week: CalendarBar.Week, selected date: Date?)
+    func didSelectWeek(with week: CalendarWeek, selected date: Date?)
 }
 
 final class CalendarBar: UIView {
-
-    enum Week: Int, CaseIterable {
-        case week1, week2, week3, week4, week5, week6
-    }
-
     // -- Constants --
 
     private lazy var calendarInfo: (days: [Int], currentMonth: Range<Int>)? = calculateCalendar()
@@ -35,13 +30,18 @@ final class CalendarBar: UIView {
     // -- Views --
 
     private var dataSource: CalendarDataSource! = nil
-    private (set) var selectedWeek: Week = .week1 {
+
+    private (set) var selectedWeek: CalendarWeek = .week1 {
         didSet {
             guard oldValue != selectedWeek else { return }
-            var snapshot = dataSource.snapshot()
-            snapshot.reloadSections([oldValue, selectedWeek])
-            dataSource.apply(snapshot, animatingDifferences: true)
+
         }
+    }
+
+    private func updateSelected(from old: CalendarWeek, to new: CalendarWeek) {
+        var snapshot = dataSource.snapshot()
+        snapshot.reloadSections([old, new])
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
 
     override init(frame: CGRect) {
@@ -105,49 +105,6 @@ final class CalendarBar: UIView {
         NSLayoutConstraint.snap(stackView, to: collectionView, for: [.left, .right])
         stackView.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -Constants.legendBottomSpacing).isActive = true
     }
-
-    // Calculate current month information
-
-    func calculateCalendar() -> (days: [Int], currentMonth: Range<Int>)? {
-
-        let calendar = Calendar.gregorian
-        let currentDate = Date()
-
-        if let firstDate = currentDate.startOfMonth {
-
-            // Get the short name of the first day of the month. e.g. "Mon"
-            let weekDay = firstDate.formatted(as: .custom(style: .day, timeZone: .current))
-
-            // Calculate number of days in current month an the previous one;
-            // Find week day for the 1st day of current month
-            guard
-                let currentMonthDaysCount = calendar.monthDays(from: firstDate),
-                let weekDayIndex = calendar.shortWeekdaySymbols.firstIndex(of: weekDay),
-                let previousMonth = firstDate.previousMonth,
-                let previousMonthDaysCount = calendar.monthDays(from: previousMonth) else { return nil }
-
-            // Offset in days for the 1st day of the month e.g. "Mon", "Tue", "Wed" -> "29", "30", "1"
-            let weekDayOffset = calendar.shortWeekdaySymbols.prefix(upTo: Int(weekDayIndex)).indices.last ?? 0
-            // Indexes for current month
-            let currentMonthDays = Array(1...currentMonthDaysCount)
-
-            // If 1th day is the first day of the week day
-            if weekDayOffset == 0 {
-
-                let remainingDays = Array(1...Constants.numberOfCells - currentMonthDaysCount)
-                return (currentMonthDays + remainingDays, 0..<currentMonthDaysCount)
-            } else {
-
-                let previousMonthDays = Array((previousMonthDaysCount - weekDayOffset)...previousMonthDaysCount)
-                let joinedDaysTotal = previousMonthDays.count + currentMonthDays.count
-                let remainingDays = joinedDaysTotal < Constants.numberOfCells ? Array(1...(Constants.numberOfCells - joinedDaysTotal)) : []
-                let offset = weekDayOffset + 1
-                return (previousMonthDays + currentMonthDays + remainingDays, offset..<currentMonthDaysCount + offset)
-            }
-        }
-
-        return nil
-    }
 }
 
 extension CalendarBar {
@@ -202,7 +159,7 @@ extension CalendarBar {
 }
 
 extension CalendarBar {
-    typealias CalendarDataSource = UICollectionViewDiffableDataSource<Week, Int>
+    typealias CalendarDataSource = UICollectionViewDiffableDataSource<CalendarWeek, Int>
 
     func configureHierarchy() {
 
@@ -235,7 +192,7 @@ extension CalendarBar {
         var snapshot = NSDiffableDataSourceSnapshot<Week, Int>()
 
         let cells = Array(0..<Constants.numberOfCells).chunked(into: 7) // -- one month of days + remaining items
-        Week.allCases.forEach {
+        CalendarWeek.allCases.forEach {
             snapshot.appendSections([$0])
             snapshot.appendItems(cells[$0.rawValue])
         }

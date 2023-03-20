@@ -69,6 +69,9 @@ struct LifestyleFeature: ReducerProtocol {
 
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.uuid) var uuid
+    @Dependency(\.mainQueue) var mainQueue
+
+    private enum RefreshCompletionID {}
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -83,17 +86,15 @@ struct LifestyleFeature: ReducerProtocol {
                 state.loadInfo = .init(.willLoad, type)
                 state.loadInfo = .init(.isLoading, type)
 
-                return EffectPublisher<LifestyleFeature.Action, Never>.publisher {
-                    let valuePublisher = PassthroughSubject<APIResponse<[String: DisposableItem]>, Never>()
+                let valuePublisher = PassthroughSubject<APIResponse<[String: DisposableItem]>, Never>()
 
-                    apiClient.getDisposableItems(week: week.rawValue) {
-                        valuePublisher.send($0)
-                    }
-
-                    return valuePublisher
-                        .map { Action.didLoadItems($0, type: type) }
-                        .eraseToAnyPublisher()
+                apiClient.getDisposableItems(week: week.rawValue) {
+                    valuePublisher.send($0)
                 }
+
+                return valuePublisher
+                    .map { Action.didLoadItems($0, type: type) }
+                    .eraseToEffect()
             case .onViewDidLoad:
 
                 return .send(.onLoadContent(isReloading: false, weekInfo: .init(.week1, Date())))
@@ -117,11 +118,15 @@ struct LifestyleFeature: ReducerProtocol {
                 return .send(.filterQueryChanged(query: nil))
             case .refreshControlTriggered:
 
-                return .send(.onLoadContent(isReloading: true, weekInfo: nil))
+                return Just(Action.onLoadContent(isReloading: true, weekInfo: nil))
+                    .delay(for: 0.5, scheduler: mainQueue)
+                    .eraseToEffect()
+                    .cancellable(id: RefreshCompletionID.self, cancelInFlight: true)
             case .onSelectedWeek(let week):
 
                 return .send(.onLoadContent(isReloading: false, weekInfo: week))
             case .filterQueryChanged(query: let query):
+
                 guard let query = query, !query.isEmpty else {
                     let sections: [LifestyleSectionType] = [.ongoing, .completed]
                     let subsections = Array(sections[0..<state.originalItems.indices.upperBound])

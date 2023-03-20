@@ -10,7 +10,6 @@ import UIKit
 
 struct DisposableItem: Hashable, Equatable, Codable {
 
-//    let id: UUID = UUID()
     let name: String
     let imageURL: String
     let imageURLDark: String
