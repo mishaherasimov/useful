@@ -32,7 +32,6 @@
 		84BB0CEE245A24F700D080D5 /* DateFormatter+Caching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CED245A24F700D080D5 /* DateFormatter+Caching.swift */; };
 		84BB0CF0245A257300D080D5 /* DateFormatPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CEF245A257300D080D5 /* DateFormatPreset.swift */; };
 		84BB0CF2245A56C000D080D5 /* CalendarItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CF1245A56C000D080D5 /* CalendarItemCell.swift */; };
-		84BB0CF4245A8FE700D080D5 /* Calendar+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CF3245A8FE700D080D5 /* Calendar+Operations.swift */; };
 		84BB0CF8245B61F900D080D5 /* WeekBackgroundDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB0CF7245B61F900D080D5 /* WeekBackgroundDecorationView.swift */; };
 		84EE06E824677F6800B3F5EF /* loading-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 84EE06E724677F6800B3F5EF /* loading-dark.json */; };
 		84EE06EC246781DF00B3F5EF /* image-loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 84EE06EA246781DF00B3F5EF /* image-loading.json */; };
@@ -99,7 +98,6 @@
 		84BB0CED245A24F700D080D5 /* DateFormatter+Caching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Caching.swift"; sourceTree = "<group>"; };
 		84BB0CEF245A257300D080D5 /* DateFormatPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatPreset.swift; sourceTree = "<group>"; };
 		84BB0CF1245A56C000D080D5 /* CalendarItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarItemCell.swift; sourceTree = "<group>"; };
-		84BB0CF3245A8FE700D080D5 /* Calendar+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Operations.swift"; sourceTree = "<group>"; };
 		84BB0CF7245B61F900D080D5 /* WeekBackgroundDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekBackgroundDecorationView.swift; sourceTree = "<group>"; };
 		84EE06E724677F6800B3F5EF /* loading-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "loading-dark.json"; sourceTree = "<group>"; };
 		84EE06EA246781DF00B3F5EF /* image-loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "image-loading.json"; sourceTree = "<group>"; };
@@ -290,7 +288,6 @@
 				84FECEED2457E45A00E3D5E6 /* String+Enhancements.swift */,
 				84FECEEF2457EE2500E3D5E6 /* UIFont+Traits.swift */,
 				84BB0CED245A24F700D080D5 /* DateFormatter+Caching.swift */,
-				84BB0CF3245A8FE700D080D5 /* Calendar+Operations.swift */,
 				84EE06EF2468647800B3F5EF /* Date+Operations.swift */,
 			);
 			path = Extensions;
@@ -553,7 +550,6 @@
 				84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */,
 				8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */,
 				84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */,
-				84BB0CF4245A8FE700D080D5 /* Calendar+Operations.swift in Sources */,
 				84FECEE124579C1700E3D5E6 /* ItemCell.swift in Sources */,
 				840AF2422461049F0062DBF9 /* APIError.swift in Sources */,
 				84FECEEC2457DF0600E3D5E6 /* TitleSupplementaryView.swift in Sources */,

@@ -7,15 +7,17 @@
 //
 
 import UIKit
+import ComposableArchitecture
+import Combine
 
 protocol CalendarBarDelegate: AnyObject {
     func didSelectWeek(with week: CalendarWeek, selected date: Date?)
 }
 
 final class CalendarBar: UIView {
-    // -- Constants --
 
-    private lazy var calendarInfo: (days: [Int], currentMonth: Range<Int>)? = calculateCalendar()
+    private let viewStore: ViewStoreOf<CalendarFeature>
+    private var cancellables: Set<AnyCancellable> = []
 
     weak var delegate: CalendarBarDelegate?
 
@@ -29,7 +31,16 @@ final class CalendarBar: UIView {
 
     // -- Views --
 
-    private var dataSource: CalendarDataSource! = nil
+    private lazy var dataSource: CalendarDataSource = CalendarDataSource(collectionView: collectionView) { [weak viewStore] in
+        let index = $2
+        return mutate($0.dequeueReusableCell(for: $1) as CalendarItemCell) { cell in
+            guard let state = viewStore?.state else { return }
+            cell.configure(
+                day: state.currentMonth.dayDigits[index],
+                isCurrentMonth: state.currentMonth.digitsRange.contains(index)
+            )
+        }
+    }
 
     private (set) var selectedWeek: CalendarWeek = .week1 {
         didSet {
@@ -44,17 +55,9 @@ final class CalendarBar: UIView {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        // Calculate index of the week with the current date
-        if
-            let info = calendarInfo,
-            let day = Calendar.gregorian.dateComponents([.day], from: Date()).day,
-            let index = Array(info.days[info.currentMonth]).firstIndex(of: day),
-            let week = Week(rawValue: Int(floor(Double((index + info.currentMonth.lowerBound) / 7)))) {
-            selectedWeek = week
-        }
+    init(store: StoreOf<CalendarFeature>) {
+        self.viewStore = ViewStore(store)
+        super.init(frame: .zero)
 
         configureUI()
     }
@@ -90,7 +93,7 @@ final class CalendarBar: UIView {
         // -- Calendar --
 
         configureHierarchy()
-        configureDataSource()
+        reloadContent()
 
         // -- Legend --
 
@@ -174,27 +177,14 @@ extension CalendarBar {
         )
     }
 
-    func configureDataSource() {
-        let calendar = calendarInfo
+    func reloadContent() {
+        var snapshot = NSDiffableDataSourceSnapshot<CalendarWeek, Int>()
 
-        dataSource = CalendarDataSource(collectionView: collectionView) {
-            let index = $2
-            return mutate($0.dequeueReusableCell(for: $1) as CalendarItemCell) { cell in
-                guard let (days, currentMonth) = calendar else { return }
-                cell.configure(
-                    day: days[index],
-                    isCurrentMonth: currentMonth.contains(index)
-                )
+        for (index, weekItems) in viewStore.currentMonth.dayDigitWeeks.enumerated() {
+            if let week = CalendarWeek(rawValue: index)  {
+                snapshot.appendSections([week])
+                snapshot.appendItems(weekItems)
             }
-        }
-
-        // Initial data
-        var snapshot = NSDiffableDataSourceSnapshot<Week, Int>()
-
-        let cells = Array(0..<Constants.numberOfCells).chunked(into: 7) // -- one month of days + remaining items
-        CalendarWeek.allCases.forEach {
-            snapshot.appendSections([$0])
-            snapshot.appendItems(cells[$0.rawValue])
         }
 
         dataSource.apply(snapshot, animatingDifferences: false)
@@ -233,14 +223,6 @@ extension CalendarBar: UICollectionViewDelegate {
             }
 
             delegate?.didSelectWeek(with: newSelectedWeek, selected: Calendar.gregorian.date(from: components))
-        }
-    }
-}
-
-extension Array {
-    fileprivate func chunked(into size: Int) -> [[Element]] {
-        stride(from: 0, to: count, by: size).map {
-            Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
 }

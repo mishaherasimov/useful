@@ -20,41 +20,116 @@ extension DependencyValues {
     }
 }
 
+enum CalendarWeek: Int, CaseIterable {
+    case week1, week2, week3, week4, week5, week6
+}
+
+struct CurrentMonth: Equatable {
+
+    /// Digits that represent six weeks of the month
+    ///
+    /// `[27, 28, 29, 30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9]`
+    let dayDigits: [Int]
+
+    /// Day digits of the six weeks of the month.
+    ///
+    /// `[[27, 28, 29, 30, 31, 1, 2],  [3, 4, 5, 6, 7, 8, 9]]`
+    let dayDigitWeeks: [[Int]]
+
+    /// Range of indexes that represent day digits of the current month
+    let digitsRange: Range<Int>
+}
+
 struct CalendarService {
-    func calculateCalendar() -> (days: [Int], currentMonth: Range<Int>)? {
-        let calendar = Calendar.gregorian
-        let currentDate = Date()
+    private let today: Date = Date()
+    private let calendar: Calendar = Calendar(identifier: .gregorian)
+    
+    lazy var currentMonth: CurrentMonth = currentMonthData()
+    lazy var currentWeek: CalendarWeek = findCurrentWeek()
 
-        guard let firstDate = currentDate.startOfMonth else { return nil }
+    private mutating func findCurrentWeek() -> CalendarWeek {
+        guard let day = calendar.dateComponents([.day], from: today).day,
+              let index = Array(currentMonth.dayDigits[currentMonth.digitsRange]).firstIndex(of: day),
+              let week = Week(rawValue: Int(floor(Double((index + currentMonth.digitsRange.lowerBound) / 7)))) else {
+            return .week1
+        }
 
-        // Get the short name of the first day of the month. e.g. "Mon"
-        let weekDay = firstDate.formatted(as: .custom(style: .day, timeZone: .current))
+        return week
+    }
+
+    private func currentMonthData() -> CurrentMonth {
+        let totalDayInWeek = 7
+        let totalDaysInSixWeeks = CalendarWeek.allCases.count * totalDayInWeek
+
+        let firstMonthDay = calendar.firstDayOfMonth(using: today)
 
         // Calculate number of days in current month an the previous one;
-        // Find week day for the 1st day of current month
-        guard
-            let currentMonthDaysCount = calendar.monthDays(from: firstDate),
-            let weekDayIndex = calendar.shortWeekdaySymbols.firstIndex(of: weekDay),
-            let previousMonth = firstDate.previousMonth,
-            let previousMonthDaysCount = calendar.monthDays(from: previousMonth) else { return nil }
+        let currentMonthDaysCount = calendar.daysInMonth(using: firstMonthDay)
+        let previousMonthDaysCount = calendar.daysInMonth(using: calendar.previousMonthDay(using: firstMonthDay))
+
+        // Get the short name of the first day of the month. e.g. "Mon"
+        let weekDay = firstMonthDay.formatted(as: .custom(style: .day, timeZone: .current))
 
         // Offset in days for the 1st day of the month e.g. "Mon", "Tue", "Wed" -> "29", "30", "1"
-        let weekDayOffset = calendar.shortWeekdaySymbols.prefix(upTo: Int(weekDayIndex)).indices.last ?? 0
-        // Indexes for current month
-        let currentMonthDays = Array(1...currentMonthDaysCount)
+        let weekDayOffset = calendar.shortWeekdaySymbols.firstIndex(of: weekDay).map { Int($0) } ?? 0
 
-        // If 1th day is the first day of the week day
-        if weekDayOffset == 0 {
+        // Today's date is the first day of the month
+        if weekDayOffset == .zero {
+            let remainingDaysOfTheNextMonth = totalDaysInSixWeeks - currentMonthDaysCount
 
-            let remainingDays = Array(1...CalendarWeek.daysInAWeek - currentMonthDaysCount)
-            return (currentMonthDays + remainingDays, 0..<currentMonthDaysCount)
+            let dayDigits = Array(1...currentMonthDaysCount) + Array(1...remainingDaysOfTheNextMonth)
+            return CurrentMonth(
+                dayDigits: dayDigits,
+                dayDigitWeeks: dayDigits.chunked(into: totalDayInWeek),
+                digitsRange: 0..<currentMonthDaysCount
+            )
         } else {
+            let remainingDaysOfThePreviousMonth = Array((previousMonthDaysCount - weekDayOffset)...previousMonthDaysCount)
+            let currentMonthDays = Array(1...currentMonthDaysCount)
 
-            let previousMonthDays = Array((previousMonthDaysCount - weekDayOffset)...previousMonthDaysCount)
-            let joinedDaysTotal = previousMonthDays.count + currentMonthDays.count
-            let remainingDays = joinedDaysTotal < CalendarWeek.daysInAWeek ? Array(1...(CalendarWeek.daysInAWeek - joinedDaysTotal)) : []
+            let remainingDaysOfTheNextMonthCount = totalDaysInSixWeeks - min(remainingDaysOfThePreviousMonth.count + currentMonthDays.count, totalDaysInSixWeeks)
+            let remainingDaysOfTheNextMonth = Array(1...remainingDaysOfTheNextMonthCount)
+
             let offset = weekDayOffset + 1
-            return (previousMonthDays + currentMonthDays + remainingDays, offset..<currentMonthDaysCount + offset)
+            let dayDigits = remainingDaysOfThePreviousMonth + currentMonthDays + remainingDaysOfTheNextMonth
+            return CurrentMonth(
+                dayDigits: dayDigits,
+                dayDigitWeeks: dayDigits.chunked(into: totalDayInWeek),
+                digitsRange: offset..<currentMonthDaysCount + offset
+            )
+        }
+    }
+}
+
+private extension Calendar {
+    func previousMonthDay(using date: Date) -> Date {
+        guard let newDate = self.date(byAdding: .month, value: -1, to: date) else {
+            fatalError("Can't get a date of the previous month")
+        }
+
+        return newDate
+    }
+
+    func firstDayOfMonth(using date: Date) -> Date {
+        newDate(from: [.year, .month], with: date)
+    }
+
+    /// Calculates number of days in a month
+    /// - Parameter using: Date to use to determine current month
+    /// - Returns: Day count in a particular month
+    func daysInMonth(using date: Date) -> Int {
+        guard let count = range(of: .day, in: .month, for: date)?.count else {
+            fatalError("Can't calculate days in a month")
+        }
+
+        return count
+    }
+}
+
+private extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
 }

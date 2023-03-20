@@ -9,21 +9,22 @@
 import Foundation
 
 extension Date {
-
-    var previousMonth: Date? {
-        Calendar.gregorian.date(byAdding: .month, value: -1, to: self)
-    }
-
-    var startOfMonth: Date? {
-        Calendar.gregorian.date(from: [.year, .month], with: self)
-    }
-
     var startOfWeek: Date? {
-        Calendar.gregorian.date(from: [.yearForWeekOfYear, .weekOfYear], with: self)
+        Calendar(identifier: .gregorian).newDate(from: [.yearForWeekOfYear, .weekOfYear], with: self)
     }
 
     var endOfWeek: Date? {
         guard let sunday = startOfWeek else { return nil }
-        return Calendar.gregorian.date(byAdding: .day, value: 6, to: sunday)
+        return Calendar(identifier: .gregorian).date(byAdding: .day, value: 6, to: sunday)
+    }
+}
+
+extension Calendar {
+    func newDate(from components: Set<Component>, with date: Date) -> Date {
+        guard let newDate = self.date(from: dateComponents(components, from: date)) else {
+            fatalError("Can't calculate new date using components \(components)")
+        }
+
+        return newDate
     }
 }
