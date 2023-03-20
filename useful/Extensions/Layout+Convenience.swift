@@ -7,6 +7,17 @@
 //
 
 import UIKit
+import SwiftUI
+
+extension EdgeInsets {
+    static func create(top: CGFloat = 0, trailing: CGFloat = 0, bottom: CGFloat = 0, leading: CGFloat = 0) -> EdgeInsets {
+        EdgeInsets(top: top, leading: leading, bottom: bottom, trailing: trailing)
+    }
+
+    static func create(vertical: CGFloat, horizontal: CGFloat) -> EdgeInsets {
+        EdgeInsets(top: vertical, leading: horizontal, bottom: vertical, trailing: horizontal)
+    }
+}
 
 extension UIEdgeInsets {
 

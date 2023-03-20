@@ -407,6 +407,8 @@ extension LifestyleViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let underConstruction = UIHostingController(rootView: UnderConstructionView())
+        underConstruction.view.backgroundColor = .clear
+
         present(underConstruction, animated: true)
         collectionView.deselectItem(at: indexPath, animated: true)
     }
