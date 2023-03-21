@@ -26,13 +26,10 @@ final class CalendarBar: UIView {
     // -- Views --
 
     private lazy var dataSource: CalendarDataSource = CalendarDataSource(collectionView: collectionView) { [weak viewStore] in
-        let index = $2
+        let item = $2
         return mutate($0.dequeueReusableCell(for: $1) as CalendarItemCell) { cell in
             guard let store = viewStore else { return }
-            cell.configure(
-                day: index.day,
-                isCurrentMonth: true
-            )
+            cell.configure(day: item.day, isCurrentMonth: item.isCurrent)
         }
     }
 
@@ -167,7 +164,7 @@ extension CalendarBar {
     private func reloadContent() {
         var snapshot = NSDiffableDataSourceSnapshot<CalendarWeek, DayItem>()
 
-        for (index, weekItems) in viewStore.currentMonth.dayDigitWeeks.enumerated() {
+        for (index, weekItems) in viewStore.currentMonth.enumerated() {
             if let week = CalendarWeek(rawValue: index)  {
                 snapshot.appendSections([week])
                 snapshot.appendItems(weekItems, toSection: week)
