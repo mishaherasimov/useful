@@ -12,17 +12,25 @@ import Foundation
 
 struct CalendarFeature: ReducerProtocol {
     enum Action {
+        case delegate(DelegateAction)
+    }
 
+    enum DelegateAction: Equatable {
+        case didSelect(Week)
     }
 
     struct State: Equatable {
         var selectedWeek: CalendarWeek = .week1
         let currentMonth: CurrentMonth
+        let totalWeeks: Int = CalendarWeek.allCases.count
     }
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .delegate:
+                return .none
+            }
         }
     }
 }

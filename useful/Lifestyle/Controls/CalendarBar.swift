@@ -10,16 +10,10 @@ import UIKit
 import ComposableArchitecture
 import Combine
 
-protocol CalendarBarDelegate: AnyObject {
-    func didSelectWeek(with week: CalendarWeek, selected date: Date?)
-}
-
 final class CalendarBar: UIView {
 
     private let viewStore: ViewStoreOf<CalendarFeature>
     private var cancellables: Set<AnyCancellable> = []
-
-    weak var delegate: CalendarBarDelegate?
 
     // Views
 
@@ -39,13 +33,6 @@ final class CalendarBar: UIView {
                 day: state.currentMonth.dayDigits[index],
                 isCurrentMonth: state.currentMonth.digitsRange.contains(index)
             )
-        }
-    }
-
-    private (set) var selectedWeek: CalendarWeek = .week1 {
-        didSet {
-            guard oldValue != selectedWeek else { return }
-
         }
     }
 
@@ -117,7 +104,7 @@ extension CalendarBar {
         let layout =
             UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
-                guard let self, let sectionType = Week(rawValue: sectionIndex) else { return nil }
+                guard let self, let sectionType = CalendarWeek(rawValue: sectionIndex) else { return nil }
 
                 // --- Item ---
 
@@ -141,7 +128,7 @@ extension CalendarBar {
 
                 // -- Background --
 
-                if sectionType == self.selectedWeek {
+                if sectionType == self.viewStore.selectedWeek {
 
                     let weekBackgroundDecoration = NSCollectionLayoutDecorationItem.background(
                         elementKind: SupplementaryViewKind.background.kindIdentifier(WeekBackgroundDecorationView.self)
@@ -172,7 +159,7 @@ extension CalendarBar {
             collectionView,
             to: self,
             for: [.left, .right, .bottom],
-            sizeAttributes: [.height(value: Constants.calendarHeight)],
+            sizeAttributes: [.height(value: CGFloat(viewStore.totalWeeks) * Constants.daysGroupHeight)],
             with: Constants.calendarInsets
         )
     }
@@ -194,6 +181,7 @@ extension CalendarBar {
 extension CalendarBar: UICollectionViewDelegate {
 
     func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        /*
         let valueIndex = (
             7 * indexPath.section + indexPath
                 .row
@@ -224,6 +212,7 @@ extension CalendarBar: UICollectionViewDelegate {
 
             delegate?.didSelectWeek(with: newSelectedWeek, selected: Calendar.gregorian.date(from: components))
         }
+         */
     }
 }
 
@@ -238,7 +227,5 @@ extension CalendarBar {
         static let legendBottomSpacing: CGFloat = 10
         static let daysGroupHeight: CGFloat = 32
         static let calendarInsets: UIEdgeInsets = .create(right: 12, bottom: 26, left: 12)
-        static var numberOfCells: Int { 7 * Week.allCases.count }
-        static var calendarHeight: CGFloat { daysGroupHeight * CGFloat(Week.allCases.count) }
     }
 }

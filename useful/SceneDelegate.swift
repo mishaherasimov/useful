@@ -21,8 +21,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
+        let service = CalendarService()
+        let calendar = CalendarFeature.State(
+            selectedWeek: service.currentWeek,
+            currentMonth: service.currentMonth
+        )
+
         let state = LifestyleFeature.State(
             loadInfo: .init(.didLoad, .loadNew),
+            calendar: calendar,
             originalItems: [],
             disposableItems: []
         )

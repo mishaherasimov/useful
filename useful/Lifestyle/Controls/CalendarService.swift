@@ -40,17 +40,17 @@ struct CurrentMonth: Equatable {
     let digitsRange: Range<Int>
 }
 
-struct CalendarService {
+final class CalendarService {
     private let today: Date = Date()
     private let calendar: Calendar = Calendar(identifier: .gregorian)
     
     lazy var currentMonth: CurrentMonth = currentMonthData()
     lazy var currentWeek: CalendarWeek = findCurrentWeek()
 
-    private mutating func findCurrentWeek() -> CalendarWeek {
+    private func findCurrentWeek() -> CalendarWeek {
         guard let day = calendar.dateComponents([.day], from: today).day,
               let index = Array(currentMonth.dayDigits[currentMonth.digitsRange]).firstIndex(of: day),
-              let week = Week(rawValue: Int(floor(Double((index + currentMonth.digitsRange.lowerBound) / 7)))) else {
+              let week = CalendarWeek(rawValue: Int(floor(Double((index + currentMonth.digitsRange.lowerBound) / 7)))) else {
             return .week1
         }
 

@@ -59,7 +59,13 @@ final class LifestyleViewController: UIViewController {
         }
     }
 
-    private let calendarBar = CalendarBar()
+    private lazy var calendarBar = CalendarBar(
+        store: Store(
+            initialState: viewStore.calendar,
+            reducer: CalendarFeature()
+        )
+    )
+
     private var calendarAnimator: CalendarAnimator?
 
     private var calendarContainerTopConstraint: NSLayoutConstraint?
@@ -118,6 +124,25 @@ final class LifestyleViewController: UIViewController {
                 self?.loadingDisposableItems(with: $0)
             }
             .store(in: &cancellables)
+
+        viewStore.publisher
+            .currentWeek
+            .compactMap(\.?.date)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                self?.calendarAnimator?.closeBar()
+                self?.refreshHeader()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func refreshHeader() {
+        // Reload header info
+        var snapshot = dataSource.snapshot()
+        if viewStore.disposableItems.map(\.section).contains(.ongoing) {
+            snapshot.reloadSections([.ongoing])
+            dataSource.apply(snapshot)
+        }
     }
 
     private func refresh(sections: [LifestyleSection], animatingDifferences: Bool = true) {
@@ -216,7 +241,6 @@ extension LifestyleViewController {
         // -- Calendar --
 
         containerView.addSubview(calendarBar)
-        calendarBar.delegate = self
 
         let calendarConstraint = NSLayoutConstraint.snap(
             calendarBar,
@@ -418,22 +442,6 @@ extension LifestyleViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         viewStore.send(.filterQueryChanged(query: searchController.searchBar.text))
-    }
-}
-
-extension LifestyleViewController: CalendarBarDelegate {
-    func didSelectWeek(with week: CalendarBar.Week, selected date: Date?) {
-        guard let date = date else { return }
-
-        calendarAnimator?.closeBar()
-        viewStore.send(.onSelectedWeek(.init(week, date)))
-
-        // Reload header info
-        var snapshot = dataSource.snapshot()
-        if viewStore.disposableItems.map(\.section).contains(.ongoing) {
-            snapshot.reloadSections([.ongoing])
-            dataSource.apply(snapshot)
-        }
     }
 }
 

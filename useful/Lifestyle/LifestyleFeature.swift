@@ -20,10 +20,10 @@ struct LifestyleSection: Equatable {
 }
 
 struct Week: Equatable {
-    let week: CalendarBar.Week
-    let date: Date
+    let week: CalendarWeek
+    let date: Date?
 
-    init(_ week: CalendarBar.Week, _ date: Date) {
+    init(_ week: CalendarWeek, _ date: Date?) {
         self.week = week
         self.date = date
     }
@@ -53,6 +53,7 @@ struct LifestyleFeature: ReducerProtocol {
     struct State: Equatable {
         var currentWeek: Week?
         var loadInfo: LoadInfo
+        var calendar: CalendarFeature.State
         var originalItems: [[DisposableItem]]
         var disposableItems: [LifestyleSection]
     }
@@ -60,8 +61,8 @@ struct LifestyleFeature: ReducerProtocol {
     enum Action {
         case onViewDidLoad
         case refreshControlTriggered
-        case onSelectedWeek(Week)
         case filterQueryChanged(query: String?)
+        case calendar(CalendarFeature.Action)
 
         case didLoadItems(APIResponse<[String: DisposableItem]>, type: LoadingType)
         case onLoadContent(isReloading: Bool, weekInfo: Week?)
@@ -122,7 +123,8 @@ struct LifestyleFeature: ReducerProtocol {
                     .delay(for: 0.5, scheduler: mainQueue)
                     .eraseToEffect()
                     .cancellable(id: RefreshCompletionID.self, cancelInFlight: true)
-            case .onSelectedWeek(let week):
+            case .calendar(.delegate(.didSelect(let week))):
+                state.currentWeek = week
 
                 return .send(.onLoadContent(isReloading: false, weekInfo: week))
             case .filterQueryChanged(query: let query):
