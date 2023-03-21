@@ -28,10 +28,10 @@ final class CalendarBar: UIView {
     private lazy var dataSource: CalendarDataSource = CalendarDataSource(collectionView: collectionView) { [weak viewStore] in
         let index = $2
         return mutate($0.dequeueReusableCell(for: $1) as CalendarItemCell) { cell in
-            guard let state = viewStore?.state else { return }
+            guard let store = viewStore else { return }
             cell.configure(
-                day: state.currentMonth.dayDigits[index],
-                isCurrentMonth: state.currentMonth.digitsRange.contains(index)
+                day: index.day,
+                isCurrentMonth: true
             )
         }
     }
@@ -47,6 +47,7 @@ final class CalendarBar: UIView {
         super.init(frame: .zero)
 
         configureUI()
+        reloadContent()
     }
 
     required init?(coder _: NSCoder) {
@@ -80,7 +81,6 @@ final class CalendarBar: UIView {
         // -- Calendar --
 
         configureHierarchy()
-        reloadContent()
 
         // -- Legend --
 
@@ -149,9 +149,9 @@ extension CalendarBar {
 }
 
 extension CalendarBar {
-    typealias CalendarDataSource = UICollectionViewDiffableDataSource<CalendarWeek, Int>
+    typealias CalendarDataSource = UICollectionViewDiffableDataSource<CalendarWeek, DayItem>
 
-    func configureHierarchy() {
+    private func configureHierarchy() {
 
         collectionView.delegate = self
         addSubview(collectionView)
@@ -164,13 +164,13 @@ extension CalendarBar {
         )
     }
 
-    func reloadContent() {
-        var snapshot = NSDiffableDataSourceSnapshot<CalendarWeek, Int>()
+    private func reloadContent() {
+        var snapshot = NSDiffableDataSourceSnapshot<CalendarWeek, DayItem>()
 
         for (index, weekItems) in viewStore.currentMonth.dayDigitWeeks.enumerated() {
             if let week = CalendarWeek(rawValue: index)  {
                 snapshot.appendSections([week])
-                snapshot.appendItems(weekItems)
+                snapshot.appendItems(weekItems, toSection: week)
             }
         }
 

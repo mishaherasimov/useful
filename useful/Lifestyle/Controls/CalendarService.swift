@@ -24,17 +24,22 @@ enum CalendarWeek: Int, CaseIterable {
     case week1, week2, week3, week4, week5, week6
 }
 
+struct DayItem: Equatable, Hashable, Identifiable {
+    let id: UUID = .init()
+    let day: Int
+}
+
 struct CurrentMonth: Equatable {
 
     /// Digits that represent six weeks of the month
     ///
     /// `[27, 28, 29, 30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9]`
-    let dayDigits: [Int]
+    let dayDigits: [DayItem]
 
     /// Day digits of the six weeks of the month.
     ///
     /// `[[27, 28, 29, 30, 31, 1, 2],  [3, 4, 5, 6, 7, 8, 9]]`
-    let dayDigitWeeks: [[Int]]
+    let dayDigitWeeks: [[DayItem]]
 
     /// Range of indexes that represent day digits of the current month
     let digitsRange: Range<Int>
@@ -48,8 +53,10 @@ final class CalendarService {
     lazy var currentWeek: CalendarWeek = findCurrentWeek()
 
     private func findCurrentWeek() -> CalendarWeek {
+        let itemSubrange = Array(currentMonth.dayDigits[currentMonth.digitsRange])
+
         guard let day = calendar.dateComponents([.day], from: today).day,
-              let index = Array(currentMonth.dayDigits[currentMonth.digitsRange]).firstIndex(of: day),
+              let index = itemSubrange.firstIndex(where: { $0.day == day }),
               let week = CalendarWeek(rawValue: Int(floor(Double((index + currentMonth.digitsRange.lowerBound) / 7)))) else {
             return .week1
         }
@@ -78,9 +85,11 @@ final class CalendarService {
             let remainingDaysOfTheNextMonth = totalDaysInSixWeeks - currentMonthDaysCount
 
             let dayDigits = Array(1...currentMonthDaysCount) + Array(1...remainingDaysOfTheNextMonth)
+            let days = dayDigits.map(DayItem.init(day:))
+
             return CurrentMonth(
-                dayDigits: dayDigits,
-                dayDigitWeeks: dayDigits.chunked(into: totalDayInWeek),
+                dayDigits: days,
+                dayDigitWeeks: days.chunked(into: totalDayInWeek),
                 digitsRange: 0..<currentMonthDaysCount
             )
         } else {
@@ -92,9 +101,11 @@ final class CalendarService {
 
             let offset = weekDayOffset + 1
             let dayDigits = remainingDaysOfThePreviousMonth + currentMonthDays + remainingDaysOfTheNextMonth
+            let days = dayDigits.map(DayItem.init(day:))
+
             return CurrentMonth(
-                dayDigits: dayDigits,
-                dayDigitWeeks: dayDigits.chunked(into: totalDayInWeek),
+                dayDigits: days,
+                dayDigitWeeks: days.chunked(into: totalDayInWeek),
                 digitsRange: offset..<currentMonthDaysCount + offset
             )
         }
