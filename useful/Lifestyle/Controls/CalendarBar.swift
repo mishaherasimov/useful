@@ -11,6 +11,7 @@ import ComposableArchitecture
 import Combine
 
 final class CalendarBar: UIView {
+    private typealias CalendarDataSource = UICollectionViewDiffableDataSource<CalendarWeek, DayItem>
 
     private let viewStore: ViewStoreOf<CalendarFeature>
     private var cancellables: Set<AnyCancellable> = []
@@ -33,18 +34,13 @@ final class CalendarBar: UIView {
         }
     }
 
-    private func updateSelected(from old: CalendarWeek, to new: CalendarWeek) {
-        var snapshot = dataSource.snapshot()
-        snapshot.reloadSections([old, new])
-        dataSource.apply(snapshot, animatingDifferences: true)
-    }
-
     init(store: StoreOf<CalendarFeature>) {
         self.viewStore = ViewStore(store)
         super.init(frame: .zero)
 
         configureUI()
-        reloadContent()
+        setupDataSource()
+        setupBindings()
     }
 
     required init?(coder _: NSCoder) {
@@ -92,12 +88,72 @@ final class CalendarBar: UIView {
         NSLayoutConstraint.snap(stackView, to: collectionView, for: [.left, .right])
         stackView.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -Constants.legendBottomSpacing).isActive = true
     }
+
+    private func configureHierarchy() {
+        collectionView.delegate = self
+        addSubview(collectionView)
+        NSLayoutConstraint.snap(
+            collectionView,
+            to: self,
+            for: [.left, .right, .bottom],
+            sizeAttributes: [.height(value: CGFloat(viewStore.totalWeeks) * Constants.daysGroupHeight)],
+            with: Constants.calendarInsets
+        )
+    }
+
+    private func setupBindings() {
+        viewStore.publisher
+            .selectedWeek
+            .removeDuplicates()
+            .sink { [unowned dataSource] in
+                var snapshot = dataSource.snapshot()
+                snapshot.reloadSections([$0])
+                dataSource.apply(snapshot, animatingDifferences: true)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func setupDataSource() {
+        var snapshot = NSDiffableDataSourceSnapshot<CalendarWeek, DayItem>()
+
+        for (index, weekItems) in viewStore.currentMonth.enumerated() {
+            if let week = CalendarWeek(rawValue: index)  {
+                snapshot.appendSections([week])
+                snapshot.appendItems(weekItems, toSection: week)
+            }
+        }
+
+        dataSource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+extension CalendarBar: UICollectionViewDelegate {
+    func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let day = dataSource.itemIdentifier(for: indexPath),
+              let week = CalendarWeek(rawValue: indexPath.section) else {
+            return
+        }
+
+        viewStore.send(.delegate(.didSelect(week, day: day)))
+    }
 }
 
 extension CalendarBar {
+    enum Constants {
+        static let cornerRadius: CGFloat = 20
 
+        static let indicatorHeight: CGFloat = 5
+        static let indicatorWidth: CGFloat = 48
+        static let indicatorInsets: UIEdgeInsets = .create(bottom: 8)
+
+        static let legendBottomSpacing: CGFloat = 10
+        static let daysGroupHeight: CGFloat = 32
+        static let calendarInsets: UIEdgeInsets = .create(right: 12, bottom: 26, left: 12)
+    }
+}
+
+extension CalendarBar {
     func createLayout() -> UICollectionViewLayout {
-
         let layout =
             UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
@@ -142,87 +198,5 @@ extension CalendarBar {
         )
 
         return layout
-    }
-}
-
-extension CalendarBar {
-    typealias CalendarDataSource = UICollectionViewDiffableDataSource<CalendarWeek, DayItem>
-
-    private func configureHierarchy() {
-
-        collectionView.delegate = self
-        addSubview(collectionView)
-        NSLayoutConstraint.snap(
-            collectionView,
-            to: self,
-            for: [.left, .right, .bottom],
-            sizeAttributes: [.height(value: CGFloat(viewStore.totalWeeks) * Constants.daysGroupHeight)],
-            with: Constants.calendarInsets
-        )
-    }
-
-    private func reloadContent() {
-        var snapshot = NSDiffableDataSourceSnapshot<CalendarWeek, DayItem>()
-
-        for (index, weekItems) in viewStore.currentMonth.enumerated() {
-            if let week = CalendarWeek(rawValue: index)  {
-                snapshot.appendSections([week])
-                snapshot.appendItems(weekItems, toSection: week)
-            }
-        }
-
-        dataSource.apply(snapshot, animatingDifferences: false)
-    }
-}
-
-extension CalendarBar: UICollectionViewDelegate {
-
-    func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        /*
-        let valueIndex = (
-            7 * indexPath.section + indexPath
-                .row
-        ) // formula -- number of days in a week * offset in weeks + offset in current weekdays
-        guard
-            let newSelectedWeek = Week(rawValue: indexPath.section),
-            selectedWeek != newSelectedWeek,
-            let calendarInfo = calendarInfo,
-            calendarInfo.days.indices ~= valueIndex
-        else { return }
-        selectedWeek = newSelectedWeek
-
-        let day = calendarInfo.days[valueIndex]
-
-        var components = Calendar.gregorian.dateComponents([.day, .month, .year], from: Date())
-        components.day = day
-
-        if let month = components.month {
-
-            switch valueIndex {
-            case ..<calendarInfo.currentMonth.startIndex:
-                components.month = month - 1
-            case calendarInfo.currentMonth.endIndex...:
-                components.month = month + 1
-            default:
-                break
-            }
-
-            delegate?.didSelectWeek(with: newSelectedWeek, selected: Calendar.gregorian.date(from: components))
-        }
-         */
-    }
-}
-
-extension CalendarBar {
-    enum Constants {
-        static let cornerRadius: CGFloat = 20
-
-        static let indicatorHeight: CGFloat = 5
-        static let indicatorWidth: CGFloat = 48
-        static let indicatorInsets: UIEdgeInsets = .create(bottom: 8)
-
-        static let legendBottomSpacing: CGFloat = 10
-        static let daysGroupHeight: CGFloat = 32
-        static let calendarInsets: UIEdgeInsets = .create(right: 12, bottom: 26, left: 12)
     }
 }
