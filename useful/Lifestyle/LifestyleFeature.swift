@@ -123,10 +123,12 @@ struct LifestyleFeature: ReducerProtocol {
                     .delay(for: 0.5, scheduler: mainQueue)
                     .eraseToEffect()
                     .cancellable(id: RefreshCompletionID.self, cancelInFlight: true)
-            case .calendar(.delegate(.didSelect(let week))):
-                state.currentWeek = week
+            case .calendar(.delegate(.didSelect(let week, let day))):
+                print("🚀 \(week)")
+//                state.currentWeek = week
 
-                return .send(.onLoadContent(isReloading: false, weekInfo: week))
+//                return .send(.onLoadContent(isReloading: false, weekInfo: week))
+                return .none
             case .filterQueryChanged(query: let query):
 
                 guard let query = query, !query.isEmpty else {
@@ -150,6 +152,20 @@ struct LifestyleFeature: ReducerProtocol {
 
                 return .none
             }
-        }._printChanges()
+        }
+        .ifLet(\.optionalCalendar, action: /Action.calendar) {
+            CalendarFeature()
+        }
+    }
+}
+
+extension LifestyleFeature.State {
+    var optionalCalendar: CalendarFeature.State? {
+        get { calendar }
+        set {
+            if let new = newValue {
+                calendar = new
+            }
+        }
     }
 }

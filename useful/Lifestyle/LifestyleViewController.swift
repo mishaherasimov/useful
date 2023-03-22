@@ -13,11 +13,12 @@ import ComposableArchitecture
 import UIKit
 
 final class LifestyleViewController: UIViewController {
-    private let viewStore: ViewStoreOf<LifestyleFeature>
+    private let store: StoreOf<LifestyleFeature>
+    private var viewStore: ViewStoreOf<LifestyleFeature> { ViewStore(store) }
     private var cancellables: Set<AnyCancellable> = []
 
     init(store: StoreOf<LifestyleFeature>) {
-        self.viewStore = ViewStore(store)
+        self.store = store
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -60,10 +61,7 @@ final class LifestyleViewController: UIViewController {
     }
 
     private lazy var calendarBar = CalendarBar(
-        store: Store(
-            initialState: viewStore.calendar,
-            reducer: CalendarFeature()
-        )
+        store: store.scope(state: \.calendar, action: { .calendar($0) })
     )
 
     private var calendarAnimator: CalendarAnimator?
