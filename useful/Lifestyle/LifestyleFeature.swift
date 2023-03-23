@@ -22,28 +22,12 @@ struct LifestyleSection: Equatable {
 struct Timeframe: Equatable {
     let week: CalendarWeek
     let day: DayItem
-}
 
-extension LifestyleFeature.State {
-    /*
-    func header(for section: LifestyleSectionType) -> (title: String, annotation: String) {
+    var weekSpan: (beginning: Date, end: Date) {
+        @Dependency(\.calendarService) var service: CalendarService
 
-        switch section {
-        case .ongoing:
-            guard
-                let date = currentWeek?.date,
-                let endOfweek = date.endOfWeek?.formatted(as: .custom(style: .weekDay, timeZone: .current)),
-                let startOfweek = date.startOfWeek?.formatted(as: .custom(style: .weekDay, timeZone: .current))
-            else { return (.empty, .empty) }
-            let weekInfo = String(format: "%@ - %@", startOfweek, endOfweek)
-            return (weekInfo, "Current week")
-        case .completed:
-            return ("Completed items", .empty)
-        case .search:
-            return ("Search result items", .empty)
-        }
+        return service.weekSpan(using: day)
     }
-     */
 }
 
 struct LifestyleFeature: ReducerProtocol {
