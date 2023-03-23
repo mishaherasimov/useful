@@ -61,7 +61,7 @@ final class LifestyleViewController: UIViewController {
     }
 
     private lazy var calendarBar = CalendarBar(
-        store: store.scope(state: \.calendar, action: { .calendar($0) })
+        store: store.scope(state: \.calendarBar, action: { .calendarBar($0) })
     )
 
     private var calendarAnimator: CalendarAnimator?
@@ -124,8 +124,8 @@ final class LifestyleViewController: UIViewController {
             .store(in: &cancellables)
 
         viewStore.publisher
-            .currentWeek
-            .compactMap(\.?.date)
+            .currentTimeframe
+            .compactMap(\.?.day)
             .removeDuplicates()
             .sink { [weak self] _ in
                 self?.calendarAnimator?.closeBar()

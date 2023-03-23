@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let state = LifestyleFeature.State(
             loadInfo: .init(.didLoad, .loadNew),
-            calendar: calendar,
+            calendarBar: calendar,
             originalItems: [],
             disposableItems: []
         )

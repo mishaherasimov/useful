@@ -134,7 +134,7 @@ extension CalendarBar: UICollectionViewDelegate {
             return
         }
 
-        viewStore.send(.delegate(.didSelect(week, day: day)))
+        viewStore.send(.delegate(.didSelect(.init(week: week, day: day))))
     }
 }
 

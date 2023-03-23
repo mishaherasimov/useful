@@ -7,6 +7,18 @@
 //
 
 import Foundation
+import ComposableArchitecture
+
+enum CalendarKey: DependencyKey {
+    static let liveValue = Calendar(identifier: .gregorian)
+}
+
+extension DependencyValues {
+    var calendar: Calendar {
+        get { self[CalendarKey.self] }
+        set { self[CalendarKey.self] = newValue }
+    }
+}
 
 enum CalendarWeek: Int, CaseIterable {
     case week1, week2, week3, week4, week5, week6
@@ -22,6 +34,17 @@ struct DayItem: Equatable, Hashable, Identifiable {
         self.day = day
         self.isCurrent = isCurrent
     }
+
+    init(date: Date) {
+        @Dependency(\.calendar) var calendar: Calendar
+
+        let components = calendar.dateComponents([.day], from: date)
+        guard let day = components.day else {
+            fatalError("Cannot retrieve day information from the date \(date)")
+        }
+
+        self.init(day: day)
+    }
 }
 
 /// Day digits of the six weeks of the month.
@@ -31,7 +54,7 @@ typealias CurrentMonth = [[DayItem]]
 
 final class CalendarService {
     private let today: Date = Date()
-    private let calendar: Calendar = Calendar(identifier: .gregorian)
+    @Dependency(\.calendar) private var calendar: Calendar
     
     lazy var currentMonth: CurrentMonth = currentMonthData()
     lazy var currentWeek: CalendarWeek = findCurrentWeek()

@@ -16,7 +16,7 @@ struct CalendarFeature: ReducerProtocol {
     }
 
     enum DelegateAction: Equatable {
-        case didSelect(CalendarWeek, day: DayItem)
+        case didSelect(Timeframe)
     }
 
     struct State: Equatable {
@@ -28,8 +28,8 @@ struct CalendarFeature: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-            case .delegate(.didSelect(let week, _)):
-                state.selectedWeek = week
+            case .delegate(.didSelect(let timeframe)):
+                state.selectedWeek = timeframe.week
                 return .none
             }
         }

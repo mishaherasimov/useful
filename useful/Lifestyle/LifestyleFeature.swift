@@ -19,17 +19,13 @@ struct LifestyleSection: Equatable {
     var items: [DisposableItem]
 }
 
-struct Week: Equatable {
+struct Timeframe: Equatable {
     let week: CalendarWeek
-    let date: Date?
-
-    init(_ week: CalendarWeek, _ date: Date?) {
-        self.week = week
-        self.date = date
-    }
+    let day: DayItem
 }
 
 extension LifestyleFeature.State {
+    /*
     func header(for section: LifestyleSectionType) -> (title: String, annotation: String) {
 
         switch section {
@@ -47,13 +43,14 @@ extension LifestyleFeature.State {
             return ("Search result items", .empty)
         }
     }
+     */
 }
 
 struct LifestyleFeature: ReducerProtocol {
     struct State: Equatable {
-        var currentWeek: Week?
+        var currentTimeframe: Timeframe?
         var loadInfo: LoadInfo
-        var calendar: CalendarFeature.State
+        var calendarBar: CalendarFeature.State
         var originalItems: [[DisposableItem]]
         var disposableItems: [LifestyleSection]
     }
@@ -62,10 +59,10 @@ struct LifestyleFeature: ReducerProtocol {
         case onViewDidLoad
         case refreshControlTriggered
         case filterQueryChanged(query: String?)
-        case calendar(CalendarFeature.Action)
+        case calendarBar(CalendarFeature.Action)
 
         case didLoadItems(APIResponse<[String: DisposableItem]>, type: LoadingType)
-        case onLoadContent(isReloading: Bool, weekInfo: Week?)
+        case onLoadContent(isReloading: Bool, time: Timeframe?)
     }
 
     @Dependency(\.apiClient) var apiClient
@@ -77,10 +74,10 @@ struct LifestyleFeature: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-            case .onLoadContent(let isReloading, let weekInfo):
+            case .onLoadContent(let isReloading, let timeframe):
 
-                state.currentWeek = weekInfo ?? state.currentWeek
-                guard let week = state.currentWeek?.week else { return .none }
+                state.currentTimeframe = timeframe ?? state.currentTimeframe
+                guard let week = state.currentTimeframe?.week else { return .none }
 
                 let type: LoadingType = isReloading ? .fullReload : .loadNew
 
@@ -98,7 +95,8 @@ struct LifestyleFeature: ReducerProtocol {
                     .eraseToEffect()
             case .onViewDidLoad:
 
-                return .send(.onLoadContent(isReloading: false, weekInfo: .init(.week1, Date())))
+                let time = Timeframe(week: .week1, day: DayItem(date: Date()))
+                return .send(.onLoadContent(isReloading: false, time: time))
             case .didLoadItems(let response, let loadType):
                 guard let values = response.value else {
 
@@ -119,16 +117,14 @@ struct LifestyleFeature: ReducerProtocol {
                 return .send(.filterQueryChanged(query: nil))
             case .refreshControlTriggered:
 
-                return Just(Action.onLoadContent(isReloading: true, weekInfo: nil))
+                return Just(Action.onLoadContent(isReloading: true, time: nil))
                     .delay(for: 0.5, scheduler: mainQueue)
                     .eraseToEffect()
                     .cancellable(id: RefreshCompletionID.self, cancelInFlight: true)
-            case .calendar(.delegate(.didSelect(let week, let day))):
-                print("🚀 \(week)")
-//                state.currentWeek = week
+            case .calendarBar(.delegate(.didSelect(let timeframe))):
 
-//                return .send(.onLoadContent(isReloading: false, weekInfo: week))
-                return .none
+                state.currentTimeframe = timeframe
+                return .send(.onLoadContent(isReloading: false, time: timeframe))
             case .filterQueryChanged(query: let query):
 
                 guard let query = query, !query.isEmpty else {
@@ -153,18 +149,18 @@ struct LifestyleFeature: ReducerProtocol {
                 return .none
             }
         }
-        .ifLet(\.optionalCalendar, action: /Action.calendar) {
+        .ifLet(\.optionalCalendarBar, action: /Action.calendarBar) {
             CalendarFeature()
         }
     }
 }
 
 extension LifestyleFeature.State {
-    var optionalCalendar: CalendarFeature.State? {
-        get { calendar }
+    var optionalCalendarBar: CalendarFeature.State? {
+        get { calendarBar }
         set {
             if let new = newValue {
-                calendar = new
+                calendarBar = new
             }
         }
     }
