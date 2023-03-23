@@ -15,8 +15,14 @@ import UIKit
 typealias LifestyleViewStore = ViewStore<LifestyleViewController.ViewState, LifestyleViewController.ViewAction>
 
 final class LifestyleViewController: UIViewController {
+    struct WeekSpan: Equatable {
+        let beginning: Date
+        let end: Date
+    }
+
     struct ViewState: Equatable {
         let selectedDay: DayItem?
+        let weekSpan: WeekSpan?
         let isLoadViewHidden: Bool
         let isRefreshControlHidden: Bool
         let isErrorViewHidden: Bool
@@ -500,6 +506,8 @@ extension LifestyleFeature.Action {
 
 extension LifestyleViewController.ViewState {
     init(state: LifestyleFeature.State) {
+        let span = state.currentTimeframe?.weekSpan
+        weekSpan = span.map(LifestyleViewController.WeekSpan.init)
         selectedDay = state.currentTimeframe?.day
         isRefreshControlHidden = !state.loadInfo.state.isActive
         isLoadViewHidden = !state.loadInfo.state.isActive || state.loadInfo.type == .fullReload
