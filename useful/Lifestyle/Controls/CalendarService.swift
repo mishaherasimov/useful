@@ -20,6 +20,17 @@ extension DependencyValues {
     }
 }
 
+enum CalendarServiceKey: DependencyKey {
+    static let liveValue = CalendarService()
+}
+
+extension DependencyValues {
+    var calendarService: CalendarService {
+        get { self[CalendarServiceKey.self] }
+        set { self[CalendarServiceKey.self] = newValue }
+    }
+}
+
 enum CalendarWeek: Int, CaseIterable {
     case week1, week2, week3, week4, week5, week6
 }
@@ -58,6 +69,19 @@ final class CalendarService {
     
     lazy var currentMonth: CurrentMonth = currentMonthData()
     lazy var currentWeek: CalendarWeek = findCurrentWeek()
+
+    func weekSpan(using day: DayItem) -> (beginning: Date, end: Date) {
+        guard let current = calendar.date(bySetting: .day, value: day.day, of: today) else {
+            fatalError("Cannot calculate week span")
+        }
+
+        let beginning = calendar.newDate(from: [.yearForWeekOfYear, .weekOfYear], with: current)
+        guard let end = calendar.date(byAdding: .day, value: 6, to: beginning) else {
+            fatalError("Cannot calculate week span")
+        }
+
+        return (beginning, end)
+    }
 
     private func findCurrentWeek() -> CalendarWeek {
         guard let dayNum = calendar.dateComponents([.day], from: today).day,
@@ -127,6 +151,14 @@ private extension Calendar {
         }
 
         return count
+    }
+
+    func newDate(from components: Set<Component>, with date: Date) -> Date {
+        guard let newDate = self.date(from: dateComponents(components, from: date)) else {
+            fatalError("Can't calculate new date using components \(components)")
+        }
+
+        return newDate
     }
 }
 

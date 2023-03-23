@@ -36,7 +36,6 @@
 		84EE06E824677F6800B3F5EF /* loading-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 84EE06E724677F6800B3F5EF /* loading-dark.json */; };
 		84EE06EC246781DF00B3F5EF /* image-loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 84EE06EA246781DF00B3F5EF /* image-loading.json */; };
 		84EE06EE2467831F00B3F5EF /* image-loading-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 84EE06ED2467831F00B3F5EF /* image-loading-dark.json */; };
-		84EE06F02468647800B3F5EF /* Date+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EE06EF2468647800B3F5EF /* Date+Operations.swift */; };
 		84FECED82457915B00E3D5E6 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */; };
 		84FECEDB2457972C00E3D5E6 /* UICollectionView+CellHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */; };
 		84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FECEDD245797E200E3D5E6 /* ReusableView.swift */; };
@@ -103,7 +102,6 @@
 		84EE06E724677F6800B3F5EF /* loading-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "loading-dark.json"; sourceTree = "<group>"; };
 		84EE06EA246781DF00B3F5EF /* image-loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "image-loading.json"; sourceTree = "<group>"; };
 		84EE06ED2467831F00B3F5EF /* image-loading-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "image-loading-dark.json"; sourceTree = "<group>"; };
-		84EE06EF2468647800B3F5EF /* Date+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Operations.swift"; sourceTree = "<group>"; };
 		84FECED72457915B00E3D5E6 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		84FECEDA2457972C00E3D5E6 /* UICollectionView+CellHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+CellHandling.swift"; sourceTree = "<group>"; };
 		84FECEDD245797E200E3D5E6 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
@@ -291,7 +289,6 @@
 				84FECEED2457E45A00E3D5E6 /* String+Enhancements.swift */,
 				84FECEEF2457EE2500E3D5E6 /* UIFont+Traits.swift */,
 				84BB0CED245A24F700D080D5 /* DateFormatter+Caching.swift */,
-				84EE06EF2468647800B3F5EF /* Date+Operations.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -557,7 +554,6 @@
 				922FF24329CC250600DCEFB5 /* LifestyleFactory.swift in Sources */,
 				840AF2422461049F0062DBF9 /* APIError.swift in Sources */,
 				84FECEEC2457DF0600E3D5E6 /* TitleSupplementaryView.swift in Sources */,
-				84EE06F02468647800B3F5EF /* Date+Operations.swift in Sources */,
 				84BB0CEE245A24F700D080D5 /* DateFormatter+Caching.swift in Sources */,
 				84BB0CF2245A56C000D080D5 /* CalendarItemCell.swift in Sources */,
 				84FECED82457915B00E3D5E6 /* CustomNavigationController.swift in Sources */,
