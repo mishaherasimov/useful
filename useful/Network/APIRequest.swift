@@ -29,7 +29,6 @@ extension APIRequest {
 extension APIRequest {
 
     var urlRequest: URLRequest {
-
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30)
         request.httpMethod = method.rawValue
 
@@ -45,7 +44,7 @@ extension APIRequest {
                 var mutableResults = results
 
                 if let arrayParam = parameter.value as? [Any] {
-                    let arrayItems = arrayParam.map({ URLQueryItem(name: parameter.key, value: String(describing: $0)) })
+                    let arrayItems = arrayParam.map { URLQueryItem(name: parameter.key, value: String(describing: $0)) }
                     mutableResults += arrayItems
                 } else {
                     mutableResults.append(URLQueryItem(name: parameter.key, value: String(describing: parameter.value)))
@@ -70,7 +69,6 @@ extension APIRequest {
 extension APIRequest {
 
     func formatPath(format: String, _ arguments: CVarArg...) -> Foundation.URL {
-
         let formattedPath = String(format: format, arguments: arguments)
         let url = APIClient.baseUrl.appendingPathComponent(formattedPath)
         return url

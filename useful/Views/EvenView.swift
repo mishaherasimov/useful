@@ -32,12 +32,12 @@ class EventView: UIView {
         configureUI()
     }
 
+    @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     private func configureUI() {
-
         translatesAutoresizingMaskIntoConstraints = false
 
         let stackView = UIStackView.create(axis: .vertical, spacing: contentSpacing)
@@ -49,7 +49,6 @@ class EventView: UIView {
     }
 
     func configure(for type: EventType) {
-
         switch type {
         case .construction:
             imageView.image = #imageLiteral(resourceName: "under-construction")

@@ -6,8 +6,8 @@
 //  Copyright © 2020 Mykhailo Herasimov. All rights reserved.
 //
 
-import UIKit
 import ComposableArchitecture
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 

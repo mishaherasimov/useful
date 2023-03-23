@@ -30,9 +30,7 @@ extension UIView {
     }
 
     func configureRequiredPriorities(for axis: [NSLayoutConstraint.PriorityAxis]) {
-
         axis.forEach {
-
             switch $0 {
             case .horizontal(let priority), .vertical(let priority):
 
@@ -54,7 +52,8 @@ extension UILabel {
         isDynamicallySized: Bool = false,
         contentPriority axis: [NSLayoutConstraint.PriorityAxis] = []
     )
-    -> UILabel {
+        -> UILabel
+    {
         mutate(UILabel()) {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.font = UIFont.preferredFont(forTextStyle: fontStyle)
@@ -78,7 +77,8 @@ extension UIStackView {
         distribution: Distribution = .fill,
         alignment: Alignment = .fill
     )
-    -> UIStackView {
+        -> UIStackView
+    {
         mutate(UIStackView()) {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.spacing = spacing

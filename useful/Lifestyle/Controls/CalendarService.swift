@@ -6,8 +6,8 @@
 //  Copyright © 2023 Mykhailo Herasimov. All rights reserved.
 //
 
-import Foundation
 import ComposableArchitecture
+import Foundation
 
 enum CalendarKey: DependencyKey {
     static let liveValue = Calendar(identifier: .gregorian)
@@ -64,9 +64,9 @@ struct DayItem: Equatable, Hashable, Identifiable {
 typealias CurrentMonth = [[DayItem]]
 
 final class CalendarService {
-    private let today: Date = Date()
+    private let today = Date()
     @Dependency(\.calendar) private var calendar: Calendar
-    
+
     lazy var currentMonth: CurrentMonth = currentMonthData()
     lazy var currentWeek: CalendarWeek = findCurrentWeek()
 
@@ -84,9 +84,10 @@ final class CalendarService {
     }
 
     private func findCurrentWeek() -> CalendarWeek {
-        guard let dayNum = calendar.dateComponents([.day], from: today).day,
-              let weekIndex = currentMonth.firstIndex(where: { items in items.contains { $0.isCurrent && $0.day == dayNum }}),
-              let week = CalendarWeek(rawValue: Int(weekIndex)) else { return .week1 }
+        guard
+            let dayNum = calendar.dateComponents([.day], from: today).day,
+            let weekIndex = currentMonth.firstIndex(where: { items in items.contains { $0.isCurrent && $0.day == dayNum }}),
+            let week = CalendarWeek(rawValue: Int(weekIndex)) else { return .week1 }
 
         return week
     }
@@ -121,7 +122,10 @@ final class CalendarService {
                 .suffix(weekDayOffset)
                 .map { DayItem(day: $0) }
 
-            let remainingDaysOfTheNextMonthCount = totalDaysInSixWeeks - min(previousMonth.count + currentMonth.count, totalDaysInSixWeeks)
+            let remainingDaysOfTheNextMonthCount = totalDaysInSixWeeks - min(
+                previousMonth.count + currentMonth.count,
+                totalDaysInSixWeeks
+            )
             let nextMonth = Array(1...remainingDaysOfTheNextMonthCount).map { DayItem(day: $0) }
 
             return (previousMonth + currentMonth + nextMonth).chunked(into: totalDayInWeek)
@@ -129,8 +133,8 @@ final class CalendarService {
     }
 }
 
-private extension Calendar {
-    func previousMonthDay(using date: Date) -> Date {
+extension Calendar {
+    fileprivate func previousMonthDay(using date: Date) -> Date {
         guard let newDate = self.date(byAdding: .month, value: -1, to: date) else {
             fatalError("Can't get a date of the previous month")
         }
@@ -138,14 +142,14 @@ private extension Calendar {
         return newDate
     }
 
-    func firstDayOfMonth(using date: Date) -> Date {
+    fileprivate func firstDayOfMonth(using date: Date) -> Date {
         newDate(from: [.year, .month], with: date)
     }
 
     /// Calculates number of days in a month
     /// - Parameter using: Date to use to determine current month
     /// - Returns: Day count in a particular month
-    func daysInMonth(using date: Date) -> Int {
+    fileprivate func daysInMonth(using date: Date) -> Int {
         guard let count = range(of: .day, in: .month, for: date)?.count else {
             fatalError("Can't calculate days in a month")
         }
@@ -153,7 +157,7 @@ private extension Calendar {
         return count
     }
 
-    func newDate(from components: Set<Component>, with date: Date) -> Date {
+    fileprivate func newDate(from components: Set<Component>, with date: Date) -> Date {
         guard let newDate = self.date(from: dateComponents(components, from: date)) else {
             fatalError("Can't calculate new date using components \(components)")
         }
@@ -162,8 +166,8 @@ private extension Calendar {
     }
 }
 
-private extension Array {
-    func chunked(into size: Int) -> [[Element]] {
+extension Array {
+    fileprivate func chunked(into size: Int) -> [[Element]] {
         stride(from: 0, to: count, by: size).map {
             Array(self[$0 ..< Swift.min($0 + size, count)])
         }

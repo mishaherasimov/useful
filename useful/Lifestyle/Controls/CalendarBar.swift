@@ -6,9 +6,9 @@
 //  Copyright © 2020 Mykhailo Herasimov. All rights reserved.
 //
 
-import UIKit
-import ComposableArchitecture
 import Combine
+import ComposableArchitecture
+import UIKit
 
 final class CalendarBar: UIView {
     private typealias CalendarDataSource = UICollectionViewDiffableDataSource<CalendarWeek, DayItem>
@@ -18,15 +18,16 @@ final class CalendarBar: UIView {
 
     // Views
 
-    private lazy var collectionView: UICollectionView = mutate(UICollectionView(frame: .zero, collectionViewLayout: createLayout())) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.register(CalendarItemCell.self)
-        $0.backgroundColor = .clear
-    }
+    private lazy var collectionView: UICollectionView =
+        mutate(UICollectionView(frame: .zero, collectionViewLayout: createLayout())) {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.register(CalendarItemCell.self)
+            $0.backgroundColor = .clear
+        }
 
     // -- Views --
 
-    private lazy var dataSource: CalendarDataSource = CalendarDataSource(collectionView: collectionView) { [weak viewStore] in
+    private lazy var dataSource = CalendarDataSource(collectionView: collectionView) { [weak viewStore] in
         let item = $2
         return mutate($0.dequeueReusableCell(for: $1) as CalendarItemCell) { cell in
             guard let store = viewStore else { return }
@@ -35,7 +36,7 @@ final class CalendarBar: UIView {
     }
 
     init(store: StoreOf<CalendarFeature>) {
-        self.viewStore = ViewStore(store)
+        viewStore = ViewStore(store)
         super.init(frame: .zero)
 
         configureUI()
@@ -43,6 +44,7 @@ final class CalendarBar: UIView {
         setupBindings()
     }
 
+    @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -86,7 +88,8 @@ final class CalendarBar: UIView {
 
         stackView.items = legends
         NSLayoutConstraint.snap(stackView, to: collectionView, for: [.left, .right])
-        stackView.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -Constants.legendBottomSpacing).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -Constants.legendBottomSpacing)
+            .isActive = true
     }
 
     private func configureHierarchy() {
@@ -117,7 +120,7 @@ final class CalendarBar: UIView {
         var snapshot = NSDiffableDataSourceSnapshot<CalendarWeek, DayItem>()
 
         for (index, weekItems) in viewStore.currentMonth.enumerated() {
-            if let week = CalendarWeek(rawValue: index)  {
+            if let week = CalendarWeek(rawValue: index) {
                 snapshot.appendSections([week])
                 snapshot.appendItems(weekItems, toSection: week)
             }
@@ -129,8 +132,10 @@ final class CalendarBar: UIView {
 
 extension CalendarBar: UICollectionViewDelegate {
     func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let day = dataSource.itemIdentifier(for: indexPath),
-              let week = CalendarWeek(rawValue: indexPath.section) else {
+        guard
+            let day = dataSource.itemIdentifier(for: indexPath),
+            let week = CalendarWeek(rawValue: indexPath.section) else
+        {
             return
         }
 
@@ -182,7 +187,6 @@ extension CalendarBar {
                 // -- Background --
 
                 if sectionType == self.viewStore.selectedWeek {
-
                     let weekBackgroundDecoration = NSCollectionLayoutDecorationItem.background(
                         elementKind: SupplementaryViewKind.background.kindIdentifier(WeekBackgroundDecorationView.self)
                     )

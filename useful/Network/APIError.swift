@@ -17,7 +17,6 @@ public enum APIError {
 
 extension APIError: CustomStringConvertible {
     public var description: String {
-
         switch self {
         case .requestError(let statusCode):
             return "Request error with statusCode: \(statusCode)"

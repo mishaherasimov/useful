@@ -54,14 +54,12 @@ final class ItemCell: UICollectionViewCell {
     // MARK: - Configurations
 
     private func configureBorderIfNeeded() {
-
         let isDarkMode = traitCollection.userInterfaceStyle == .dark
         contentView.layer.borderWidth = isDarkMode ? 1 : 0
         contentView.layer.borderColor = UIColor.separator.cgColor
     }
 
     private func configureUI() {
-
         configureBorderIfNeeded()
         layer.cornerRadius = Constants.cornerRadius
         backgroundColor = UIColor(collection: .backgroundElevated)
@@ -77,13 +75,15 @@ final class ItemCell: UICollectionViewCell {
 
         NSLayoutConstraint.snap(nameLabel, to: contentView, for: [.left, .right, .top], with: Constants.contentInsets)
         NSLayoutConstraint.snap(itemImage, to: contentView, for: [.bottom], with: Constants.contentInsets)
-        NSLayoutConstraint.size(view: itemImage, attributes: [.height(value: Constants.imageSize.height), .width(value: Constants.imageSize.width)])
+        NSLayoutConstraint.size(
+            view: itemImage,
+            attributes: [.height(value: Constants.imageSize.height), .width(value: Constants.imageSize.width)]
+        )
         NSLayoutConstraint.center(itemImage, in: contentView, for: [.horizontal])
         itemImage.topAnchor.constraint(greaterThanOrEqualTo: nameLabel.bottomAnchor, constant: Constants.spacing).activate()
     }
 
     func configure(name: String, imageURL: String, imageURLDark: String, isCompleted: Bool) {
-
         nameLabel.text = name
 
         if let imageURL = traitCollection.userInterfaceStyle == .dark ? URL(string: imageURLDark) : URL(string: imageURL) {

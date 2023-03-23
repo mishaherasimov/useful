@@ -32,7 +32,6 @@ enum LoadingState: Equatable {
     case didLoad
 
     var isActive: Bool {
-
         switch self {
         case .isLoading, .willLoad:
             return true

@@ -67,7 +67,6 @@ class CalendarAnimator {
     unowned var calendar: CalendarBar
 
     init(inset: CGFloat, constraint: NSLayoutConstraint, calendar: CalendarBar) {
-
         bounds = (inset, 0)
         totalTranslation = bounds.max
         self.constraint = constraint
@@ -77,7 +76,6 @@ class CalendarAnimator {
     }
 
     private func configure() {
-
         // -- Recognizers --
 
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handle(recognizer:)))
@@ -86,7 +84,6 @@ class CalendarAnimator {
 
     @objc
     private func handle(recognizer: UIPanGestureRecognizer) {
-
         let translation = recognizer.translation(in: calendar)
         let velocity = recognizer.velocity(in: calendar)
         let position = BoundsPosition(progress: constraint.constant, translationY: translation.y, bounds: bounds)
@@ -135,14 +132,12 @@ class CalendarAnimator {
     // -- Animator --
 
     private func animateView(to bound: CGFloat, velocity: CGFloat) {
-
         let normalizedVelocity = velocity / abs(bounds.max - bounds.min)
 
         let timing = UISpringTimingParameters(dampingRatio: 0.8, initialVelocity: CGVector(dx: 0, dy: normalizedVelocity))
         let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: timing)
 
         animator.addAnimations {
-
             self.constraint.constant = bound
             self.calendar.superview?.layoutIfNeeded()
             self.totalTranslation = bound

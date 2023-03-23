@@ -29,7 +29,10 @@ struct LifestyleFactory {
         )
 
         let calendarStore: StoreOf<CalendarFeature> = store.scope(state: \.calendarBar, action: { .calendarBar($0) })
-        let viewStore: LifestyleViewStore = ViewStore(store.scope(state: LifestyleViewController.ViewState.init, action: LifestyleFeature.Action.init))
+        let viewStore: LifestyleViewStore = ViewStore(
+            store
+                .scope(state: LifestyleViewController.ViewState.init, action: LifestyleFeature.Action.init)
+        )
 
         return LifestyleViewController(
             viewStore: viewStore,

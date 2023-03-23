@@ -31,14 +31,12 @@ class CalendarItemCell: UICollectionViewCell {
     // MARK: - Configurations
 
     private func configureUI() {
-
         contentView.addSubview(dayLabel)
         backgroundColor = .clear
         NSLayoutConstraint.snap(dayLabel, to: contentView)
     }
 
     func configure(day: Int, isCurrentMonth: Bool) {
-
         dayLabel.text = String(day)
         contentView.alpha = isCurrentMonth ? 1.0 : 0.5
     }

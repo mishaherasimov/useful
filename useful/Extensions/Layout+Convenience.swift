@@ -6,8 +6,8 @@
 //  Copyright © 2020 Mykhailo Herasimov. All rights reserved.
 //
 
-import UIKit
 import SwiftUI
+import UIKit
 
 extension EdgeInsets {
     static func create(top: CGFloat = 0, trailing: CGFloat = 0, bottom: CGFloat = 0, leading: CGFloat = 0) -> EdgeInsets {
@@ -75,7 +75,6 @@ extension NSLayoutConstraint {
         sizeAttributes: [CGSize.Attributes] = [],
         with inset: UIEdgeInsets = .zero
     ) -> [Side: NSLayoutConstraint] {
-
         var constraints: [Side: NSLayoutConstraint] = [:]
 
         for side in sides {
@@ -100,7 +99,6 @@ extension NSLayoutConstraint {
     }
 
     static func size(view: UIView, attributes: [CGSize.Attributes]) {
-
         for attribute in attributes {
             switch attribute {
             case .width(let value):
@@ -117,7 +115,6 @@ extension NSLayoutConstraint {
         for axises: [Axis] = [.vertical, .horizontal],
         with offset: CGPoint = .zero
     ) {
-
         for axis in axises {
             switch axis {
             case .vertical:
@@ -132,7 +129,6 @@ extension NSLayoutConstraint {
 
     @discardableResult
     func activate(with priority: UILayoutPriority = .required) -> NSLayoutConstraint {
-
         self.priority = priority
         isActive = true
         return self

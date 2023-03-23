@@ -36,7 +36,6 @@ class TitleSupplementaryView: UICollectionReusableView {
     // MARK: - Configurations
 
     private func configureUI() {
-
         let stackView = UIStackView.create(axis: .vertical, spacing: spacing)
         addSubview(stackView)
 
@@ -47,7 +46,6 @@ class TitleSupplementaryView: UICollectionReusableView {
     }
 
     func configure(header: (title: String, annotation: String)) {
-
         annotationLabel.isHidden = header.annotation.isEmpty
         titleLabel.text = header.title
         annotationLabel.text = header.annotation

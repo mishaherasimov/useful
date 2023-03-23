@@ -18,7 +18,6 @@ final class NetworkSessionManager: NSObject {
 
     @discardableResult
     public func data(_ request: URLRequestProvider, completionBlock: @escaping (DataResponse) -> Void) -> URLSessionDataTask {
-
         let urlRequest = request.urlRequest
 
         let task = session.dataTask(with: urlRequest) { data, response, error in

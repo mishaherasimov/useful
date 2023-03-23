@@ -6,10 +6,10 @@
 //  Copyright © 2020 Mykhailo Herasimov. All rights reserved.
 //
 
-import Lottie
-import SwiftUI
 import Combine
 import ComposableArchitecture
+import Lottie
+import SwiftUI
 import UIKit
 
 typealias LifestyleViewStore = ViewStore<LifestyleViewController.ViewState, LifestyleViewController.ViewAction>
@@ -48,7 +48,8 @@ final class LifestyleViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -198,7 +199,6 @@ final class LifestyleViewController: UIViewController {
 
     private func refresh(sections: [LifestyleSection], animatingDifferences: Bool = true) {
         guard !sections.isEmpty else {
-
             configureBackgroundView(for: .empty)
             dataSource.apply(
                 NSDiffableDataSourceSnapshot<LifestyleSectionType, DisposableItem>(),
@@ -233,7 +233,6 @@ final class LifestyleViewController: UIViewController {
 extension LifestyleViewController {
 
     private func configureCalendarBar() {
-
         // -- Container view --
         // Helps to handle collection view oscillation
 
@@ -318,7 +317,6 @@ extension LifestyleViewController {
     }
 
     private func configureBackgroundView(for event: EventView.EventType) {
-
         eventView.removeConstraints(eventViewConstraints)
         eventView.configure(for: event)
         collectionView.backgroundView = eventView
@@ -332,7 +330,6 @@ extension LifestyleViewController {
 extension LifestyleViewController {
 
     private func createLayout() -> UICollectionViewLayout {
-
         let layout =
             UICollectionViewCompositionalLayout { (_: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
@@ -400,45 +397,65 @@ extension LifestyleViewController {
         dataSource = UICollectionViewDiffableDataSource<
             LifestyleSectionType,
             DisposableItem
-        >(collectionView: collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, disposableItem: DisposableItem) -> UICollectionViewCell? in
+        >(collectionView: collectionView) { [weak self] (
+            collectionView: UICollectionView,
+            indexPath: IndexPath,
+            disposableItem: DisposableItem
+        )
+            -> UICollectionViewCell? in
 
-                guard let self = self else { return nil }
+        guard let self = self else { return nil }
 
-                let content = self.viewStore.items[indexPath.section]
-                let isLast = disposableItem == self.viewStore.items[indexPath.section].items.last
+        let content = self.viewStore.items[indexPath.section]
+        let isLast = disposableItem == self.viewStore.items[indexPath.section].items.last
 
-                // If last item in a first section
-                if isLast, content.section == .ongoing {
-
-                    let cell: SuggestedItemsCell = collectionView.dequeueReusableCell(for: indexPath)
-                    cell.configure(items: Int.random(in: 2..<10))
-                    return cell
-                } else {
-
-                    let cell: ItemCell = collectionView.dequeueReusableCell(for: indexPath)
-                    cell.configure(
-                        name: disposableItem.name,
-                        imageURL: disposableItem.imageURL,
-                        imageURLDark: disposableItem.imageURLDark,
-                        isCompleted: disposableItem.isCompleted == true
-                    )
-                    return cell
-                }
-        }
-
-        dataSource.supplementaryViewProvider = { [weak self] (collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
-            guard let self else { return nil }
-
-            let section = self.viewStore.items[indexPath.section].section
-            let supplementaryView: TitleSupplementaryView = collectionView.dequeueReusableSupplementaryView(
-                for: indexPath,
-                kind: kind
+        // If last item in a first section
+        if isLast, content.section == .ongoing {
+            let cell: SuggestedItemsCell = collectionView.dequeueReusableCell(for: indexPath)
+            cell.configure(items: Int.random(in: 2..<10))
+            return cell
+        } else {
+            let cell: ItemCell = collectionView.dequeueReusableCell(for: indexPath)
+            cell.configure(
+                name: disposableItem.name,
+                imageURL: disposableItem.imageURL,
+                imageURLDark: disposableItem.imageURLDark,
+                isCompleted: disposableItem.isCompleted == true
             )
-
-            supplementaryView.configure(header: ("Test", "Test"))
-
-            return supplementaryView
+            return cell
         }
+        }
+
+        dataSource
+            .supplementaryViewProvider =
+            { [weak self] (collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
+                guard let self else { return nil }
+
+                let section = self.viewStore.items[indexPath.section].section
+                let supplementaryView: TitleSupplementaryView = collectionView.dequeueReusableSupplementaryView(
+                    for: indexPath,
+                    kind: kind
+                )
+
+                var header: (title: String, annotation: String) = (.empty, .empty)
+
+                switch section {
+                case .ongoing:
+                    if let week = self.viewStore.weekSpan {
+                        let beginning: String = week.beginning.formatted(as: .custom(style: .weekDay, timeZone: .current))
+                        let end: String = week.end.formatted(as: .custom(style: .weekDay, timeZone: .current))
+
+                        header = (String(format: "%@ - %@", beginning, end), "Current week")
+                    }
+                case .completed:
+                    header = ("Completed items", .empty)
+                case .search:
+                    header = ("Search result items", .empty)
+                }
+
+                supplementaryView.configure(header: header)
+                return supplementaryView
+            }
     }
 }
 
@@ -449,7 +466,6 @@ extension LifestyleViewController: UICollectionViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
         // Helps to mimic the behaviour of the stretchy navigation bar
         let isNegativeDirection = scrollView.contentOffset.y <= -Constants.contentTopInset
         elasticTopInset = isNegativeDirection ? abs(scrollView.contentOffset.y) - Constants.contentTopInset : 0

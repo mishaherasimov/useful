@@ -13,7 +13,6 @@ final class SuggestedItemsCell: UICollectionViewCell {
     // MARK: - Views
 
     private let disclosureImageView: UIImageView = {
-
         let symbolConfig = UIImage.SymbolConfiguration(pointSize: 28, weight: .semibold, scale: .medium)
         let symbol = UIImage(systemName: "arrow.right.circle.fill", withConfiguration: symbolConfig)
         let imageView = UIImageView(image: symbol)
@@ -57,7 +56,6 @@ final class SuggestedItemsCell: UICollectionViewCell {
     // MARK: - Configurations
 
     private func configureUI() {
-
         let stackView = UIStackView.create(axis: .vertical, spacing: Constants.spacing)
         contentView.addSubview(stackView)
         contentView.addSubview(disclosureImageView)
@@ -76,7 +74,6 @@ final class SuggestedItemsCell: UICollectionViewCell {
     }
 
     func configure(items: Int) {
-
         itemsLabel.text = String(format: "%d items", items)
     }
 }

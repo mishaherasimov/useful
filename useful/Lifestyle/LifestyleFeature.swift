@@ -53,7 +53,7 @@ struct LifestyleFeature: ReducerProtocol {
     @Dependency(\.uuid) var uuid
     @Dependency(\.mainQueue) var mainQueue
 
-    private enum RefreshCompletionID {}
+    private enum RefreshCompletionID { }
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -83,7 +83,6 @@ struct LifestyleFeature: ReducerProtocol {
                 return .send(.onLoadContent(isReloading: false, time: time))
             case .didLoadItems(let response, let loadType):
                 guard let values = response.value else {
-
                     state.loadInfo = .init(.failLoading, loadType)
                     return .none
                 }

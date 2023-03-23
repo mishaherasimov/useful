@@ -40,7 +40,8 @@ extension UICollectionView {
                 ofKind: kind,
                 withReuseIdentifier: T.defaultReuseIdentifier,
                 for: indexPath
-            ) as? T else {
+            ) as? T else
+        {
             fatalError("Could not dequeue reusabe view with identifier: \(T.defaultReuseIdentifier) of kind: \(kind)")
         }
 

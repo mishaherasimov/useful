@@ -13,9 +13,7 @@ private var cachedFormatters = [DateFormatPreset: DateFormatter]()
 extension DateFormatter {
 
     static func cached(with preset: DateFormatPreset) -> DateFormatter {
-
         if let cachedFormatter = cachedFormatters[preset] {
-
             return cachedFormatter
         }
 
