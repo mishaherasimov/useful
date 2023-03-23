@@ -57,6 +57,7 @@
 		9229985F29C7EA5A00B3A3D2 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9229985E29C7EA5A00B3A3D2 /* VisualEffectView.swift */; };
 		9229986129C80F7D00B3A3D2 /* CalendarFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9229986029C80F7D00B3A3D2 /* CalendarFeature.swift */; };
 		9229986329C8146300B3A3D2 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9229986229C8146300B3A3D2 /* CalendarService.swift */; };
+		922FF24329CC250600DCEFB5 /* LifestyleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922FF24229CC250600DCEFB5 /* LifestyleFactory.swift */; };
 		92769963299F308300EA4EF3 /* mutate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92769962299F308300EA4EF3 /* mutate.swift */; };
 /* End PBXBuildFile section */
 
@@ -122,6 +123,7 @@
 		9229985E29C7EA5A00B3A3D2 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		9229986029C80F7D00B3A3D2 /* CalendarFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFeature.swift; sourceTree = "<group>"; };
 		9229986229C8146300B3A3D2 /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		922FF24229CC250600DCEFB5 /* LifestyleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestyleFactory.swift; sourceTree = "<group>"; };
 		9267C84F29C155370024A220 /* Project-Adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Adhoc.xcconfig"; sourceTree = "<group>"; };
 		92769962299F308300EA4EF3 /* mutate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mutate.swift; sourceTree = "<group>"; };
 		92AE5FF129B1B9E0001D5253 /* SourceCode */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SourceCode; path = packages/SourceCode; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 			children = (
 				8433FD4A245635E400C301D3 /* LifestyleViewController.swift */,
 				84FECEF82458A56700E3D5E6 /* LifestyleFeature.swift */,
+				922FF24229CC250600DCEFB5 /* LifestyleFactory.swift */,
 				84FECEE224579C1C00E3D5E6 /* Cells and Supplementary Views */,
 				84FECEFC2458E86F00E3D5E6 /* Controls */,
 				84FECEF52458A1B600E3D5E6 /* Models */,
@@ -551,6 +554,7 @@
 				8433FD47245635E400C301D3 /* AppDelegate.swift in Sources */,
 				84FECEDE245797E200E3D5E6 /* ReusableView.swift in Sources */,
 				84FECEE124579C1700E3D5E6 /* ItemCell.swift in Sources */,
+				922FF24329CC250600DCEFB5 /* LifestyleFactory.swift in Sources */,
 				840AF2422461049F0062DBF9 /* APIError.swift in Sources */,
 				84FECEEC2457DF0600E3D5E6 /* TitleSupplementaryView.swift in Sources */,
 				84EE06F02468647800B3F5EF /* Date+Operations.swift in Sources */,

@@ -21,26 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
-        let service = CalendarService()
-        let calendar = CalendarFeature.State(
-            selectedWeek: service.currentWeek,
-            currentMonth: service.currentMonth
-        )
-
-        let state = LifestyleFeature.State(
-            loadInfo: .init(.didLoad, .loadNew),
-            calendarBar: calendar,
-            originalItems: [],
-            disposableItems: []
-        )
-
-        let store = Store(
-            initialState: state,
-            reducer: LifestyleFeature()
-        )
-
-        let lifestyle = LifestyleViewController(store: store)
-        let navigation = CustomNavigationController(rootViewController: lifestyle)
+        let factory = LifestyleFactory()
+        let navigation = CustomNavigationController(rootViewController: factory.buildLifestyleFeature())
         window.rootViewController = navigation
 
         self.window = window

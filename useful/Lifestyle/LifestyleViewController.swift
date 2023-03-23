@@ -12,13 +12,33 @@ import Combine
 import ComposableArchitecture
 import UIKit
 
+typealias LifestyleViewStore = ViewStore<LifestyleViewController.ViewState, LifestyleViewController.ViewAction>
+
 final class LifestyleViewController: UIViewController {
-    private let store: StoreOf<LifestyleFeature>
-    private var viewStore: ViewStoreOf<LifestyleFeature> { ViewStore(store) }
+    struct ViewState: Equatable {
+        let selectedDay: DayItem?
+        let isLoadViewHidden: Bool
+        let isRefreshControlHidden: Bool
+        let isErrorViewHidden: Bool
+        let items: [LifestyleSection]
+    }
+
+    enum ViewAction {
+        case onViewDidLoad
+        case refreshControlTriggered
+        case filterQueryChanged(query: String?)
+    }
+
+    private let calendarStore: StoreOf<CalendarFeature>
+    private var viewStore: LifestyleViewStore
     private var cancellables: Set<AnyCancellable> = []
 
-    init(store: StoreOf<LifestyleFeature>) {
-        self.store = store
+    init(
+        viewStore: LifestyleViewStore,
+        calendarStore: StoreOf<CalendarFeature>
+    ) {
+        self.calendarStore = calendarStore
+        self.viewStore = viewStore
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -60,10 +80,7 @@ final class LifestyleViewController: UIViewController {
         }
     }
 
-    private lazy var calendarBar = CalendarBar(
-        store: store.scope(state: \.calendarBar, action: { .calendarBar($0) })
-    )
-
+    private lazy var calendarBar = CalendarBar(store: calendarStore)
     private var calendarAnimator: CalendarAnimator?
 
     private var calendarContainerTopConstraint: NSLayoutConstraint?
@@ -109,24 +126,54 @@ final class LifestyleViewController: UIViewController {
     // MARK: - New Logic
 
     private func setupBindings() {
-        viewStore.publisher
-            .disposableItems
+        viewStore.publisher.items
+            .removeDuplicates()
             .sink { [weak self] in
                 self?.refresh(sections: $0)
             }
             .store(in: &cancellables)
 
-        viewStore.publisher
-            .loadInfo
+        viewStore.publisher.isRefreshControlHidden
+            .removeDuplicates()
             .sink { [weak self] in
-                self?.loadingDisposableItems(with: $0)
+                if $0 {
+                    self?.refreshControl.endRefreshing()
+                }
             }
             .store(in: &cancellables)
 
-        viewStore.publisher
-            .currentTimeframe
-            .compactMap(\.?.day)
+        viewStore.publisher.isLoadViewHidden
             .removeDuplicates()
+            .sink { [weak self] in
+                guard let self else { return }
+
+                if !$0 {
+                    LoaderView.shared.start(in: self.view) { [weak self] in
+                        guard let self else { return }
+                        self.view.insertSubview($0, aboveSubview: self.collectionView)
+                    }
+                } else {
+                    LoaderView.shared.stop()
+                }
+            }
+            .store(in: &cancellables)
+
+        viewStore.publisher.isErrorViewHidden
+            .removeDuplicates()
+            .sink { [weak self] in
+                if !$0 {
+                    self?.configureBackgroundView(for: .error)
+                }
+            }
+            .store(in: &cancellables)
+
+        viewStore.publisher.items
+            .sink { [weak self] in self?.refresh(sections: $0) }
+            .store(in: &cancellables)
+
+        viewStore.publisher.selectedDay
+            .removeDuplicates()
+            .compactMap { $0 }
             .sink { [weak self] _ in
                 self?.calendarAnimator?.closeBar()
                 self?.refreshHeader()
@@ -137,7 +184,7 @@ final class LifestyleViewController: UIViewController {
     private func refreshHeader() {
         // Reload header info
         var snapshot = dataSource.snapshot()
-        if viewStore.disposableItems.map(\.section).contains(.ongoing) {
+        if viewStore.items.map(\.section).contains(.ongoing) {
             snapshot.reloadSections([.ongoing])
             dataSource.apply(snapshot)
         }
@@ -164,28 +211,6 @@ final class LifestyleViewController: UIViewController {
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
 
-    // MARK: - End New Logic
-
-    private func loadingDisposableItems(with info: LoadInfo) {
-        switch info.state {
-        case .willLoad:
-            guard info.type == .loadNew else { break }
-            LoaderView.shared.start(in: view) { [weak self] in
-                guard let self = self else { return }
-                view.insertSubview($0, aboveSubview: self.collectionView)
-            }
-        case .failLoading:
-            LoaderView.shared.stop()
-            refreshControl.endRefreshing()
-            configureBackgroundView(for: .error)
-        case .didLoad:
-            LoaderView.shared.stop()
-            refreshControl.endRefreshing()
-            refresh(sections: viewStore.disposableItems, animatingDifferences: true)
-        case .isLoading: break
-        }
-    }
-
     @objc
     private func refreshItems(_: UIRefreshControl) {
         viewStore.send(.refreshControlTriggered)
@@ -195,7 +220,7 @@ final class LifestyleViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
 
         guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
-        refresh(sections: viewStore.disposableItems, animatingDifferences: false)
+        refresh(sections: viewStore.items, animatingDifferences: false)
     }
 }
 
@@ -373,11 +398,8 @@ extension LifestyleViewController {
 
                 guard let self = self else { return nil }
 
-                let content = self.viewStore.disposableItems[indexPath.section]
-
-                // print("The identifier is \(disposableItem) the index path is \(indexPath)")
-
-                let isLast = disposableItem == self.viewStore.disposableItems[indexPath.section].items.last
+                let content = self.viewStore.items[indexPath.section]
+                let isLast = disposableItem == self.viewStore.items[indexPath.section].items.last
 
                 // If last item in a first section
                 if isLast, content.section == .ongoing {
@@ -401,7 +423,7 @@ extension LifestyleViewController {
         dataSource.supplementaryViewProvider = { [weak self] (collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
             guard let self else { return nil }
 
-            let section = self.viewStore.disposableItems[indexPath.section].section
+            let section = self.viewStore.items[indexPath.section].section
             let supplementaryView: TitleSupplementaryView = collectionView.dequeueReusableSupplementaryView(
                 for: indexPath,
                 kind: kind
@@ -460,5 +482,28 @@ extension LifestyleViewController {
         static let calendarInset: CGFloat = -235
         static let calendarHeight: CGFloat = 280
         static let titleInsets: UIEdgeInsets = .create(left: 18)
+    }
+}
+
+extension LifestyleFeature.Action {
+    init(action: LifestyleViewController.ViewAction) {
+        switch action {
+        case .onViewDidLoad:
+            self = .onViewDidLoad
+        case .refreshControlTriggered:
+            self = .refreshControlTriggered
+        case .filterQueryChanged(let query):
+            self = .filterQueryChanged(query: query)
+        }
+    }
+}
+
+extension LifestyleViewController.ViewState {
+    init(state: LifestyleFeature.State) {
+        selectedDay = state.currentTimeframe?.day
+        isRefreshControlHidden = !state.loadInfo.state.isActive
+        isLoadViewHidden = !state.loadInfo.state.isActive || state.loadInfo.type == .fullReload
+        isErrorViewHidden = state.loadInfo.state != .failLoading
+        items = state.disposableItems
     }
 }
