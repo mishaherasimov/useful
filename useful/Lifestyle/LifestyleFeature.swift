@@ -133,19 +133,10 @@ struct LifestyleFeature: ReducerProtocol {
                 return .none
             }
         }
-        .ifLet(\.optionalCalendarBar, action: /Action.calendarBar) {
-            CalendarFeature()
-        }
-    }
-}
-
-extension LifestyleFeature.State {
-    var optionalCalendarBar: CalendarFeature.State? {
-        get { calendarBar }
-        set {
-            if let new = newValue {
-                calendarBar = new
-            }
-        }
+        Scope(
+            state: \.calendarBar,
+            action: /Action.calendarBar,
+            child: { CalendarFeature() }
+        )
     }
 }
