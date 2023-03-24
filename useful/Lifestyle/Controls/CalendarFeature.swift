@@ -20,7 +20,7 @@ struct CalendarFeature: ReducerProtocol {
     }
 
     struct State: Equatable {
-        var selectedWeek: CalendarWeek = .week1
+        var selectedWeek: CalendarWeek
         let currentMonth: CurrentMonth
         let totalWeeks: Int = CalendarWeek.allCases.count
     }

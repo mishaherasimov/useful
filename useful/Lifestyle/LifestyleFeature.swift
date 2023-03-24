@@ -26,7 +26,7 @@ struct Timeframe: Equatable {
     var weekSpan: (beginning: Date, end: Date) {
         @Dependency(\.calendarService) var service: CalendarService
 
-        return service.weekSpan(using: day)
+        return service.weekSpan(using: self)
     }
 }
 
@@ -78,8 +78,9 @@ struct LifestyleFeature: ReducerProtocol {
                     .map { Action.didLoadItems($0, type: type) }
                     .eraseToEffect()
             case .onViewDidLoad:
+                let week = state.calendarBar.selectedWeek
+                let time = Timeframe(week: week, day: DayItem(date: Date()))
 
-                let time = Timeframe(week: .week1, day: DayItem(date: Date()))
                 return .send(.onLoadContent(isReloading: false, time: time))
             case .didLoadItems(let response, let loadType):
                 guard let values = response.value else {

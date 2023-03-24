@@ -54,7 +54,7 @@ struct DayItem: Equatable, Hashable, Identifiable {
             fatalError("Cannot retrieve day information from the date \(date)")
         }
 
-        self.init(day: day)
+        self.init(day: day, isCurrent: true)
     }
 }
 
@@ -70,8 +70,12 @@ final class CalendarService {
     lazy var currentMonth: CurrentMonth = currentMonthData()
     lazy var currentWeek: CalendarWeek = findCurrentWeek()
 
-    func weekSpan(using day: DayItem) -> (beginning: Date, end: Date) {
-        guard let current = calendar.date(bySetting: .day, value: day.day, of: today) else {
+    func weekSpan(using timeframe: Timeframe) -> (beginning: Date, end: Date) {
+        var components = calendar.dateComponents([.year, .month], from: today)
+        components.day = timeframe.day.day
+        components.month = timeframe.monthToAdd + (components.month ?? .zero)
+
+        guard let current = calendar.date(from: components) else {
             fatalError("Cannot calculate week span")
         }
 
@@ -170,6 +174,19 @@ extension Array {
     fileprivate func chunked(into size: Int) -> [[Element]] {
         stride(from: 0, to: count, by: size).map {
             Array(self[$0 ..< Swift.min($0 + size, count)])
+        }
+    }
+}
+
+private extension Timeframe {
+    var monthToAdd: Int {
+        switch (week, day.isCurrent) {
+        case (.week1, false), (.week2, false):
+            return -1
+        case (.week6, false), (.week5, false):
+            return 1
+        default:
+            return .zero
         }
     }
 }

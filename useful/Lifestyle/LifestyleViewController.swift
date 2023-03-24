@@ -404,26 +404,26 @@ extension LifestyleViewController {
         )
             -> UICollectionViewCell? in
 
-        guard let self = self else { return nil }
+            guard let self = self else { return nil }
 
-        let content = self.viewStore.items[indexPath.section]
-        let isLast = disposableItem == self.viewStore.items[indexPath.section].items.last
+            let content = self.viewStore.items[indexPath.section]
+            let isLast = disposableItem == self.viewStore.items[indexPath.section].items.last
 
-        // If last item in a first section
-        if isLast, content.section == .ongoing {
-            let cell: SuggestedItemsCell = collectionView.dequeueReusableCell(for: indexPath)
-            cell.configure(items: Int.random(in: 2..<10))
-            return cell
-        } else {
-            let cell: ItemCell = collectionView.dequeueReusableCell(for: indexPath)
-            cell.configure(
-                name: disposableItem.name,
-                imageURL: disposableItem.imageURL,
-                imageURLDark: disposableItem.imageURLDark,
-                isCompleted: disposableItem.isCompleted == true
-            )
-            return cell
-        }
+            // If last item in a first section
+            if isLast, content.section == .ongoing {
+                let cell: SuggestedItemsCell = collectionView.dequeueReusableCell(for: indexPath)
+                cell.configure(items: Int.random(in: 2..<10))
+                return cell
+            } else {
+                let cell: ItemCell = collectionView.dequeueReusableCell(for: indexPath)
+                cell.configure(
+                    name: disposableItem.name,
+                    imageURL: disposableItem.imageURL,
+                    imageURLDark: disposableItem.imageURLDark,
+                    isCompleted: disposableItem.isCompleted == true
+                )
+                return cell
+            }
         }
 
         dataSource
